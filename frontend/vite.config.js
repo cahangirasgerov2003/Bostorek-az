@@ -10,6 +10,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      // Eger siz ilkin kullanimi tercih edessinizse bu zaman bu yapilandirmani yazmaniz gerekicek ki
+      // yazdiqlarinizi ekranda gore bilesiniz
+      // vue: "vue/dist/vue.esm-bundler",
     },
   },
 });
