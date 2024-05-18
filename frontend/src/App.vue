@@ -1,5 +1,9 @@
 <template>
-  <NavBar />
+  <div>
+    <NavBar />
+
+    <RouterView />
+  </div>
 </template>
 
 <script>

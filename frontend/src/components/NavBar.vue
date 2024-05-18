@@ -1,22 +1,24 @@
 <template>
   <nav class="navbar navbar-expand-lg custom-navbar">
     <div class="container">
-      <a class="navbar-brand" href="#">Bostorek</a>
+      <a class="navbar-brand" href="#">{{
+        isUpperCase ? BrandName.toUpperCase() : BrandName
+      }}</a>
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" href="#">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Categories</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Blog</a>
+          <a class="nav-link" href="#">Books</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Contact Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Register</a>
         </li>
       </ul>
     </div>
@@ -26,6 +28,12 @@
 <script>
 export default {
   name: "NavBar",
+  data() {
+    return {
+      BrandName: "Bostorek",
+      isUpperCase: true,
+    };
+  },
 };
 </script>
 
