@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg custom-navbar">
     <div class="container">
-      <RouterLink class="navbar-brand" v-bind:to="{ name: 'home' }"
+      <RouterLink class="navbar-brand" :to="{ name: 'home' }"
         >BOSTOREK</RouterLink
       >
       <ul class="navbar-nav">
