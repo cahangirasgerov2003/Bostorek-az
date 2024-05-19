@@ -3,7 +3,11 @@
     <div class="container pt-5">
       <Heading :title="title" :desc="desc" />
       <BookList :books="limitBooks" />
-      <Pagination :current="current" :pages="calculateNumberOfPages" />
+      <Pagination
+        :current="current"
+        :pages="calculateNumberOfPages"
+        @changePage="updatePage"
+      />
     </div>
   </section>
 </template>
@@ -38,6 +42,13 @@ export default {
       const startBookNumber = this.current * this.perPage - this.perPage;
       const endBookNumber = startBookNumber + this.perPage;
       return books.slice(startBookNumber, endBookNumber);
+    },
+  },
+
+  // Methods
+  methods: {
+    updatePage(page) {
+      this.current = page;
     },
   },
 };
