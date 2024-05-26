@@ -3,7 +3,7 @@
     <div class="container pt-5">
       <Heading :title="title" :desc="desc + ' ' + book.name" />
       <RouterLink to="/books" class="btn btn-info px-4 mt-3 mb-5 text-white">
-        Back
+        <font-awesome-icon icon="left-long" size="xl" />
       </RouterLink>
       <div class="row">
         <div class="col-lg-6">
@@ -15,7 +15,7 @@
         </div>
         <div class="col-lg-6">
           <div class="textOverflow" style="margin-bottom: 30px">
-            <p class="lead mb-0">
+            <p class="lead mb-0 pe-3" style="text-align: justify">
               {{ book.description }}
             </p>
           </div>
@@ -62,6 +62,7 @@
               id="carouselExampleAutoplaying"
               class="carousel slide"
               data-bs-ride="carousel"
+              style="width: 90%; margin: auto"
             >
               <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -71,11 +72,16 @@
                       <p class="card-text">
                         With supporting text below as a natural lead-in to
                         additional content.With supporting text below as a
-                        natural lead-in to additional content.With supporting
-                        text below as a natural lead-in to additional content.
+                        natural lead-in to additional content.With supporting,
+                        natural lead-in to additional content.With supporting,
                       </p>
-                      <div class="d-flex">
-                        <p>Upvote :</p>
+                      <div
+                        class="d-flex align-items-center justify-content-end"
+                      >
+                        <font-awesome-icon
+                          icon="fa-regular fa-thumbs-up"
+                          size="lg"
+                        />
                         <strong class="ms-2">8</strong>
                       </div>
                     </div>
@@ -88,11 +94,16 @@
                       <p class="card-text">
                         With supporting text below as a natural lead-in to
                         additional content.With supporting text below as a
-                        natural lead-in to additional content.With supporting
-                        text below as a natural lead-in to additional content.
+                        natural lead-in to additional content.With supporting,
+                        natural lead-in to additional content.With supporting,
                       </p>
-                      <div class="d-flex">
-                        <p>Upvote :</p>
+                      <div
+                        class="d-flex align-items-center justify-content-end"
+                      >
+                        <font-awesome-icon
+                          icon="fa-regular fa-thumbs-up"
+                          size="lg"
+                        />
                         <strong class="ms-2">89</strong>
                       </div>
                     </div>
@@ -105,11 +116,22 @@
                       <p class="card-text">
                         With supporting text below as a natural lead-in to
                         additional content.With supporting text below as a
-                        natural lead-in to additional content.With supporting
-                        text below as a natural lead-in to additional content.
+                        natural lead-in to additional content.With supporting,
+                        natural lead-in to additional content.With supporting,
+                        natural lead-in to additional content.With supporting,
+                        With supporting text below as a natural lead-in to
+                        additional content.With supporting text below as a
+                        natural lead-in to additional content.With supporting,
+                        natural lead-in to additional content.With supporting,
+                        natural lead-in to additional content.With supporting,
                       </p>
-                      <div class="d-flex">
-                        <p>Upvote :</p>
+                      <div
+                        class="d-flex align-items-center justify-content-end"
+                      >
+                        <font-awesome-icon
+                          icon="fa-regular fa-thumbs-up"
+                          size="lg"
+                        />
                         <strong class="ms-2">12</strong>
                       </div>
                     </div>
@@ -121,11 +143,14 @@
                 type="button"
                 data-bs-target="#carouselExampleAutoplaying"
                 data-bs-slide="prev"
+                style="height: 32px; width: 20px"
               >
-                <span
-                  class="carousel-control-prev-icon"
+                <font-awesome-icon
+                  icon="angle-left"
+                  style="color: black"
+                  size="2xl"
                   aria-hidden="true"
-                ></span>
+                />
                 <span class="visually-hidden">Previous</span>
               </button>
               <button
@@ -133,11 +158,14 @@
                 type="button"
                 data-bs-target="#carouselExampleAutoplaying"
                 data-bs-slide="next"
+                style="height: 32px; width: 20px"
               >
-                <span
-                  class="carousel-control-next-icon"
+                <font-awesome-icon
+                  icon="angle-right"
+                  style="color: black"
+                  size="2xl"
                   aria-hidden="true"
-                ></span>
+                />
                 <span class="visually-hidden">Next</span>
               </button>
             </div>
@@ -181,7 +209,7 @@ export default {
 }
 
 .textOverflow {
-  max-height: 200px;
+  max-height: 190px;
   overflow-y: auto;
 }
 
@@ -197,5 +225,22 @@ export default {
   left: 12px;
   width: calc(100% - 12px);
   border-bottom: 1px solid rgba(195, 192, 192, 0.523);
+}
+
+.carousel-control-prev {
+  top: 50%;
+  left: calc(-1% - 20px);
+}
+
+.carousel-control-next {
+  top: 50%;
+  left: 101%;
+}
+
+.card-text {
+  max-height: 96px;
+  overflow-y: auto;
+  text-align: justify;
+  padding-right: 8px;
 }
 </style>

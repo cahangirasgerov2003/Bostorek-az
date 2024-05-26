@@ -5,7 +5,7 @@ const books = [
     author: "F. Scott Fitzgerald",
     page: 218,
     description:
-      "The Book of Freedom is an irrefutable invitation to claim yourself as who you truly are. One who is free from the cycle of expectation and disappointment that rules ordinary life. One who is capable of holding love and forgiveness for all the people on your path, especially yourself.",
+      "The Book of Freedom is an irrefutable invitation to claim yourself as who you truly are. One who is free from the cycle of expectation and disappointment that rules ordinary life. One who is capable of holding love and forgiveness for all the people on your path, especially yourself, especially yourself, especially yourself, especially yourself, especially yourself, especially yourself, especially yourself, especially yourself, especially yourself.",
     rating: 4.2,
     uploadDate: "10 Jan 2019",
   },
