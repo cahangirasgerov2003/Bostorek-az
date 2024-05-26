@@ -4,7 +4,8 @@ const books = [
     name: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
     page: 218,
-    description: "A story of the Jazz Age.",
+    description:
+      "The Book of Freedom is an irrefutable invitation to claim yourself as who you truly are. One who is free from the cycle of expectation and disappointment that rules ordinary life. One who is capable of holding love and forgiveness for all the people on your path, especially yourself.",
     rating: 4.2,
     uploadDate: "10 Jan 2019",
   },
@@ -13,7 +14,8 @@ const books = [
     name: "To Kill a Mockingbird",
     author: "Harper Lee",
     page: 281,
-    description: "A novel about racial injustice.",
+    description:
+      "A novel about racial injustice.A story of the Jazz Age.A story of the Jazz Age.",
     rating: 7.8,
     uploadDate: "15 Mar 2020",
   },
@@ -22,7 +24,8 @@ const books = [
     name: "1984",
     author: "George Orwell",
     page: 328,
-    description: "A dystopian social science fi...",
+    description:
+      "A dystopian social science fiA story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.",
     rating: 4.5,
     uploadDate: "22 Aug 2018",
   },
@@ -31,7 +34,8 @@ const books = [
     name: "Pride and Prejudice",
     author: "Jane Austen",
     page: 279,
-    description: "A romantic novel of manners.",
+    description:
+      "A romantic novel of manners.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.",
     rating: 8.3,
     uploadDate: "05 Jul 2021",
   },
@@ -76,8 +80,7 @@ const books = [
     name: "War and Peace",
     author: "Leo Tolstoy",
     page: 1225,
-    description:
-      "A historical novel that chronicles the history of the French invasion of Russia.",
+    description: "A historical novel",
     rating: 4.7,
     uploadDate: "14 May 2013",
   },

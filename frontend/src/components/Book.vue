@@ -12,13 +12,11 @@
     </div>
     <div class="card-body">
       <h5 class="card-title fw-bold">{{ book.name }}</h5>
-      <p class="card-text text-justify">
-        {{ book.description }}
+      <p class="card-text text-justify descContent">
+        {{ formattedText }}
       </p>
       <div class="d-flex justify-content-between align-items-center">
-        <RouterLink
-          :to="`/books/` + book.id"
-          style="color: #44b89d; text-decoration: none"
+        <RouterLink :to="`/books/` + book.id" style="color: #44b89d"
           >Read More</RouterLink
         >
         <span
@@ -58,6 +56,12 @@ export default {
       }
       return "bg-danger";
     },
+
+    formattedText() {
+      return this.book.description.length > 80
+        ? this.book.description.slice(0, 77) + "..."
+        : this.book.description;
+    },
   },
   components: { RouterLink },
 };
@@ -79,5 +83,9 @@ export default {
 
 .card-body {
   padding: 45px 25px 25px 25px;
+}
+
+.descContent {
+  min-height: 72px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <section class="mb-5">
     <div class="container pt-5">
-      <Heading :title="title" :desc="desc" />
+      <Heading :title="title" :desc="desc + ' ' + book.name" />
       <RouterLink to="/books" class="btn btn-info px-4 mt-3 mb-5 text-white">
         Back
       </RouterLink>
@@ -14,23 +14,21 @@
           />
         </div>
         <div class="col-lg-6">
-          <div>
-            <p class="lead">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus
-              quaerat voluptates eum accusamus, architecto repellendus unde
-              corrupti ab magnam modi?
+          <div class="textOverflow" style="margin-bottom: 30px">
+            <p class="lead mb-0">
+              {{ book.description }}
             </p>
           </div>
           <div>
-            <div class="row border-bottom mb-3">
+            <div class="row mb-3 bookStatic">
               <div class="col-lg-6">
                 <strong>Page</strong>
               </div>
               <div class="col-lg-6">
-                <p>278</p>
+                <p>{{ book.page }}</p>
               </div>
             </div>
-            <div class="row border-bottom mb-3">
+            <div class="row mb-3 bookStatic">
               <div class="col-lg-6">
                 <strong>Category</strong>
               </div>
@@ -38,26 +36,26 @@
                 <p>Fiction</p>
               </div>
             </div>
-            <div class="row border-bottom mb-3">
+            <div class="row mb-3 bookStatic">
               <div class="col-lg-6">
                 <strong>Rating</strong>
               </div>
               <div class="col-lg-6">
-                <p>7.8</p>
+                <p>{{ book.rating }}</p>
               </div>
             </div>
-            <div class="row border-bottom mb-3">
+            <div class="row mb-3 bookStatic">
               <div class="col-lg-6">
                 <strong>Upload date</strong>
               </div>
               <div class="col-lg-6">
-                <p>20 Jan 2010</p>
+                <p>{{ book.uploadDate }}</p>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 class="my-3" style="color: #063547; font-weight: 400">
+            <h3 class="my-3 ps-1" style="color: #063547; font-weight: 400">
               Comments
             </h3>
             <div
@@ -153,17 +151,23 @@
 <script>
 import Heading from "@/components/Heading.vue";
 import { RouterLink } from "vue-router";
+import books from "@/data/db.js";
 export default {
   name: "BookDetailView",
   data() {
     return {
       title: "Book Detail",
-      desc: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration",
+      desc: "About the book of",
+      book: null,
     };
   },
   components: {
     Heading,
     RouterLink,
+  },
+  created() {
+    const bookId = this.$route.params.id;
+    this.book = books.find((book) => book.id === parseInt(bookId));
   },
 };
 </script>
@@ -174,5 +178,24 @@ export default {
   height: 740px;
   object-fit: cover;
   border-radius: 5px;
+}
+
+.textOverflow {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.bookStatic {
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.bookStatic::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  width: calc(100% - 12px);
+  border-bottom: 1px solid rgba(195, 192, 192, 0.523);
 }
 </style>

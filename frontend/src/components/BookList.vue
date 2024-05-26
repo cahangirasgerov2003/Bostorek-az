@@ -5,7 +5,7 @@
       v-for="(book, index) in books"
       :key="index"
     >
-      <RouterLink v-bind:to="`/books/` + book.id" style="text-decoration: none">
+      <RouterLink v-bind:to="`/books/` + book.id">
         <Book :book="book" />
       </RouterLink>
     </div>
