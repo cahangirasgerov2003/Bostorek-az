@@ -16,7 +16,11 @@
         {{ book.description }}
       </p>
       <div class="d-flex justify-content-between align-items-center">
-        <a href="#" style="color: #44b89d; text-decoration: none">Read More</a>
+        <RouterLink
+          :to="`/books/` + book.id"
+          style="color: #44b89d; text-decoration: none"
+          >Read More</RouterLink
+        >
         <span
           class="badge rounded-pill py-2 px-3"
           style="background-color: #063547; font-size: 14px"
@@ -34,6 +38,8 @@
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
+
 export default {
   name: "Book",
   props: {
@@ -53,6 +59,7 @@ export default {
       return "bg-danger";
     },
   },
+  components: { RouterLink },
 };
 </script>
 

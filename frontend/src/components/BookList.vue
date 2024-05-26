@@ -5,17 +5,21 @@
       v-for="(book, index) in books"
       :key="index"
     >
-      <Book :book="book" />
+      <RouterLink v-bind:to="`/books/` + book.id" style="text-decoration: none">
+        <Book :book="book" />
+      </RouterLink>
     </div>
   </div>
 </template>
 
 <script>
+import { RouterLink } from "vue-router";
 import Book from "./Book.vue";
 export default {
   name: "BookList",
   components: {
     Book,
+    RouterLink,
   },
   props: {
     books: {
