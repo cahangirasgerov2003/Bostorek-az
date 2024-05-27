@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "Pagination",
+  name: "ThePagination",
   emits: ["changePage"],
   props: {
     current: {
@@ -65,7 +65,7 @@ export default {
 }
 
 .active > .page-link {
-  background-color: #063547 !important;
-  border-color: #063547 !important;
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }
 </style>

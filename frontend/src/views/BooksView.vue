@@ -1,9 +1,9 @@
 <template>
-  <section>
+  <section class="calculatingHeightSection">
     <div class="container pt-5">
-      <Heading :title="title" :desc="desc" />
+      <TheHeading :title="title" :desc="desc" />
       <BookList :books="limitBooks" />
-      <Pagination
+      <ThePagination
         :current="current"
         :pages="calculateNumberOfPages"
         @changePage="updatePage"
@@ -13,16 +13,16 @@
 </template>
 
 <script>
-import Heading from "@/components/Heading.vue";
+import TheHeading from "@/components/TheHeading.vue";
 import BookList from "@/components/BookList.vue";
 import books from "@/data/db.js";
-import Pagination from "@/components/Pagination.vue";
+import ThePagination from "@/components/ThePagination.vue";
 export default {
   name: "BooksView",
   components: {
-    Heading,
+    TheHeading,
     BookList,
-    Pagination,
+    ThePagination,
   },
   data() {
     return {

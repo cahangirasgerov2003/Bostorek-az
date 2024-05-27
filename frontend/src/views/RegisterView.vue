@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-5">
+  <section class="calculatingHeightSection">
     <div class="container">
       <div class="d-flex justify-content-center mb-3">
         <h2 class="fw-bold">Register</h2>
@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     submitForm() {
-      console.log(this.userData);
+      console.log("Register data : ", this.userData);
     },
 
     updateGender(gender) {
@@ -169,14 +169,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.labelElement {
-  color: #063547;
-  font-size: 18px;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-style: italic;
-}
-.styleInputTypes {
-  margin-bottom: 35px;
-}
-</style>
+<style scoped></style>

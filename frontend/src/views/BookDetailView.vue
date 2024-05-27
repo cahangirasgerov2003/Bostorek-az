@@ -1,7 +1,7 @@
 <template>
   <section class="mb-5">
     <div class="container pt-5">
-      <Heading :title="title" :desc="desc + ' ' + book.name" />
+      <TheHeading :title="title" :desc="desc + ' ' + book.name" />
       <RouterLink to="/books" class="btn btn-info px-4 mt-3 mb-5 text-white">
         <font-awesome-icon icon="left-long" size="xl" />
       </RouterLink>
@@ -55,7 +55,10 @@
           </div>
 
           <div>
-            <h3 class="my-3 ps-1" style="color: #063547; font-weight: 400">
+            <h3
+              class="my-3 ps-1"
+              style="color: var(--primary-color); font-weight: 400"
+            >
               Comments
             </h3>
             <div
@@ -177,7 +180,7 @@
 </template>
 
 <script>
-import Heading from "@/components/Heading.vue";
+import TheHeading from "@/components/TheHeading.vue";
 import { RouterLink } from "vue-router";
 import books from "@/data/db.js";
 export default {
@@ -190,7 +193,7 @@ export default {
     };
   },
   components: {
-    Heading,
+    TheHeading,
     RouterLink,
   },
   created() {

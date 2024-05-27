@@ -21,7 +21,7 @@
         >
         <span
           class="badge rounded-pill py-2 px-3"
-          style="background-color: #063547; font-size: 14px"
+          style="background-color: var(--primary-color); font-size: 14px"
           >{{ book.uploadDate }}</span
         >
       </div>
@@ -74,7 +74,7 @@ export default {
   left: 25px;
   padding: 10px 25px;
   font-size: 18px;
-  background-color: #063547;
+  background-color: var(--primary-color);
   border: 3px solid white;
   color: white;
   transform: translateY(50%);

@@ -1,0 +1,35 @@
+/* Import */
+@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@200..1000&display=swap");
+
+/* Global CSS Variables */
+:root {
+  --primary-color: #063547;
+  --navbar-hoverColor: rgba(255, 255, 255, 0.393);
+}
+
+/* Main styles */
+html,
+body {
+  font-family: "Mulish", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Custom styles */
+.labelElement {
+  color: var(--primary-color);
+  font-size: 18px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-style: italic;
+}
+.styleInputTypes {
+  margin-bottom: 35px;
+}
+
+.calculatingHeightSection {
+  min-height: calc(100vh - 130px);
+  display: flex;
+  align-items: center;
+}

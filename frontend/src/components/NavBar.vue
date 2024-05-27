@@ -49,7 +49,7 @@ export default {
 
 <style scoped>
 .custom-navbar {
-  background-color: #063547;
+  background-color: var(--primary-color);
   padding: 15px 0;
 }
 
@@ -68,10 +68,10 @@ export default {
 }
 
 .nav-link:hover {
-  color: rgba(255, 255, 255, 0.393);
+  color: var(--navbar-hoverColor);
 }
 
 .activeLink.nav-link {
-  color: rgba(255, 255, 255, 0.393);
+  color: var(--navbar-hoverColor);
 }
 </style>

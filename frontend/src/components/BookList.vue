@@ -6,7 +6,7 @@
       :key="index"
     >
       <RouterLink v-bind:to="`/books/` + book.id">
-        <Book :book="book" />
+        <BookItem :book="book" />
       </RouterLink>
     </div>
   </div>
@@ -14,11 +14,11 @@
 
 <script>
 import { RouterLink } from "vue-router";
-import Book from "./Book.vue";
+import BookItem from "./BookItem.vue";
 export default {
   name: "BookList",
   components: {
-    Book,
+    BookItem,
     RouterLink,
   },
   props: {
