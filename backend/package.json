@@ -1,0 +1,29 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "This project is a backend API for uploading books, user registration, comments, and other related operations.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "keywords": [
+    "book",
+    "comment",
+    "login",
+    "user",
+    "registration",
+    "update",
+    "book",
+    "delete",
+    "book",
+    "update",
+    "user"
+  ],
+  "author": "Əsgərov Cahangir",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.1"
+  }
+}
