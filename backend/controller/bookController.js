@@ -1,6 +1,42 @@
+import mongoose from "mongoose";
 import Book from "../models/Book.js";
-const getAllBooks = (req, res) => {
-  console.log("All books will be retrived");
+const getAllBooks = async (req, res) => {
+  try {
+    const allBooks = await Book.find({});
+    return res
+      .status(200)
+      .json({ message: "All books returned successfully", books: allBooks });
+  } catch (error) {
+    console.error("Error at getAllBooks", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getABook = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        error: "The id value in the query is not a valid objectId value",
+      });
+    }
+
+    const aBook = await Book.findById(id);
+
+    if (!aBook) {
+      return res
+        .status(404)
+        .json({ error: "No book with this ID value was found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "The searched book was found successfully", aBook });
+  } catch (error) {
+    console.error("Error at getABook", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 const createNewBook = async (req, res) => {
@@ -34,9 +70,63 @@ const createNewBook = async (req, res) => {
         .status(400)
         .json({ error: "Validation error", validationErrors });
     } else {
+      console.error("Error at creatNewBook", error);
       return res.status(500).json({ error: "Internal Server Error" });
     }
   }
 };
 
-export { getAllBooks, createNewBook };
+const updateABook = async (req, res) => {
+  const { id } = req.params;
+  const { title, author, page, description, rating } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      error: "The id value in the query is not a valid objectId value",
+    });
+  }
+
+  try {
+    const aBook = await Book.findById(id);
+
+    if (!aBook) {
+      return res
+        .status(404)
+        .json({ error: "No book with this ID value was found" });
+    }
+
+    aBook.title = title || aBook.title;
+    aBook.author = author || aBook.author;
+    aBook.page = page || aBook.page;
+    aBook.description = description || aBook.description;
+    aBook.rating = rating || aBook.rating;
+
+    await aBook.save();
+
+    return res.status(200).json({ message: "The book updated successfully" });
+  } catch (error) {
+    console.error("Error at updateABook", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const deleteABook = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      error: "The id value in the query is not a valid objectId value",
+    });
+  }
+  const aBook = await Book.findByIdAndDelete(id);
+
+  if (!aBook) {
+    return res
+      .status(404)
+      .json({ error: "No book with this ID value was found" });
+  }
+
+  return res.status(200).json({ message: "The book deleted successfully" });
+};
+
+export { getAllBooks, createNewBook, getABook, updateABook, deleteABook };
