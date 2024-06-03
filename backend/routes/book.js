@@ -4,14 +4,21 @@ import * as bookController from "../controller/bookController.js";
 
 const router = express.Router();
 
-router.get("/", bookController.getAllBooks);
+// router.get("/", bookController.getAllBooks);
 
-router.post("/", bookController.createNewBook);
+// router.post("/", bookController.createNewBook);
 
-router.get("/:id", bookController.getABook);
+// Alternative variant
 
-router.put("/:id", bookController.updateABook);
+router
+  .route("/")
+  .get(bookController.getAllBooks)
+  .post(bookController.createNewBook);
 
-router.delete("/:id", bookController.deleteABook);
+router
+  .route("/:id")
+  .get(bookController.getABook)
+  .put(bookController.updateABook)
+  .delete(bookController.deleteABook);
 
 export default router;

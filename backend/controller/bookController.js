@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
 import Book from "../models/Book.js";
+import { controlObjectId, findDocumentById } from "../utility/index.js";
 const getAllBooks = async (req, res) => {
   try {
     const allBooks = await Book.find({});
@@ -16,19 +16,11 @@ const getABook = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({
-        error: "The id value in the query is not a valid objectId value",
-      });
-    }
+    if (controlObjectId(id, res)) return;
 
-    const aBook = await Book.findById(id);
+    const aBook = await findDocumentById(Book, id, res);
 
-    if (!aBook) {
-      return res
-        .status(404)
-        .json({ error: "No book with this ID value was found" });
-    }
+    if (!aBook) return;
 
     return res
       .status(200)
@@ -80,20 +72,12 @@ const updateABook = async (req, res) => {
   const { id } = req.params;
   const { title, author, page, description, rating } = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({
-      error: "The id value in the query is not a valid objectId value",
-    });
-  }
+  if (controlObjectId(id, res)) return;
 
   try {
-    const aBook = await Book.findById(id);
+    const aBook = await findDocumentById(Book, id, res);
 
-    if (!aBook) {
-      return res
-        .status(404)
-        .json({ error: "No book with this ID value was found" });
-    }
+    if (!aBook) return;
 
     aBook.title = title || aBook.title;
     aBook.author = author || aBook.author;
@@ -113,20 +97,22 @@ const updateABook = async (req, res) => {
 const deleteABook = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({
-      error: "The id value in the query is not a valid objectId value",
-    });
-  }
-  const aBook = await Book.findByIdAndDelete(id);
+  if (controlObjectId(id, res)) return;
 
-  if (!aBook) {
-    return res
-      .status(404)
-      .json({ error: "No book with this ID value was found" });
-  }
+  try {
+    const aBook = await Book.findByIdAndDelete(id);
 
-  return res.status(200).json({ message: "The book deleted successfully" });
+    if (!aBook) {
+      return res
+        .status(404)
+        .json({ error: "No book with this ID value was found" });
+    }
+
+    return res.status(200).json({ message: "The book deleted successfully" });
+  } catch (error) {
+    console.error("Error at deleteABook", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 export { getAllBooks, createNewBook, getABook, updateABook, deleteABook };
