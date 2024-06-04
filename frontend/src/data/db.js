@@ -34,8 +34,7 @@ const books = [
     name: "Pride and Prejudice",
     author: "Jane Austen",
     page: 279,
-    description:
-      "A romantic novel of manners.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.A story of the Jazz Age.",
+    description: "A romantic novel of manners.A story of the Jazz Age.",
     rating: 8.3,
     uploadDate: "05 Jul 2021",
   },

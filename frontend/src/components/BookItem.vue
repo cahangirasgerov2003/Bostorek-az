@@ -11,18 +11,18 @@
       </h4>
     </div>
     <div class="card-body">
-      <h5 class="card-title fw-bold">{{ book.name }}</h5>
+      <h5 class="card-title fw-bold">{{ book.title }}</h5>
       <p class="card-text text-justify descContent">
         {{ formattedText }}
       </p>
       <div class="d-flex justify-content-between align-items-center">
-        <RouterLink :to="`/books/` + book.id" style="color: #44b89d"
+        <RouterLink :to="`/books/` + book._id" style="color: #44b89d"
           >Read More</RouterLink
         >
         <span
           class="badge rounded-pill py-2 px-3"
           style="background-color: var(--primary-color); font-size: 14px"
-          >{{ book.uploadDate }}</span
+          >{{ book.updatedAt.slice(11, 19) }}</span
         >
       </div>
     </div>

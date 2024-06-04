@@ -19,9 +19,10 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { faLeftLong } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
-library.add(faAngleLeft, faAngleRight, faLeftLong, faThumbsUp);
+library.add(faAngleLeft, faAngleRight, faLeftLong, faThumbsUp, faSpinner);
 
 createApp(App)
   .component("font-awesome-icon", FontAwesomeIcon)
