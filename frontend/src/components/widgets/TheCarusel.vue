@@ -1,6 +1,6 @@
 <template>
   <div class="position-relative w-100">
-    <Transition name="fade">
+    <Transition name="fade" mode="out-in">
       <div :key="currentItem.imageUrl" class="position-relative">
         <img
           :alt="currentItem.subtitle"
@@ -62,8 +62,7 @@ export default {
   },
   created() {
     this.currentItem = this.caruselItems[0];
-    this.autoPlay = true;
-    this.startAutoPlay();
+    this.autoPlay = false;
   },
   props: {
     caruselItems: {

@@ -1,5 +1,5 @@
 <template>
-  <section class="calculatingHeightSection">
+  <section>
     <TheCarusel v-bind:caruselItems="carouselItems" height="400px"></TheCarusel>
   </section>
 </template>
