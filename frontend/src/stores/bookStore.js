@@ -6,6 +6,11 @@ export const useBookStore = defineStore("bookStore", {
     books: [],
     isLoading: false,
   }),
+  getters: {
+    selectABook(state) {
+      return (id) => state.books.find((item) => item._id === id);
+    },
+  },
   actions: {
     async fetchBooks() {
       try {
