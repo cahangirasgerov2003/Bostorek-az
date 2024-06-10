@@ -4,6 +4,8 @@ import "@/assets/styles/main.css";
 
 import { createApp } from "vue";
 
+import { createPinia } from "pinia";
+
 import App from "@/App.vue";
 
 import router from "@/router/index.js";
@@ -35,6 +37,7 @@ library.add(
 );
 
 createApp(App)
+  .use(createPinia())
   .component("font-awesome-icon", FontAwesomeIcon)
   .use(router)
   .mount("#app");

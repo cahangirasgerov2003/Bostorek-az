@@ -43,6 +43,10 @@ import TheHeading from "../components/TheHeading.vue";
 import TheCarusel from "../components/widgets/TheCarusel.vue";
 import FeaturedListGroup from "../components/widgets/FeaturedListGroup.vue";
 import FeaturedAccordion from "../components/widgets/FeaturedAccordion.vue";
+import { useBookStore } from "@/stores/bookStore.js";
+// Biz burada butun storu yox sadece books-i isteyirik
+// o zaman yalniz onu istifade edek
+import { mapState } from "pinia";
 export default {
   name: "HomeView",
   components: {
@@ -78,29 +82,32 @@ export default {
       ],
       title: "Featured books",
       desc: "After the title and the book cover, your description is the most important",
-      loading: true,
-      books: [],
+      loading: false,
+      // store adi vermek daha meksede uygundur
+      // books: [],
       filterType: "Latest",
+      bookStore: useBookStore(),
     };
   },
   methods: {
-    async fetchBooks() {
-      try {
-        const response = await fetch("http://localhost:3000/api/v1/books");
-        const data = await response.json();
-        this.loading = false;
-        this.books = data.books;
-      } catch (error) {
-        console.error("An error occurred while fetching books", error);
-      }
-    },
+    // Artiq stordan cekeceyik datamizi
+    // async fetchBooks() {
+    //   try {
+    //     const response = await fetch("http://localhost:3000/api/v1/books");
+    //     const data = await response.json();
+    //     this.loading = false;
+    //     this.books = data.books;
+    //   } catch (error) {
+    //     console.error("An error occurred while fetching books", error);
+    //   }
+    // },
     changeFilterType(type) {
       this.filterType = type;
     },
   },
-  created() {
-    this.fetchBooks();
-  },
+  // created() {
+  //   this.fetchBooks();
+  // },
 
   computed: {
     filterBooks() {
@@ -113,6 +120,8 @@ export default {
         return booksToFilter.sort((a, b) => b.rating - a.rating).slice(0, 3);
       }
     },
+
+    ...mapState(useBookStore, ["books"]),
   },
 };
 </script>
