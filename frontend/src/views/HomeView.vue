@@ -11,10 +11,23 @@
         <TheHeading :desc="desc" :title="title" />
         <div class="row mt-5">
           <div class="col-md-4">
-            <FeaturedListGroup />
+            <FeaturedListGroup
+              :filterType="filterType"
+              @changeType="changeFilterType"
+            />
           </div>
-          <div class="col-md-8">
-            <FeaturedAccordion />
+          <div class="col-md-8" :style="loading ? 'min-height:350px' : ''">
+            <FeaturedAccordion :filterBooks="filterBooks" v-if="!loading" />
+            <div
+              v-else
+              class="w-100 h-100 d-flex align-items-center justify-content-center"
+            >
+              <font-awesome-icon
+                icon="spinner"
+                spin-pulse
+                style="font-size: 40px"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -65,7 +78,41 @@ export default {
       ],
       title: "Featured books",
       desc: "After the title and the book cover, your description is the most important",
+      loading: true,
+      books: [],
+      filterType: "Latest",
     };
+  },
+  methods: {
+    async fetchBooks() {
+      try {
+        const response = await fetch("http://localhost:3000/api/v1/books");
+        const data = await response.json();
+        this.loading = false;
+        this.books = data.books;
+      } catch (error) {
+        console.error("An error occurred while fetching books", error);
+      }
+    },
+    changeFilterType(type) {
+      this.filterType = type;
+    },
+  },
+  created() {
+    this.fetchBooks();
+  },
+
+  computed: {
+    filterBooks() {
+      const booksToFilter = [...this.books];
+      if (this.filterType === "Latest") {
+        return booksToFilter
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 3);
+      } else if (this.filterType === "TopRated") {
+        return booksToFilter.sort((a, b) => b.rating - a.rating).slice(0, 3);
+      }
+    },
   },
 };
 </script>
