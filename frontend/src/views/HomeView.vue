@@ -16,8 +16,8 @@
               @changeType="changeFilterType"
             />
           </div>
-          <div class="col-md-8" :style="loading ? 'min-height:350px' : ''">
-            <FeaturedAccordion :filterBooks="filterBooks" v-if="!loading" />
+          <div class="col-md-8" :style="isLoading ? 'min-height:350px' : ''">
+            <FeaturedAccordion :filterBooks="filterBooks" v-if="!isLoading" />
             <div
               v-else
               class="w-100 h-100 d-flex align-items-center justify-content-center"
@@ -46,7 +46,7 @@ import FeaturedAccordion from "../components/widgets/FeaturedAccordion.vue";
 import { useBookStore } from "@/stores/bookStore.js";
 // Biz burada butun storu yox sadece books-i isteyirik
 // o zaman yalniz onu istifade edek
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
 export default {
   name: "HomeView",
   components: {
@@ -82,7 +82,6 @@ export default {
       ],
       title: "Featured books",
       desc: "After the title and the book cover, your description is the most important",
-      loading: false,
       // store adi vermek daha meksede uygundur
       // books: [],
       filterType: "Latest",
@@ -90,6 +89,8 @@ export default {
     };
   },
   methods: {
+    // Istifade edeceyimiz actions-i yaziriq
+    ...mapActions(useBookStore, ["fetchBooks"]),
     // Artiq stordan cekeceyik datamizi
     // async fetchBooks() {
     //   try {
@@ -105,9 +106,6 @@ export default {
       this.filterType = type;
     },
   },
-  // created() {
-  //   this.fetchBooks();
-  // },
 
   computed: {
     filterBooks() {
@@ -121,7 +119,11 @@ export default {
       }
     },
 
-    ...mapState(useBookStore, ["books"]),
+    ...mapState(useBookStore, ["books", "isLoading"]),
+  },
+
+  created() {
+    this.fetchBooks();
   },
 };
 </script>

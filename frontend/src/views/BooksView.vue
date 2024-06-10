@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="calculatingHeightSection" v-if="!loading">
+    <section class="calculatingHeightSection" v-if="!isLoading">
       <div class="container pt-5">
         <TheHeading :title="title" :desc="desc" />
         <BookList :books="limitBooks" />
@@ -25,6 +25,8 @@
 import TheHeading from "@/components/TheHeading.vue";
 import BookList from "@/components/BookList.vue";
 import ThePagination from "@/components/ThePagination.vue";
+import { useBookStore } from "../stores/bookStore";
+import { mapState } from "pinia";
 export default {
   name: "BooksView",
   components: {
@@ -36,14 +38,14 @@ export default {
     return {
       title: "Books Categories",
       desc: " There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration",
-      books: [],
       current: 1,
       perPage: 8,
-      loading: true,
+      bookStore: useBookStore(),
     };
   },
   // Computed props
   computed: {
+    ...mapState(useBookStore, ["books", "isLoading"]),
     calculateNumberOfPages() {
       return Math.ceil(this.books.length / this.perPage);
     },
@@ -59,21 +61,6 @@ export default {
     updatePage(page) {
       this.current = page;
     },
-
-    async fetchBooks() {
-      try {
-        const response = await fetch("http://localhost:3000/api/v1/books");
-        const data = await response.json();
-        this.loading = false;
-        this.books = data.books;
-      } catch (error) {
-        console.error("An error occurred while fetching books", error);
-      }
-    },
-  },
-
-  created() {
-    this.fetchBooks();
   },
 };
 </script>
