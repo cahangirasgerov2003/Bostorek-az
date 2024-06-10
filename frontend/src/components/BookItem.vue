@@ -1,11 +1,7 @@
 <template>
   <div class="card border-0 shadow position-relative">
     <div class="position-relative">
-      <img
-        src="../../template/bostorek/images/b1.jpg"
-        class="card-img-top"
-        alt="Books"
-      />
+      <img src="@/assets/images/b1.jpg" class="card-img-top" alt="Books" />
       <h4 class="book_author m-0">
         <span> {{ book.author }} </span>
       </h4>

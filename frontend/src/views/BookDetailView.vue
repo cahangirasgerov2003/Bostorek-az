@@ -3,13 +3,16 @@
     <section class="mb-5" v-if="!loading">
       <div class="container pt-5">
         <TheHeading :title="title" :desc="desc + ' ' + book.title" />
-        <RouterLink to="/books" class="btn btn-info px-4 mt-3 mb-5 text-white">
+        <RouterLink
+          to="/books"
+          class="btn px-4 mt-3 mb-5 text-white btn-left-arrow"
+        >
           <font-awesome-icon icon="left-long" size="xl" />
         </RouterLink>
         <div class="row">
           <div class="col-lg-6">
             <img
-              src="../../template/bostorek/images/best-books.jpg"
+              src="@/assets/images/b3.jpg"
               alt="Best book"
               class="editImage"
             />
@@ -283,5 +286,13 @@ export default {
     margin-top: 10px;
     padding-right: 0;
   }
+}
+
+.btn-left-arrow {
+  background-color: var(--primary-color);
+  transition: all 0.4s;
+}
+.btn-left-arrow:hover {
+  background-color: var(--secondary-color);
 }
 </style>

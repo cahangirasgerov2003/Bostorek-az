@@ -56,6 +56,11 @@ export default {
     },
   },
 
+  // Burda bir xeta olacaq cunki biz home-da fetch atiriq burda yox amma bir basa biz books
+  // Seyfesine kecdiyimizde o zaman burda actions olmadigi ucun ve home-a girmediyimiz ucun |
+  // Kitablari elde ede bilmeyeceyik bunun yerine actions-i main.js de proje acilan zaman calisdirsaq daha
+  // Yaxsi olacaq bizim ucun
+
   // Methods
   methods: {
     updatePage(page) {

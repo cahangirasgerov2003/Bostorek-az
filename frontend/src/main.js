@@ -6,6 +6,8 @@ import { createApp } from "vue";
 
 import { createPinia } from "pinia";
 
+import { useBookStore } from "./stores/bookStore.js";
+
 import App from "@/App.vue";
 
 import router from "@/router/index.js";
@@ -36,8 +38,21 @@ library.add(
   faPause
 );
 
-createApp(App)
-  .use(createPinia())
-  .component("font-awesome-icon", FontAwesomeIcon)
-  .use(router)
-  .mount("#app");
+const pinia = createPinia();
+
+// Burda pinia yazmasaq useBookStore hissesinde store use olmadan stordan
+// useBookStore() oxumaqa calisdigimiz ucun hata alicaz
+const bookStore = useBookStore(pinia);
+
+bookStore
+  .fetchBooks()
+  .then(() => {
+    createApp(App)
+      .use(pinia)
+      .component("font-awesome-icon", FontAwesomeIcon)
+      .use(router)
+      .mount("#app");
+  })
+  .catch((error) => {
+    console.error("An error occurred while fetching books", error);
+  });

@@ -46,7 +46,7 @@ import FeaturedAccordion from "../components/widgets/FeaturedAccordion.vue";
 import { useBookStore } from "@/stores/bookStore.js";
 // Biz burada butun storu yox sadece books-i isteyirik
 // o zaman yalniz onu istifade edek
-import { mapState, mapActions } from "pinia";
+import { mapState } from "pinia";
 export default {
   name: "HomeView",
   components: {
@@ -90,7 +90,9 @@ export default {
   },
   methods: {
     // Istifade edeceyimiz actions-i yaziriq
-    ...mapActions(useBookStore, ["fetchBooks"]),
+    // Main.js de zaten sorgunu atdiq
+    // ...mapActions(useBookStore, ["fetchBooks"]),
+
     // Artiq stordan cekeceyik datamizi
     // async fetchBooks() {
     //   try {
@@ -122,9 +124,10 @@ export default {
     ...mapState(useBookStore, ["books", "isLoading"]),
   },
 
-  created() {
-    this.fetchBooks();
-  },
+  // Main.js de zaten fetch sorgusu atdik
+  // created() {
+  //   this.fetchBooks();
+  // },
 };
 </script>
 
