@@ -47,7 +47,7 @@
               type="password"
               class="form-control"
               id="password"
-              v-model="userData.password"
+              v-model.trim="userData.password"
               placeholder="Ali2005%))"
               required
             />
@@ -65,6 +65,7 @@
                 name="gender"
                 id="redio1"
                 @change="updateGender('Male', $event)"
+                required
               />
               <label class="form-check-label" for="redio1"> Male </label>
             </div>
@@ -75,6 +76,7 @@
                 name="gender"
                 id="redio2"
                 @change="updateGender('Female', $event)"
+                required
               />
               <label class="form-check-label" for="redio2"> Female </label>
             </div>
