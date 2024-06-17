@@ -1,5 +1,9 @@
 import Book from "../models/Book.js";
-import { controlObjectId, findDocumentById } from "../utility/index.js";
+import {
+  controlObjectId,
+  findDocumentById,
+  checkValidationErrors,
+} from "../utility/index.js";
 const getAllBooks = async (req, res) => {
   try {
     const allBooks = await Book.find({});
@@ -52,19 +56,7 @@ const createNewBook = async (req, res) => {
       });
     }
   } catch (error) {
-    if (error.name === "Validation error") {
-      const validationErrors = {};
-      for (let key in error.errors) {
-        validationErrors[key] = error.errors[key].message;
-      }
-
-      return res
-        .status(400)
-        .json({ error: "Validation error", validationErrors });
-    } else {
-      console.error("Error at creatNewBook", error);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
+    checkValidationErrors(error, "createNewBook", res);
   }
 };
 
