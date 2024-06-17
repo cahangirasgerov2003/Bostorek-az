@@ -18,9 +18,25 @@ export const useAuthStore = defineStore("authStore", {
           "http://localhost:3000/api/v1/auth/register",
           newUser
         );
-        this.user = response.data.user;
+        console.log("response", response);
       } catch (error) {
         console.error("Error occurred when new user was created !", error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async beLogin(loginData) {
+      try {
+        this.isLoading = true;
+        const response = await axios.post(
+          "http://localhost:3000/api/v1/auth/login",
+          loginData
+        );
+        console.log("response", response);
+        this.user = response.data.user;
+      } catch (error) {
+        console.error("An error occurred when logging in !", error);
       } finally {
         this.isLoading = false;
       }

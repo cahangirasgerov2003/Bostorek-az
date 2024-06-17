@@ -135,15 +135,19 @@
         </div>
         <div class="row justify-content-center styleInputTypes">
           <div class="col-md-6 col-12">
-            <button type="submit" class="btn btn-primary w-100 py-2">
-              <span v-if="!isLoading">Submit</span>
-              <span v-else>
-                <font-awesome-icon
-                  icon="circle-notch"
-                  spin-pulse
-                  style="font-size: 20px"
-                />
-              </span>
+            <button
+              type="submit"
+              class="btn btn-primary w-100 py-2"
+              v-if="!isLoading"
+            >
+              Submit
+            </button>
+            <button type="submit" class="btn btn-primary w-100 py-2" v-else>
+              <font-awesome-icon
+                icon="circle-notch"
+                spin-pulse
+                style="font-size: 20px"
+              />
             </button>
           </div>
         </div>
@@ -153,8 +157,8 @@
 </template>
 
 <script>
-import { useAuthStore } from "../stores/authStore";
-import { mapActions, mapState } from "pinia";
+import { useAuthStore } from "@/stores/authStore.js";
+import { mapState, mapActions } from "pinia";
 export default {
   name: "RegisterView",
   data() {

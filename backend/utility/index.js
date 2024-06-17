@@ -43,7 +43,7 @@ const checkValidationErrors = (error, locationError, res) => {
     });
   } else {
     console.error(`Error at ${locationError}`, error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
