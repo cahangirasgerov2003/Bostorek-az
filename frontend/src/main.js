@@ -26,6 +26,7 @@ import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { faPause } from "@fortawesome/free-solid-svg-icons";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
 library.add(
@@ -35,7 +36,8 @@ library.add(
   faThumbsUp,
   faSpinner,
   faPlay,
-  faPause
+  faPause,
+  faCircleNotch
 );
 
 const pinia = createPinia();

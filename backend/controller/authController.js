@@ -13,7 +13,11 @@ const createNewUser = async (req, res) => {
         error: "The user already exists",
       });
     }
+
     const newUser = await User.create(req.body);
+
+    newUser.password = undefined;
+
     return res.status(201).json({
       message: "The new user has been successfully created",
       user: newUser,

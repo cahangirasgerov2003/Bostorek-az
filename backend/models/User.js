@@ -1,6 +1,8 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
 
 import { Schema } from "mongoose";
+
+import bcrypt from "bcryptjs";
 
 const emailRegex =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -43,6 +45,23 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
+
+userSchema.pre("save", async function (next) {
+  try {
+    if (!this.isModified("password")) {
+      return next();
+    }
+
+    const salt = await bcrypt.genSalt(10);
+
+    const hash = await bcrypt.hash(this.password, salt);
+
+    this.password = hash;
+  } catch (error) {
+    console.error("Error occurred during password hashing : ", error);
+    next(error);
+  }
+});
 
 const User = mongoose.model("User", userSchema);
 

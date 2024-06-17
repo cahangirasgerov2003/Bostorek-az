@@ -136,7 +136,14 @@
         <div class="row justify-content-center styleInputTypes">
           <div class="col-md-6 col-12">
             <button type="submit" class="btn btn-primary w-100 py-2">
-              Submit
+              <span v-if="!isLoading">Submit</span>
+              <span v-else>
+                <font-awesome-icon
+                  icon="circle-notch"
+                  spin-pulse
+                  style="font-size: 20px"
+                />
+              </span>
             </button>
           </div>
         </div>
@@ -146,6 +153,8 @@
 </template>
 
 <script>
+import { useAuthStore } from "../stores/authStore";
+import { mapActions, mapState } from "pinia";
 export default {
   name: "RegisterView",
   data() {
@@ -160,13 +169,18 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      console.log("Register data : ", this.userData);
+    ...mapActions(useAuthStore, ["beRegister"]),
+    async submitForm() {
+      await this.beRegister(this.userData);
     },
 
     updateGender(gender) {
       this.userData.gender = gender;
     },
+  },
+
+  computed: {
+    ...mapState(useAuthStore, ["isLoading"]),
   },
 };
 </script>
