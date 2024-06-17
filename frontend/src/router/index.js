@@ -6,6 +6,7 @@ import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 import BookDetailView from "@/views/BookDetailView.vue";
+import DashboardView from "@/views/DashboardView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -26,6 +27,12 @@ const router = createRouter({
       component: BookDetailView,
     },
     {
+      path: "/dashboard",
+      name: "dashboard",
+      component: DashboardView,
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/contact",
       name: "contact",
       component: ContactView,
@@ -42,6 +49,20 @@ const router = createRouter({
     },
   ],
   linkActiveClass: "activeLink",
+});
+
+router.beforeEach((to, from, next) => {
+  // to.matched - bu /dashboard/userInfo kimi url olduqda hemin url-ni ['/', '/dashboard', '/dashboard/userInfo']
+  // seklinde 3 yere ayirir some ise hamsi uzerinde qacir ve hansindasa requiresAuth var ya yox ona baxir
+  const requiresAuth = to.matched.some((url) => url.meta.requiresAuth);
+
+  const isLoggedIn = localStorage.getItem("user");
+
+  if (requiresAuth && !isLoggedIn) {
+    next({ name: "login" });
+  } else {
+    next();
+  }
 });
 
 export default router;

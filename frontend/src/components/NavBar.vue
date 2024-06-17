@@ -15,17 +15,22 @@
             >Books</RouterLink
           >
         </li>
+        <li class="nav-item" v-if="isLoggedIn">
+          <RouterLink class="nav-link" v-bind:to="{ name: 'dashboard' }"
+            >Dashboard</RouterLink
+          >
+        </li>
         <li class="nav-item">
           <RouterLink class="nav-link" v-bind:to="{ name: 'contact' }"
             >Contact Us</RouterLink
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="!isLoggedIn">
           <RouterLink class="nav-link" v-bind:to="{ name: 'login' }"
             >Login</RouterLink
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="!isLoggedIn">
           <RouterLink class="nav-link" v-bind:to="{ name: 'register' }"
             >Register</RouterLink
           >
@@ -37,6 +42,8 @@
 
 <script>
 import { RouterLink } from "vue-router";
+import { useAuthStore } from "@/stores/authStore.js";
+import { mapState } from "pinia";
 
 export default {
   name: "NavBar",
@@ -44,6 +51,9 @@ export default {
     return {};
   },
   components: { RouterLink },
+  computed: {
+    ...mapState(useAuthStore, ["isLoggedIn"]),
+  },
 };
 </script>
 

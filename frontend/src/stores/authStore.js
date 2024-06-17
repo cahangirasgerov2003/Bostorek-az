@@ -8,7 +8,11 @@ export const useAuthStore = defineStore("authStore", {
     isLoading: false,
   }),
 
-  getters: {},
+  getters: {
+    isLoggedIn(state) {
+      return !!state.user;
+    },
+  },
 
   actions: {
     async beRegister(newUser) {
@@ -20,7 +24,9 @@ export const useAuthStore = defineStore("authStore", {
         );
         console.log("response", response);
       } catch (error) {
-        console.error("Error occurred when new user was created !", error);
+        // Bu islem erroru donderir ve sonraki islemleri durdurur
+        // Bu frontend terefde errorlarin islenmesi zamani kullanislidir
+        throw error;
       } finally {
         this.isLoading = false;
       }
@@ -35,8 +41,9 @@ export const useAuthStore = defineStore("authStore", {
         );
         console.log("response", response);
         this.user = response.data.user;
+        localStorage.setItem("user", JSON.stringify(response.data.user));
       } catch (error) {
-        console.error("An error occurred when logging in !", error);
+        throw error;
       } finally {
         this.isLoading = false;
       }

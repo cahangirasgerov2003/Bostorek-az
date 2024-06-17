@@ -76,7 +76,12 @@ export default {
   methods: {
     ...mapActions(useAuthStore, ["beLogin"]),
     async submitForm() {
-      await this.beLogin(this.userData);
+      try {
+        await this.beLogin(this.userData);
+        this.$router.push("/dashboard");
+      } catch (error) {
+        console.error("An error occurred when logging in !", error);
+      }
     },
   },
 

@@ -175,7 +175,12 @@ export default {
   methods: {
     ...mapActions(useAuthStore, ["beRegister"]),
     async submitForm() {
-      await this.beRegister(this.userData);
+      try {
+        await this.beRegister(this.userData);
+        this.$router.push("/login");
+      } catch (error) {
+        console.error("Error occurred when new user was created !", error);
+      }
     },
 
     updateGender(gender) {

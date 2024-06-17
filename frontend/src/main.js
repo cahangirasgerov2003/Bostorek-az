@@ -6,7 +6,8 @@ import { createApp } from "vue";
 
 import { createPinia } from "pinia";
 
-import { useBookStore } from "./stores/bookStore.js";
+import { useBookStore } from "@/stores/bookStore.js";
+import { useAuthStore } from "@/stores/authStore.js";
 
 import App from "@/App.vue";
 
@@ -45,6 +46,12 @@ const pinia = createPinia();
 // Burda pinia yazmasaq useBookStore hissesinde store use olmadan stordan
 // useBookStore() oxumaqa calisdigimiz ucun hata alicaz
 const bookStore = useBookStore(pinia);
+
+const authStore = useAuthStore(pinia);
+
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (user) authStore.user = user;
 
 bookStore
   .fetchBooks()
