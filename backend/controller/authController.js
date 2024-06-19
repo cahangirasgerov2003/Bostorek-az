@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import { checkValidationErrors } from "../utility/index.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 const createNewUser = async (req, res) => {
   try {
     const { email } = req.body;
@@ -45,9 +46,18 @@ const loginAccount = async (req, res) => {
 
     result.password = undefined;
 
+    // Kullanici giris yapmismi kontrol edek
+    const token = jwt.sign(
+      {
+        userId: result._id,
+      },
+      process.env.SECRET_KEY,
+      { expiresIn: process.env.EXPIRES_IN }
+    );
+
     return res
       .status(200)
-      .json({ message: "Successfully logged in", user: result });
+      .json({ message: "Successfully logged in", user: result, token });
   } catch (error) {
     console.error("Error at loginAccount", error);
     return res.status(500).json({ error: "Internal Server Error" });

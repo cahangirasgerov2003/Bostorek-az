@@ -87,6 +87,7 @@ const updateABook = async (req, res) => {
 };
 
 const deleteABook = async (req, res) => {
+  console.log("The user who performed the deletion:::", req.user);
   const { id } = req.params;
 
   if (controlObjectId(id, res)) return;
