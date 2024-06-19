@@ -15,6 +15,7 @@
               id="email"
               v-model.trim="userData.email"
               placeholder="Ali2005@gmail.com"
+              autocomplete="off"
               required
             />
           </div>
@@ -91,4 +92,30 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.form-control {
+  background-color: #f1f1f1;
+  height: 50px;
+  border: none;
+  border-radius: 25px;
+  padding-left: 25px;
+  color: #101010;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem #44b89d75;
+}
+
+.btn-primary {
+  height: 50px;
+  border-radius: 25px;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  transition: all 0.4s;
+}
+
+.btn-primary:hover {
+  background-color: white;
+  color: var(--secondary-color);
+}
+</style>
