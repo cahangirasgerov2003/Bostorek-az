@@ -25,6 +25,9 @@
             >Contact Us</RouterLink
           >
         </li>
+        <li class="nav-item" v-if="isLoggedIn">
+          <button class="nav-link" @click="logout">Logout</button>
+        </li>
         <li class="nav-item" v-if="!isLoggedIn">
           <RouterLink class="nav-link" v-bind:to="{ name: 'login' }"
             >Login</RouterLink
@@ -43,7 +46,7 @@
 <script>
 import { RouterLink } from "vue-router";
 import { useAuthStore } from "@/stores/authStore.js";
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
 
 export default {
   name: "NavBar",
@@ -53,6 +56,13 @@ export default {
   components: { RouterLink },
   computed: {
     ...mapState(useAuthStore, ["isLoggedIn"]),
+  },
+  methods: {
+    ...mapActions(useAuthStore, ["logoutAccount"]),
+
+    logout() {
+      this.logoutAccount();
+    },
   },
 };
 </script>

@@ -48,5 +48,11 @@ export const useAuthStore = defineStore("authStore", {
         this.isLoading = false;
       }
     },
+
+    logoutAccount() {
+      this.user = null;
+      localStorage.removeItem("user");
+      location.reload();
+    },
   },
 });
