@@ -13,7 +13,8 @@ const userSchema = new Schema(
       type: String,
       required: true,
       trim: true,
-      maxLength: 12,
+      minLength: 3,
+      maxLength: 9,
     },
     email: {
       type: String,
@@ -26,8 +27,8 @@ const userSchema = new Schema(
       type: String,
       required: true,
       trim: true,
-      maxLength: 10,
       minLength: 4,
+      maxLength: 10,
     },
     gender: {
       type: String,

@@ -1,6 +1,6 @@
 <template>
   <section class="calculatingHeightSection">
-    <div class="container">
+    <div class="container my-3">
       <div class="d-flex justify-content-center mb-3">
         <h2 class="fw-bold">Login</h2>
       </div>
