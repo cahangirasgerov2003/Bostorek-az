@@ -26,7 +26,7 @@ export const useAuthStore = defineStore("authStore", {
       } catch (error) {
         // Bu islem erroru donderir ve sonraki islemleri durdurur
         // Bu frontend terefde errorlarin islenmesi zamani kullanislidir
-        throw error;
+        throw error.response.data;
       } finally {
         this.isLoading = false;
       }

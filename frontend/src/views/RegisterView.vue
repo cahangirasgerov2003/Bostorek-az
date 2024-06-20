@@ -5,6 +5,13 @@
         <h2 class="fw-bold">Register</h2>
       </div>
       <form @submit.prevent="submitForm">
+        <div class="row justify-content-center mb-3" v-if="requestError">
+          <div class="col-md-6 col-12 text-center">
+            <span class="text-danger ms-2" style="font-weight: 500"
+              >A problem occurred, please try again later !</span
+            >
+          </div>
+        </div>
         <!-- Username -->
         <div class="row justify-content-center styleInputTypes">
           <div class="col-md-6 col-12">
@@ -66,7 +73,9 @@
               autocomplete="off"
               :class="{
                 'is-valid': isEmailValid,
-                'is-invalid': !isEmailValid && errors.email.error,
+                'is-invalid':
+                  (!isEmailValid && errors.email.error) ||
+                  existingEmail === userData.email,
               }"
               @focus="
                 () => {
@@ -83,7 +92,7 @@
               >{{ errors.email.errorMessage }}</small
             >
             <small
-              v-if="isEmailValid"
+              v-if="isEmailValid && existingEmail !== userData.email"
               class="text-success ms-3"
               :style="
                 errors.email.focusedPassword
@@ -91,6 +100,12 @@
                   : 'font-weight:600'
               "
               >{{ errors.email.successMessage }}</small
+            >
+
+            <small
+              v-if="existingEmail === userData.email"
+              class="text-danger ms-3"
+              >The user already exists !</small
             >
           </div>
         </div>
@@ -227,6 +242,7 @@
         >
           <div class="col-md-6 col-12">
             <button
+              :disabled="!formIsValid"
               type="submit"
               class="btn btn-primary w-100 py-2"
               v-if="!isLoading"
@@ -242,7 +258,7 @@
             </button>
           </div>
         </div>
-        <div class="row justify-content-center mb-2">
+        <div class="row justify-content-center mb-2" v-if="!formIsValid">
           <div class="col-md-6 col-12">
             <span class="text-danger ms-2" style="font-weight: 500"
               >* Please complete all of the required fields !</span
@@ -289,6 +305,8 @@ export default {
           focusedPassword: false,
         },
       },
+      existingEmail: null,
+      requestError: false,
     };
   },
   methods: {
@@ -297,8 +315,23 @@ export default {
       try {
         await this.beRegister(this.userData);
         this.$router.push("/login");
-      } catch (error) {
-        console.error("Error occurred when new user was created !", error);
+      } catch (errorData) {
+        console.error("Error occurred when new user was created !", errorData);
+        if (errorData.error == "The user already exists !") {
+          this.existingEmail = this.userData.email;
+        } else {
+          this.requestError = true;
+          this.userData = {
+            userName: "",
+            email: "",
+            password: "",
+            gender: "",
+            bookGenres: ["Horror"],
+          };
+          this.errors.userName.error = false;
+          this.errors.email.error = false;
+          this.errors.password.error = false;
+        }
       }
     },
 
@@ -328,6 +361,15 @@ export default {
 
     isGenderValid() {
       return this.userData.gender;
+    },
+
+    formIsValid() {
+      return (
+        this.isEmailValid &&
+        this.isGenderValid &&
+        this.isPasswordValid &&
+        this.isUserNameValid
+      );
     },
   },
 };
