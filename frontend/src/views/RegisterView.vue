@@ -277,6 +277,7 @@
 <script>
 import { useAuthStore } from "@/stores/authStore.js";
 import { mapState, mapActions } from "pinia";
+import { successAction } from "@/utility/index.js";
 export default {
   name: "RegisterView",
   data() {
@@ -317,8 +318,12 @@ export default {
     ...mapActions(useAuthStore, ["beRegister"]),
     async submitForm() {
       try {
-        await this.beRegister(this.userData);
-        this.$router.push("/login");
+        const result = await this.beRegister(this.userData);
+        console.log("response", result);
+        successAction(result);
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 3500);
       } catch (errorData) {
         console.error("Error occurred when new user was created !", errorData);
         if (errorData.error == "The user already exists !") {

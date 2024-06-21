@@ -28,6 +28,11 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { faPause } from "@fortawesome/free-solid-svg-icons";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { faRocket } from "@fortawesome/free-solid-svg-icons";
+
+// Toastification
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 /* add icons to the library */
 library.add(
@@ -38,7 +43,8 @@ library.add(
   faSpinner,
   faPlay,
   faPause,
-  faCircleNotch
+  faCircleNotch,
+  faRocket
 );
 
 const pinia = createPinia();
@@ -60,6 +66,7 @@ bookStore
       .use(pinia)
       .component("font-awesome-icon", FontAwesomeIcon)
       .use(router)
+      .use(Toast)
       .mount("#app");
   })
   .catch((error) => {

@@ -14,7 +14,7 @@
 
 <script>
 import { RouterLink } from "vue-router";
-import BookItem from "./BookItem.vue";
+import BookItem from "@/components/BookItem.vue";
 export default {
   name: "BookList",
   components: {

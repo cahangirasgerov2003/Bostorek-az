@@ -47,6 +47,7 @@
 import { RouterLink } from "vue-router";
 import { useAuthStore } from "@/stores/authStore.js";
 import { mapState, mapActions } from "pinia";
+import { successAction } from "../utility/index.js";
 
 export default {
   name: "NavBar",
@@ -61,7 +62,17 @@ export default {
     ...mapActions(useAuthStore, ["logoutAccount"]),
 
     logout() {
-      this.logoutAccount();
+      const result = {
+        data: {
+          message: "Successfully logged out !",
+        },
+      };
+
+      successAction(result);
+
+      setTimeout(() => {
+        this.logoutAccount();
+      }, 3300);
     },
   },
 };

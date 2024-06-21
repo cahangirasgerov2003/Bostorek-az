@@ -21,7 +21,7 @@ const createNewUser = async (req, res) => {
     newUser.password = undefined;
 
     return res.status(201).json({
-      message: "The new user has been successfully created",
+      message: "The new user has been successfully created !",
       user: newUser,
     });
   } catch (error) {
@@ -57,7 +57,7 @@ const loginAccount = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Successfully logged in", user: result, token });
+      .json({ message: "Successfully logged in !", user: result, token });
   } catch (error) {
     console.error("Error at loginAccount", error);
     return res.status(500).json({ error: "Internal Server Error" });

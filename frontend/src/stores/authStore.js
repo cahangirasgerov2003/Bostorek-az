@@ -22,7 +22,7 @@ export const useAuthStore = defineStore("authStore", {
           "http://localhost:3000/api/v1/auth/register",
           newUser
         );
-        console.log("response", response);
+        return response;
       } catch (error) {
         // Bu islem erroru donderir ve sonraki islemleri durdurur
         // Bu frontend terefde errorlarin islenmesi zamani kullanislidir
@@ -39,9 +39,9 @@ export const useAuthStore = defineStore("authStore", {
           "http://localhost:3000/api/v1/auth/login",
           loginData
         );
-        console.log("response", response);
         this.user = response.data.user;
         localStorage.setItem("user", JSON.stringify(response.data.user));
+        return response;
       } catch (error) {
         throw error.response.data;
       } finally {

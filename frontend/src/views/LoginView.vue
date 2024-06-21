@@ -155,6 +155,7 @@
 <script>
 import { useAuthStore } from "@/stores/authStore.js";
 import { mapState, mapActions } from "pinia";
+import { successAction } from "@/utility/index.js";
 export default {
   name: "LoginView",
   data() {
@@ -186,8 +187,12 @@ export default {
     ...mapActions(useAuthStore, ["beLogin"]),
     async submitForm() {
       try {
-        await this.beLogin(this.userData);
-        this.$router.push("/dashboard");
+        const result = await this.beLogin(this.userData);
+        console.log("response", result);
+        successAction(result);
+        setTimeout(() => {
+          this.$router.push("/dashboard");
+        }, 3500);
       } catch (errorData) {
         console.error("An error occurred when logging in !", errorData);
         if (errorData.error === "User not found !") {
