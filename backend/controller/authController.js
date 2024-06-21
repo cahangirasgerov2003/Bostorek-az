@@ -35,14 +35,14 @@ const loginAccount = async (req, res) => {
 
     const result = await User.findOne({ email });
 
-    if (!result) return res.status(404).json({ error: "User not found!" });
+    if (!result) return res.status(404).json({ error: "User not found" });
 
     const pass = await bcrypt.compare(password, result.password);
 
     if (!pass)
       return res
         .status(401)
-        .json({ error: "The password you entered is not correct!" });
+        .json({ error: "The password you entered is not correct !" });
 
     result.password = undefined;
 

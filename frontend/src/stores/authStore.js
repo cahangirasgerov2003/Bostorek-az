@@ -43,7 +43,7 @@ export const useAuthStore = defineStore("authStore", {
         this.user = response.data.user;
         localStorage.setItem("user", JSON.stringify(response.data.user));
       } catch (error) {
-        throw error;
+        throw error.response.data;
       } finally {
         this.isLoading = false;
       }

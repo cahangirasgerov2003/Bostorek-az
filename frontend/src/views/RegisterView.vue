@@ -21,7 +21,7 @@
             </label>
             <input
               type="text"
-              class="form-control"
+              class="form-control form-control-custom"
               id="userName"
               v-model.trim="userData.userName"
               placeholder="Ali"
@@ -66,7 +66,7 @@
             </label>
             <input
               type="email"
-              class="form-control"
+              class="form-control form-control-custom"
               id="email"
               v-model.trim="userData.email"
               placeholder="Ali2005@gmail.com"
@@ -119,7 +119,7 @@
             </label>
             <input
               type="password"
-              class="form-control"
+              class="form-control form-control-custom"
               id="password"
               v-model.trim="userData.password"
               placeholder="Ali2005%))"
@@ -244,12 +244,16 @@
             <button
               :disabled="!formIsValid"
               type="submit"
-              class="btn btn-primary w-100 py-2"
+              class="btn btn-primary btn-primary-custom w-100 py-2"
               v-if="!isLoading"
             >
               Submit
             </button>
-            <button type="submit" class="btn btn-primary w-100 py-2" v-else>
+            <button
+              type="submit"
+              class="btn btn-primary btn-primary-custom w-100 py-2"
+              v-else
+            >
               <font-awesome-icon
                 icon="circle-notch"
                 spin-pulse
@@ -375,33 +379,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.form-control {
-  background-color: #f1f1f1;
-  height: 50px;
-  border-radius: 25px;
-  padding-left: 25px;
-  color: #101010;
-}
-
-.btn-primary {
-  height: 50px;
-  border-radius: 25px;
-  background-color: var(--secondary-color);
-  border: 1px solid var(--secondary-color);
-  transition: all 0.4s;
-}
-
-.btn-primary:hover {
-  background-color: white;
-  color: var(--secondary-color);
-}
-
-.form-control:focus {
-  box-shadow: inset 0 0 0 1px #be1809;
-}
-
-.form-control.is-valid:focus {
-  box-shadow: inset 0 0 0 1px rgb(25, 135, 84);
-}
-</style>
+<style scoped></style>
