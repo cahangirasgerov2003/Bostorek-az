@@ -60,6 +60,8 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !isLoggedIn) {
     next({ name: "login" });
+  } else if (isLoggedIn && (to.name === "login" || to.name === "register")) {
+    next({ name: "dashboard" });
   } else {
     next();
   }

@@ -49,6 +49,8 @@ library.add(
 
 const pinia = createPinia();
 
+const app = createApp(App);
+
 // Burda pinia yazmasaq useBookStore hissesinde store use olmadan stordan
 // useBookStore() oxumaqa calisdigimiz ucun hata alicaz
 const bookStore = useBookStore(pinia);
@@ -62,7 +64,7 @@ if (user) authStore.user = user;
 bookStore
   .fetchBooks()
   .then(() => {
-    createApp(App)
+    app
       .use(pinia)
       .component("font-awesome-icon", FontAwesomeIcon)
       .use(router)

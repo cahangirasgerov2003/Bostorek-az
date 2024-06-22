@@ -140,7 +140,10 @@
             </button>
           </div>
         </div>
-        <div class="row justify-content-center mb-2" v-if="!formIsValid">
+        <div
+          class="row justify-content-center mb-2"
+          v-if="!formIsValid && submitButton"
+        >
           <div class="col-md-6 col-12">
             <span class="text-danger ms-2" style="font-weight: 500"
               >* Please complete all of the required fields !</span
@@ -181,6 +184,7 @@ export default {
       inCorrectEmail: null,
       wrongPasswordEntered: false,
       requestError: false,
+      submitButton: true,
     };
   },
   methods: {
@@ -190,6 +194,7 @@ export default {
         const result = await this.beLogin(this.userData);
         console.log("response", result);
         successAction(result);
+        this.submitButton = false;
         setTimeout(() => {
           this.$router.push("/dashboard");
         }, 3500);
@@ -228,7 +233,7 @@ export default {
     },
 
     formIsValid() {
-      return this.isEmailValid && this.isPasswordValid;
+      return this.isEmailValid && this.isPasswordValid && this.submitButton;
     },
   },
 };

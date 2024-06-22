@@ -262,7 +262,10 @@
             </button>
           </div>
         </div>
-        <div class="row justify-content-center mb-2" v-if="!formIsValid">
+        <div
+          class="row justify-content-center mb-2"
+          v-if="!formIsValid && submitButton"
+        >
           <div class="col-md-6 col-12">
             <span class="text-danger ms-2" style="font-weight: 500"
               >* Please complete all of the required fields !</span
@@ -312,6 +315,7 @@ export default {
       },
       existingEmail: null,
       requestError: false,
+      submitButton: true,
     };
   },
   methods: {
@@ -321,6 +325,7 @@ export default {
         const result = await this.beRegister(this.userData);
         console.log("response", result);
         successAction(result);
+        this.submitButton = false;
         setTimeout(() => {
           this.$router.push("/login");
         }, 3500);
@@ -377,7 +382,8 @@ export default {
         this.isEmailValid &&
         this.isGenderValid &&
         this.isPasswordValid &&
-        this.isUserNameValid
+        this.isUserNameValid &&
+        this.submitButton
       );
     },
   },
