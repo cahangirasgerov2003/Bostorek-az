@@ -1,12 +1,20 @@
 <template>
-  <section class="calculatingHeightSection">
+  <section
+    :class="
+      !dashboard
+        ? 'calculatingHeightSection'
+        : 'min-height: calc(100vh - 130px)'
+    "
+  >
     <div class="container my-3">
       <div class="d-flex justify-content-center mb-3">
-        <h2 class="fw-bold">Register</h2>
+        <h2 class="fw-bold">
+          {{ dashboard ? "User Information" : "Register" }}
+        </h2>
       </div>
       <form @submit.prevent="submitForm">
         <div class="row justify-content-center mb-3" v-if="requestError">
-          <div class="col-md-6 col-12 text-center">
+          <div class="text-center" :class="dashboard ? 'col-12' : 'col-lg-6'">
             <span class="text-danger ms-2" style="font-weight: 500"
               >A problem occurred, please try again later !</span
             >
@@ -14,7 +22,7 @@
         </div>
         <!-- Username -->
         <div class="row justify-content-center styleInputTypes">
-          <div class="col-md-6 col-12">
+          <div :class="dashboard ? 'col-12' : 'col-lg-6'">
             <label for="userName" class="form-label labelElement"
               >Username
               <span class="text-danger">*</span>
@@ -59,7 +67,7 @@
 
         <!-- Email -->
         <div class="row justify-content-center styleInputTypes">
-          <div class="col-md-6 col-12">
+          <div :class="dashboard ? 'col-12' : 'col-lg-6'">
             <label for="email" class="form-label labelElement"
               >Email
               <span class="text-danger">*</span>
@@ -112,7 +120,7 @@
 
         <!-- Password -->
         <div class="row justify-content-center styleInputTypes">
-          <div class="col-md-6 col-12">
+          <div :class="dashboard ? 'col-12' : 'col-lg-6'">
             <label for="password" class="form-label labelElement"
               >Password
               <span class="text-danger">*</span>
@@ -155,8 +163,11 @@
         </div>
 
         <!-- Gender -->
-        <div class="row justify-content-center styleInputTypes">
-          <div class="col-md-6 col-12">
+        <div
+          class="row justify-content-center styleInputTypes"
+          v-if="!dashboard"
+        >
+          <div class="col-lg-6">
             <h4 class="labelElement">
               Gender
               <span class="text-danger">*</span>
@@ -188,7 +199,7 @@
 
         <!-- Types of books you like -->
         <div class="row justify-content-center styleInputTypes">
-          <div class="col-md-6 col-12">
+          <div :class="dashboard ? 'col-12' : 'col-lg-6'">
             <h4 class="labelElement">Choose the types of books you like</h4>
             <div class="form-check form-switch form-check-inline">
               <input
@@ -240,7 +251,7 @@
           class="row justify-content-center styleInputTypes"
           style="margin-bottom: 8px"
         >
-          <div class="col-md-6 col-12">
+          <div :class="dashboard ? 'col-12' : 'col-lg-6'">
             <button
               :disabled="!formIsValid"
               type="submit"
@@ -266,7 +277,7 @@
           class="row justify-content-center mb-2"
           v-if="!formIsValid && submitButton"
         >
-          <div class="col-md-6 col-12">
+          <div :class="dashboard ? 'col-12' : 'col-lg-6'">
             <span class="text-danger ms-2" style="font-weight: 500"
               >* Please complete all of the required fields !</span
             >
@@ -317,6 +328,12 @@ export default {
       requestError: false,
       submitButton: true,
     };
+  },
+  props: {
+    dashboard: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   methods: {
     ...mapActions(useAuthStore, ["beRegister"]),

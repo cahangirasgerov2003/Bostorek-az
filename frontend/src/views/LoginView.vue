@@ -6,7 +6,7 @@
       </div>
       <form @submit.prevent="submitForm">
         <div class="row justify-content-center mb-3" v-if="requestError">
-          <div class="col-md-6 col-12 text-center">
+          <div class="col-lg-6 text-center">
             <span class="text-danger ms-2" style="font-weight: 500"
               >A problem occurred, please try again later !</span
             >
@@ -14,7 +14,7 @@
         </div>
         <!-- Email -->
         <div class="row justify-content-center styleInputTypes">
-          <div class="col-md-6 col-12">
+          <div class="col-lg-6">
             <label for="email" class="form-label labelElement"
               >Email
               <span class="text-danger">*</span>
@@ -66,7 +66,7 @@
 
         <!-- Password -->
         <div class="row justify-content-center styleInputTypes">
-          <div class="col-md-6 col-12">
+          <div class="col-lg-6">
             <label for="password" class="form-label labelElement"
               >Password
               <span class="text-danger">*</span>
@@ -118,7 +118,7 @@
           class="row justify-content-center styleInputTypes"
           style="margin-bottom: 8px"
         >
-          <div class="col-md-6 col-12">
+          <div class="col-lg-6">
             <button
               :disabled="!formIsValid"
               type="submit"
@@ -144,7 +144,7 @@
           class="row justify-content-center mb-2"
           v-if="!formIsValid && submitButton"
         >
-          <div class="col-md-6 col-12">
+          <div class="col-lg-6">
             <span class="text-danger ms-2" style="font-weight: 500"
               >* Please complete all of the required fields !</span
             >

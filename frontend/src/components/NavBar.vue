@@ -96,6 +96,7 @@ export default {
   padding: 10px 20px !important;
   color: #ffffff;
   text-align: center;
+  margin: 0 auto;
 }
 
 .nav-link:hover {
