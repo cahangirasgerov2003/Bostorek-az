@@ -57,6 +57,18 @@ a {
   color: var(--secondary-color);
 }
 
+.btn-warning.btn-warning-custom {
+  height: 50px;
+  border-radius: 25px;
+  transition: all 0.4s;
+  color: white;
+}
+
+.btn-warning.btn-warning-custom:hover {
+  background-color: white;
+  color: var(--secondary-color);
+}
+
 .form-control.form-control-custom:focus {
   box-shadow: inset 0 0 0 1px #be1809;
 }

@@ -12,7 +12,7 @@
           {{ dashboard ? "User Information" : "Register" }}
         </h2>
       </div>
-      <form @submit.prevent="submitForm">
+      <form @submit.prevent="!dashboard && submitForm">
         <div class="row justify-content-center mb-3" v-if="requestError">
           <div class="text-center" :class="dashboard ? 'col-12' : 'col-lg-6'">
             <span class="text-danger ms-2" style="font-weight: 500"
@@ -31,6 +31,7 @@
               type="text"
               class="form-control form-control-custom"
               id="userName"
+              :disabled="dashboard && !editMode"
               v-model.trim="userData.userName"
               placeholder="Ali"
               autocomplete="off"
@@ -76,6 +77,7 @@
               type="email"
               class="form-control form-control-custom"
               id="email"
+              :disabled="dashboard && !editMode"
               v-model.trim="userData.email"
               placeholder="Ali2005@gmail.com"
               autocomplete="off"
@@ -129,6 +131,7 @@
               type="password"
               class="form-control form-control-custom"
               id="password"
+              :disabled="dashboard && !editMode"
               v-model.trim="userData.password"
               placeholder="Ali2005%))"
               :class="{
@@ -209,6 +212,7 @@
                 id="fantasy"
                 value="Fantasy"
                 v-model="userData.bookGenres"
+                :disabled="dashboard && !editMode"
               />
               <label class="form-check-label" for="fantasy">Fantasy</label>
             </div>
@@ -218,6 +222,7 @@
                 type="checkbox"
                 role="switch"
                 id="horror"
+                :disabled="dashboard && !editMode"
                 value="Horror"
                 v-model="userData.bookGenres"
               />
@@ -229,6 +234,7 @@
                 type="checkbox"
                 role="switch"
                 id="myStery"
+                :disabled="dashboard && !editMode"
                 value="Mystery"
                 v-model="userData.bookGenres"
               />
@@ -240,6 +246,7 @@
                 type="checkbox"
                 role="switch"
                 id="history"
+                :disabled="dashboard && !editMode"
                 value="History"
                 v-model="userData.bookGenres"
               />
@@ -248,17 +255,24 @@
           </div>
         </div>
         <div
-          class="row justify-content-center styleInputTypes"
+          class="row styleInputTypes"
+          :class="{ 'justify-content-center': !dashboard }"
           style="margin-bottom: 8px"
         >
-          <div :class="dashboard ? 'col-12' : 'col-lg-6'">
+          <div :class="dashboard ? 'col-md-4' : 'col-lg-6'">
             <button
-              :disabled="!formIsValid"
-              type="submit"
+              :disabled="
+                (!formIsValid && !dashboard) ||
+                (!formIsValid && dashboard && editMode)
+              "
+              :type="
+                !dashboard || (dashboard && editMode) ? 'submit' : 'button'
+              "
               class="btn btn-primary btn-primary-custom w-100 py-2"
+              @click="toggleEditMode"
               v-if="!isLoading"
             >
-              Submit
+              {{ !dashboard ? "Submit" : editMode ? "Save" : "Edit" }}
             </button>
             <button
               type="submit"
@@ -272,10 +286,21 @@
               />
             </button>
           </div>
+          <div class="col-md-4" v-if="dashboard && editMode">
+            <button
+              type="button"
+              class="btn btn-warning btn-warning-custom w-100 py-2 forMedium"
+              @click="clearNewUserData"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
         <div
           class="row justify-content-center mb-2"
-          v-if="!formIsValid && submitButton"
+          v-if="
+            dashboard ? !formIsValid && editMode : !formIsValid && submitButton
+          "
         >
           <div :class="dashboard ? 'col-12' : 'col-lg-6'">
             <span class="text-danger ms-2" style="font-weight: 500"
@@ -327,12 +352,23 @@ export default {
       existingEmail: null,
       requestError: false,
       submitButton: true,
+      editMode: false,
     };
   },
   props: {
     dashboard: {
       type: Boolean,
       default: () => false,
+    },
+    userInfo: {
+      type: Object,
+      default: () => ({
+        userName: "",
+        email: "",
+        password: "",
+        gender: "",
+        bookGenres: ["Horror"],
+      }),
     },
   },
   methods: {
@@ -357,7 +393,7 @@ export default {
             email: "",
             password: "",
             gender: "",
-            bookGenres: ["Horror"],
+            bookGenres: [],
           };
           this.errors.userName.error = false;
           this.errors.email.error = false;
@@ -368,6 +404,27 @@ export default {
 
     updateGender(gender) {
       this.userData.gender = gender;
+    },
+
+    saveNewUserData() {
+      console.log("SS");
+    },
+
+    toggleEditMode() {
+      this.dashboard
+        ? !this.editMode
+          ? (this.editMode = !this.editMode)
+          : this.saveNewUserData()
+        : "";
+    },
+
+    clearNewUserData() {
+      this.editMode = false;
+      this.userData.userName = this.userInfo.userName;
+      this.userData.email = this.userInfo.email;
+      this.userData.password = "";
+      this.userData.bookGenres = this.userInfo.bookGenres;
+      this.errors.password.error = false;
     },
   },
 
@@ -386,7 +443,7 @@ export default {
     },
 
     isPasswordValid() {
-      const passwordLength = this.userData.password.length;
+      const passwordLength = this.userData.password?.length;
       return passwordLength >= 4 && passwordLength <= 10;
     },
 
@@ -404,7 +461,25 @@ export default {
       );
     },
   },
+
+  created() {
+    this.userData.userName = this.userInfo.userName;
+    this.userData.email = this.userInfo.email;
+    this.userData.bookGenres = this.userInfo.bookGenres;
+    this.userData.gender = this.userInfo.gender;
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.forMedium {
+  margin-left: 2px;
+}
+
+@media only screen and (max-width: 767px) {
+  .forMedium {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+</style>

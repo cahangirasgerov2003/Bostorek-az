@@ -17,13 +17,13 @@
         <div class="tab-pane fade" :class="controlActiveTab('General')">
           <div class="row">
             <div class="col-lg-6">
-              <RegisterView :dashboard="true" />
+              <RegisterView :dashboard="true" :userInfo="user" />
             </div>
             <div class="col-lg-6"></div>
           </div>
         </div>
         <div class="tab-pane fade" :class="controlActiveTab('Books')">
-          Books Contents
+          {{ user }}
         </div>
       </div>
     </div>
