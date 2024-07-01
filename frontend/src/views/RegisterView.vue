@@ -20,6 +20,16 @@
             >
           </div>
         </div>
+        <div
+          class="row justify-content-center mb-3"
+          v-if="!requestError && otherError"
+        >
+          <div class="text-center" :class="dashboard ? 'col-12' : 'col-lg-6'">
+            <span class="text-danger ms-2" style="font-weight: 500">{{
+              otherError
+            }}</span>
+          </div>
+        </div>
         <!-- Username -->
         <div class="row justify-content-center styleInputTypes">
           <div :class="dashboard ? 'col-12' : 'col-lg-6'">
@@ -290,7 +300,7 @@
             <button
               type="button"
               class="btn btn-warning btn-warning-custom w-100 py-2 forMedium"
-              @click="clearNewUserData"
+              @click="clearUpdatedUserData"
             >
               Cancel
             </button>
@@ -315,6 +325,7 @@
 
 <script>
 import { useAuthStore } from "@/stores/authStore.js";
+import { useUserStore } from "@/stores/userStore.js";
 import { mapState, mapActions } from "pinia";
 import { successAction } from "@/utility/index.js";
 export default {
@@ -353,6 +364,7 @@ export default {
       requestError: false,
       submitButton: true,
       editMode: false,
+      otherError: false,
     };
   },
   props: {
@@ -372,7 +384,8 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useAuthStore, ["beRegister"]),
+    ...mapActions(useAuthStore, ["beRegister", "logoutAccount"]),
+    ...mapActions(useUserStore, ["updateUserData"]),
     async submitForm() {
       try {
         const result = await this.beRegister(this.userData);
@@ -406,19 +419,49 @@ export default {
       this.userData.gender = gender;
     },
 
-    saveNewUserData() {
-      console.log("SS");
+    async saveUpdatedUserData() {
+      try {
+        const result = await this.updateUserData(this.userData);
+        console.log("response", result);
+        successAction(result);
+        this.submitButton = false;
+        setTimeout(() => {
+          this.logoutAccount();
+        }, 3500);
+      } catch (errorData) {
+        console.error(
+          "Error occurred when user details were updated !",
+          errorData
+        );
+
+        if (errorData.error == "Internal Server Error") {
+          this.requestError = true;
+        } else {
+          this.otherError = errorData.error;
+        }
+
+        this.userData = {
+          userName: "",
+          email: "",
+          password: "",
+          gender: "",
+          bookGenres: [],
+        };
+        this.errors.userName.error = false;
+        this.errors.email.error = false;
+        this.errors.password.error = false;
+      }
     },
 
     toggleEditMode() {
       this.dashboard
         ? !this.editMode
           ? (this.editMode = !this.editMode)
-          : this.saveNewUserData()
+          : this.saveUpdatedUserData()
         : "";
     },
 
-    clearNewUserData() {
+    clearUpdatedUserData() {
       this.editMode = false;
       this.userData.userName = this.userInfo.userName;
       this.userData.email = this.userInfo.email;
