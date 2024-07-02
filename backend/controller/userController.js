@@ -22,7 +22,7 @@ const updateUserDetails = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "The user details updated successfully" });
+      .json({ message: "The user details updated successfully !" });
   } catch (error) {
     checkValidationErrors(error, "updateUserDetails", res);
   }

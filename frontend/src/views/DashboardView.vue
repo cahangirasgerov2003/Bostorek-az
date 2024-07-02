@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="tab-pane fade" :class="controlActiveTab('Books')">
-          {{ user }}
+          <DashboardBooks />
         </div>
       </div>
     </div>
@@ -33,6 +33,7 @@
 import { useAuthStore } from "@/stores/authStore.js";
 import { mapState } from "pinia";
 import RegisterView from "./RegisterView.vue";
+import DashboardBooks from "@/components/dashboard/DashboardBooks.vue";
 export default {
   name: "DashboardView",
   data() {
@@ -50,6 +51,7 @@ export default {
   },
   components: {
     RegisterView,
+    DashboardBooks,
   },
 };
 </script>

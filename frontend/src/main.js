@@ -28,8 +28,9 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { faPause } from "@fortawesome/free-solid-svg-icons";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { faRocket } from "@fortawesome/free-solid-svg-icons";
-
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 // Toastification
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
@@ -44,7 +45,9 @@ library.add(
   faPlay,
   faPause,
   faCircleNotch,
-  faRocket
+  faPenToSquare,
+  faTrash,
+  faXmark
 );
 
 const pinia = createPinia();

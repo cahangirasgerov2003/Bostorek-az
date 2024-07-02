@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const controlObjectId = (id, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({
-      error: "The id value in the query is not a valid objectId value",
+      error: "The id value in the query is not a valid objectId value !",
     });
   }
 };
@@ -14,7 +14,7 @@ const findDocumentById = async (collection, id, res) => {
 
     if (!document) {
       res.status(404).json({
-        error: `No ${collection.modelName} with this ID value was found`,
+        error: `No ${collection.modelName} with this ID value was found !`,
       });
 
       return null;
@@ -38,12 +38,12 @@ const checkValidationErrors = (error, locationError, res) => {
     }
 
     return res.status(400).json({
-      error: "Validation error",
+      error: "Validation error !",
       validationErrors,
     });
   } else {
     console.error(`Error at ${locationError}`, error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error !" });
   }
 };
 
