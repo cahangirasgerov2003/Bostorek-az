@@ -34,6 +34,8 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 // Toastification
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+// Axios
+import axios from "axios";
 
 /* add icons to the library */
 library.add(
@@ -60,9 +62,12 @@ const bookStore = useBookStore(pinia);
 
 const authStore = useAuthStore(pinia);
 
-const user = JSON.parse(localStorage.getItem("user"));
+const userData = JSON.parse(localStorage.getItem("user"));
 
-if (user) authStore.user = user;
+if (userData) {
+  authStore.user = userData.user;
+  axios.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
+}
 
 bookStore
   .fetchBooks()

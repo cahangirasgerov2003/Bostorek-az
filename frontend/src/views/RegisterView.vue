@@ -12,7 +12,7 @@
           {{ dashboard ? "User Information" : "Register" }}
         </h2>
       </div>
-      <form @submit.prevent="!dashboard && submitForm">
+      <form @submit.prevent="!dashboard && submitForm()">
         <div class="row justify-content-center mb-3" v-if="requestError">
           <div class="text-center" :class="dashboard ? 'col-12' : 'col-lg-6'">
             <span class="text-danger ms-2" style="font-weight: 500"
@@ -309,7 +309,9 @@
         <div
           class="row justify-content-center mb-2"
           v-if="
-            dashboard ? !formIsValid && editMode : !formIsValid && submitButton
+            dashboard
+              ? !formIsValid && editMode && submitButton
+              : !formIsValid && submitButton
           "
         >
           <div :class="dashboard ? 'col-12' : 'col-lg-6'">
