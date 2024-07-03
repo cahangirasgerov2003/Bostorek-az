@@ -25,24 +25,59 @@
             <font-awesome-icon
               icon="xmark"
               size="xl"
-              @click="modal.hide()"
+              @click="
+                () => {
+                  modal.hide();
+                  clearForm();
+                }
+              "
               class="closeIcon"
             />
           </div>
           <div class="modal-body mx-5">
+            <div
+              class="col d-flex justify-content-center mb-3"
+              v-if="errorContent"
+            >
+              <div class="text-center">
+                <span class="text-danger ms-2" style="font-weight: 500">{{
+                  errorContent
+                }}</span>
+              </div>
+            </div>
             <div class="col mb-3">
               <label for="title" class="form-label"
                 >Title
                 <span class="text-danger">*</span>
               </label>
-              <input type="text" class="form-control" id="title" required />
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                v-model.trim="bookData.title"
+                autocomplete="off"
+                required
+              />
+              <small v-if="errors.title.errorMessage" class="text-danger">{{
+                errors.title.errorMessage
+              }}</small>
             </div>
             <div class="col mb-3">
               <label for="author" class="form-label"
                 >Author
                 <span class="text-danger">*</span>
               </label>
-              <input type="text" class="form-control" id="author" required />
+              <input
+                type="text"
+                class="form-control"
+                id="author"
+                autocomplete="off"
+                v-model.trim="bookData.author"
+                required
+              />
+              <small v-if="errors.author.errorMessage" class="text-danger">{{
+                errors.author.errorMessage
+              }}</small>
             </div>
             <div class="col mb-3">
               <label for="description" class="form-label"
@@ -53,9 +88,16 @@
                 id="description"
                 class="form-control"
                 rows="6"
+                v-model.trim="bookData.description"
+                autocomplete="off"
                 maxlength="100"
-                minlength="10"
+                required
               ></textarea>
+              <small
+                v-if="errors.description.errorMessage"
+                class="text-danger"
+                >{{ errors.description.errorMessage }}</small
+              >
             </div>
             <div class="col mb-3">
               <label for="numOfPages" class="form-label"
@@ -66,8 +108,14 @@
                 type="number"
                 class="form-control"
                 id="numOfPages"
+                v-model.trim="bookData.page"
+                autocomplete="off"
+                min="1"
                 required
               />
+              <small v-if="errors.page.errorMessage" class="text-danger">{{
+                errors.page.errorMessage
+              }}</small>
             </div>
             <div
               class="row d-flex justify-content-end"
@@ -76,12 +124,33 @@
               <button
                 type="button"
                 class="btn btn-warning col-sm-4"
-                @click="modal.hide()"
+                @click="
+                  () => {
+                    modal.hide();
+                    clearForm();
+                  }
+                "
               >
                 Close
               </button>
-              <button type="button" class="btn btn-success col-sm-4 saveButton">
+              <button
+                @click="saveBookDetails"
+                type="button"
+                class="btn btn-success col-sm-4 saveButton"
+                v-if="!isLoading"
+              >
                 Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-success col-sm-4 saveButton"
+                v-else
+              >
+                <font-awesome-icon
+                  icon="circle-notch"
+                  spin-pulse
+                  style="font-size: 20px"
+                />
               </button>
             </div>
           </div>
@@ -94,11 +163,36 @@
 <script>
 import DashboardBooksTable from "./DashboardBooksTable.vue";
 import { Modal } from "bootstrap";
+import { useBookStore } from "@/stores/bookStore.js";
+import { mapActions, mapState } from "pinia";
+import { successAction } from "@/utility/index.js";
 export default {
   name: "DashboardBooks",
   data() {
     return {
       modal: null,
+      bookData: {
+        title: "",
+        author: "",
+        description: "",
+        page: "",
+      },
+      errors: {
+        title: {
+          errorMessage: "",
+        },
+        author: {
+          errorMessage: "",
+        },
+        description: {
+          errorMessage: "",
+        },
+        page: {
+          errorMessage: "",
+        },
+      },
+      errorCount: 0,
+      errorContent: "",
     };
   },
   components: {
@@ -106,6 +200,50 @@ export default {
   },
   mounted() {
     this.modal = new Modal(this.$refs.addEditBook);
+  },
+  methods: {
+    ...mapActions(useBookStore, ["createNewBook"]),
+    async saveBookDetails() {
+      this.errorCount = 0;
+      try {
+        for (let key in this.bookData) {
+          if (this.bookData[key] === "" || this.bookData[key] <= 0) {
+            this.errors[
+              key
+            ].errorMessage = `${key.toUpperCase()} is required !`;
+            this.errorCount += 1;
+          } else {
+            this.errors[key].errorMessage
+              ? (this.errors[key].errorMessage = "")
+              : "";
+          }
+        }
+
+        if (this.errorCount === 0) {
+          const result = await this.createNewBook(this.bookData);
+          console.log("response", result);
+          successAction(result);
+          this.clearForm();
+          setTimeout(() => {
+            this.modal.hide();
+            this.$router.push("/books");
+          }, 3500);
+        }
+
+        return;
+      } catch (errorData) {
+        console.error("Error occurred when new book was created !", errorData);
+        this.errorContent = errorData.error;
+        this.clearForm();
+      }
+    },
+    clearForm() {
+      for (let key in this.bookData) this.bookData[key] = "";
+      for (let key in this.errors) this.errors[key].errorMessage = "";
+    },
+  },
+  computed: {
+    ...mapState(useBookStore, ["isLoading"]),
   },
 };
 </script>

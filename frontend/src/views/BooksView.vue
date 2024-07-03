@@ -50,6 +50,7 @@ export default {
       return Math.ceil(this.books.length / this.perPage);
     },
     limitBooks() {
+      console.log(this.books);
       const startBookNumber = this.current * this.perPage - this.perPage;
       const endBookNumber = startBookNumber + this.perPage;
       return this.books.slice(startBookNumber, endBookNumber);

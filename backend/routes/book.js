@@ -14,7 +14,7 @@ const router = express.Router();
 router
   .route("/")
   .get(bookController.getAllBooks)
-  .post(bookController.createNewBook);
+  .post(authMiddleware.authorizationUser, bookController.createNewBook);
 
 router
   .route("/:id")

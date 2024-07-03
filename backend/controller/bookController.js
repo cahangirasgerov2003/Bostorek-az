@@ -37,7 +37,9 @@ const getABook = async (req, res) => {
 
 const createNewBook = async (req, res) => {
   try {
-    const { title, author } = req.body;
+    const { title, author, description, page } = req.body;
+
+    const userId = req.user._id;
 
     const existingBook = await Book.findOne({ title, author });
 
@@ -45,13 +47,19 @@ const createNewBook = async (req, res) => {
       return res.status(409).json({
         message:
           "Alternatively, you can try creating a new book with a different author or book title",
-        error: "The book already exists",
+        error: "The book already exists !",
       });
     } else {
-      const newBook = await Book.create(req.body);
+      const newBook = await Book.create({
+        title,
+        author,
+        description,
+        page,
+        userId,
+      });
 
       return res.status(201).json({
-        message: "The new book has been successfully created",
+        message: "The new book has been successfully created !",
         book: newBook,
       });
     }
