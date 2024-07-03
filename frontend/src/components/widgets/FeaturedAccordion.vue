@@ -32,7 +32,7 @@
                 <img
                   :alt="item.title"
                   src="../../assets/images/b1.jpg"
-                  class="img-fluid rounded-5"
+                  class="img-fluid rounded-4"
                 />
               </div>
               <div class="col-md-8 d-flex flex-column justify-content-center">

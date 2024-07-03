@@ -25,12 +25,7 @@
             <font-awesome-icon
               icon="xmark"
               size="xl"
-              @click="
-                () => {
-                  modal.hide();
-                  clearForm();
-                }
-              "
+              @click="modalHide()"
               class="closeIcon"
             />
           </div>
@@ -124,12 +119,7 @@
               <button
                 type="button"
                 class="btn btn-warning col-sm-4"
-                @click="
-                  () => {
-                    modal.hide();
-                    clearForm();
-                  }
-                "
+                @click="modalHide()"
               >
                 Close
               </button>
@@ -233,14 +223,20 @@ export default {
         return;
       } catch (errorData) {
         console.error("Error occurred when new book was created !", errorData);
-        this.errorContent = errorData.error;
         this.clearForm();
+        this.errorContent =
+          errorData.error || "Error occurred when new book was created !";
       }
     },
     clearForm() {
       for (let key in this.bookData) this.bookData[key] = "";
       for (let key in this.errors) this.errors[key].errorMessage = "";
       this.errorContent = "";
+    },
+
+    modalHide() {
+      this.modal.hide();
+      this.clearForm();
     },
   },
   computed: {
