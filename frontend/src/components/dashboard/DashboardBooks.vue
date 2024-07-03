@@ -40,7 +40,7 @@
               v-if="errorContent"
             >
               <div class="text-center">
-                <span class="text-danger ms-2" style="font-weight: 500">{{
+                <span class="text-danger" style="font-weight: 800">{{
                   errorContent
                 }}</span>
               </div>
@@ -240,6 +240,7 @@ export default {
     clearForm() {
       for (let key in this.bookData) this.bookData[key] = "";
       for (let key in this.errors) this.errors[key].errorMessage = "";
+      this.errorContent = "";
     },
   },
   computed: {
