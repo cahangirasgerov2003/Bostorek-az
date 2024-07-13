@@ -43,6 +43,16 @@ export const useBookStore = defineStore("bookStore", {
       }
     },
 
+    async deleteABook(bookId) {
+      try {
+        await axios.delete(`http://localhost:3000/api/v1/books/${bookId}`);
+        this.books = this.books.filter((book) => book._id !== bookId);
+      } catch (error) {
+        console.error("An error occurred while deleting a new book", error);
+        throw error.response.data;
+      }
+    },
+
     async fetchBooksByUploader() {
       try {
         if (this.requestUploadedBooks === false) {

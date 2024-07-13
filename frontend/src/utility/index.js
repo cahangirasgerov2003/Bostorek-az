@@ -1,37 +1,40 @@
 import { useToast } from "vue-toastification";
+
+const sameOptionsToast = {
+  position: "top-right",
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  draggable: true,
+  draggablePercent: 0.6,
+  showCloseButtonOnHover: false,
+  hideProgressBar: false,
+  closeButton: "button",
+  icon: true,
+  rtl: false,
+};
+
 const successAction = (result) => {
   const toast = useToast();
   toast.success(result.data.message ? result.data.message : result, {
-    position: "top-right",
     timeout: 3000,
-    closeOnClick: true,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
-    showCloseButtonOnHover: false,
-    hideProgressBar: false,
-    closeButton: "button",
-    icon: true,
-    rtl: false,
+    ...sameOptionsToast,
   });
 };
 
 const errorAction = (result) => {
   const toast = useToast();
   toast.error(result, {
-    position: "top-right",
     timeout: 2000,
-    closeOnClick: true,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
-    showCloseButtonOnHover: false,
-    hideProgressBar: false,
-    closeButton: "button",
-    icon: true,
-    rtl: false,
+    ...sameOptionsToast,
+  });
+};
+
+const warningAction = (result) => {
+  const toast = useToast();
+  toast.error(result, {
+    timeout: 2000,
+    ...sameOptionsToast,
   });
 };
 
@@ -45,4 +48,10 @@ const limitBooks = (current, perPage, returnUploadedBooks) => {
   return returnUploadedBooks.slice(startBookNumber, endBookNumber);
 };
 
-export { successAction, calculateNumberOfPages, limitBooks, errorAction };
+export {
+  successAction,
+  calculateNumberOfPages,
+  limitBooks,
+  errorAction,
+  warningAction,
+};

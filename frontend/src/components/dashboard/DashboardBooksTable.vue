@@ -33,6 +33,7 @@
                 :icon="['fas', 'trash']"
                 class="text-danger"
                 style="cursor: pointer"
+                @click="removeABook(book._id, book.title)"
               />
             </td>
           </tr>
@@ -43,6 +44,9 @@
 </template>
 
 <script>
+import { useBookStore } from "@/stores/bookStore.js";
+import { mapActions } from "pinia";
+import { warningAction } from "@/utility/index.js";
 export default {
   name: "DashboardBooksTable",
   data() {
@@ -52,6 +56,24 @@ export default {
     books: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    ...mapActions(useBookStore, [
+      "deleteABook",
+      "fetchBooksByUploader",
+      "controlRequest",
+    ]),
+
+    async removeABook(bookId, bookTitle) {
+      try {
+        await this.deleteABook(bookId);
+        warningAction(`${bookTitle} deleted successfully !`);
+        this.controlRequest();
+        await this.fetchBooksByUploader();
+      } catch (errorData) {
+        console.error("Error occurred when book was deleted !", errorData);
+      }
     },
   },
 };
