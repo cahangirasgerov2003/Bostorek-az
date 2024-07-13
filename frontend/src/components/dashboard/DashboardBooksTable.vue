@@ -1,7 +1,7 @@
 <template>
   <!-- Table -->
-  <div class="row">
-    <div class="col table-responsive">
+  <div class="row" style="padding-right: 0">
+    <div class="col table-responsive" style="padding-right: 0">
       <table class="table">
         <thead>
           <tr>
@@ -14,34 +14,30 @@
           </tr>
         </thead>
         <tbody style="position: relative">
-          <tr>
-            <td>Gülün Adi</td>
-            <td>Umberto Eco</td>
-            <td class="bookDesc">
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium.Sed ut perspiciatis unde omnis
-              iste natus error sit voluptatem accusantium doloremque
-              laudantium.Sed ut perspiciatis unde omnis iste natus error sit
-              voluptatem accusantium doloremque laudantium.Sed ut perspiciatis
-              unde omnis iste natus error sit voluptatem accusantium doloremque
-              laudantium.
-            </td>
-            <td>217</td>
-            <td class="text-center">
-              <font-awesome-icon
-                :icon="['far', 'pen-to-square']"
-                class="text-warning"
-                style="cursor: pointer"
-              />
-            </td>
-            <td class="text-center">
-              <font-awesome-icon
-                :icon="['fas', 'trash']"
-                class="text-danger"
-                style="cursor: pointer"
-              />
-            </td>
-          </tr>
+          <TransitionGroup name="tableRow">
+            <tr v-for="(book, index) in books" :key="index">
+              <td>{{ book.title }}</td>
+              <td>{{ book.author }}</td>
+              <td class="bookDesc">
+                {{ book.description }}
+              </td>
+              <td>{{ book.page }}</td>
+              <td class="text-center">
+                <font-awesome-icon
+                  :icon="['far', 'pen-to-square']"
+                  class="text-warning"
+                  style="cursor: pointer"
+                />
+              </td>
+              <td class="text-center">
+                <font-awesome-icon
+                  :icon="['fas', 'trash']"
+                  class="text-danger"
+                  style="cursor: pointer"
+                />
+              </td>
+            </tr>
+          </TransitionGroup>
         </tbody>
       </table>
     </div>
@@ -53,6 +49,12 @@ export default {
   name: "DashboardBooksTable",
   data() {
     return {};
+  },
+  props: {
+    books: {
+      type: Array,
+      default: () => [],
+    },
   },
 };
 </script>
@@ -74,5 +76,15 @@ td {
 .bookDesc:hover {
   white-space: wrap;
   overflow: visible;
+}
+
+.tableRow-enter-active,
+.tableRow-leave-active {
+  transition: all 0.5s ease;
+}
+.tableRow-enter-from,
+.tableRow-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>

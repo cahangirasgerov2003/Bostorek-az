@@ -116,4 +116,25 @@ const deleteABook = async (req, res) => {
   }
 };
 
-export { getAllBooks, createNewBook, getABook, updateABook, deleteABook };
+const getBooksByUploader = async (req, res) => {
+  try {
+    const uploaderId = req.user._id;
+    const books = await Book.find({ userId: uploaderId });
+
+    return res
+      .status(200)
+      .json({ message: "The books was found successfully", books });
+  } catch (error) {
+    console.error("Error at getBooksByUploader", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export {
+  getAllBooks,
+  createNewBook,
+  getABook,
+  updateABook,
+  deleteABook,
+  getBooksByUploader,
+};

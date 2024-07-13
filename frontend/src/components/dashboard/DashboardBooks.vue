@@ -14,7 +14,22 @@
     </div>
 
     <!-- Table -->
-    <DashboardBooksTable />
+    <div class="row">
+      <div class="d-flex justify-content-center col mt-5" v-if="isLoading">
+        <font-awesome-icon icon="spinner" spin-pulse style="font-size: 40px" />
+      </div>
+      <DashboardBooksTable
+        :books="returnUploadedBooks"
+        v-else-if="userUploadedBooks.length !== 0"
+      />
+      <div class="d-flex justify-content-center col mb-4" v-else>
+        <img
+          alt="Not books"
+          src="@/assets/images/notBooks.jpg"
+          style="width: 800px"
+        />
+      </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" tabindex="-1" ref="addEditBook">
@@ -191,8 +206,15 @@ export default {
   mounted() {
     this.modal = new Modal(this.$refs.addEditBook);
   },
+  created() {
+    this.fetchBooksByUploader();
+  },
   methods: {
-    ...mapActions(useBookStore, ["createNewBook"]),
+    ...mapActions(useBookStore, [
+      "createNewBook",
+      "fetchBooksByUploader",
+      "controlRequest",
+    ]),
     async saveBookDetails() {
       this.errorCount = 0;
       try {
@@ -214,9 +236,10 @@ export default {
           console.log("response", result);
           successAction(result);
           this.clearForm();
+          this.controlRequest();
+          await this.fetchBooksByUploader();
           setTimeout(() => {
             this.modal.hide();
-            this.$router.push("/books");
           }, 3500);
         }
 
@@ -240,7 +263,12 @@ export default {
     },
   },
   computed: {
-    ...mapState(useBookStore, ["isLoading"]),
+    ...mapState(useBookStore, ["isLoading", "userUploadedBooks"]),
+    returnUploadedBooks() {
+      return this.userUploadedBooks.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    },
   },
 };
 </script>

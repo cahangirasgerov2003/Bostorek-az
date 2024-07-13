@@ -5,6 +5,8 @@ export const useBookStore = defineStore("bookStore", {
   state: () => ({
     books: [],
     isLoading: false,
+    userUploadedBooks: [],
+    requestUploadedBooks: false,
   }),
   getters: {
     selectABook(state) {
@@ -39,6 +41,30 @@ export const useBookStore = defineStore("bookStore", {
       } finally {
         this.isLoading = false;
       }
+    },
+
+    async fetchBooksByUploader() {
+      try {
+        if (this.requestUploadedBooks === false) {
+          this.isLoading = true;
+          const response = await axios.get(
+            "http://localhost:3000/api/v1/books/uploader"
+          );
+          this.userUploadedBooks = response.data.books;
+          this.requestUploadedBooks = true;
+        }
+      } catch (error) {
+        console.error(
+          "An error occurred while fetching user uploaded books",
+          error
+        );
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    controlRequest() {
+      this.requestUploadedBooks = false;
     },
   },
 });

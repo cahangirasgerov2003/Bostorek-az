@@ -38,7 +38,7 @@ export default {
   name: "DashboardView",
   data() {
     return {
-      activeTab: "General",
+      activeTab: "Books",
     };
   },
   computed: {

@@ -17,6 +17,10 @@ router
   .post(authMiddleware.authorizationUser, bookController.createNewBook);
 
 router
+  .route("/uploader")
+  .get(authMiddleware.authorizationUser, bookController.getBooksByUploader);
+
+router
   .route("/:id")
   .get(bookController.getABook)
   .put(bookController.updateABook)
