@@ -58,6 +58,7 @@ export const useBookStore = defineStore("bookStore", {
           "An error occurred while fetching user uploaded books",
           error
         );
+        throw error.response.data;
       } finally {
         this.isLoading = false;
       }

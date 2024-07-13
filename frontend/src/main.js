@@ -36,6 +36,7 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 // Axios
 import axios from "axios";
+import { errorAction } from "./utility/index.js";
 
 /* add icons to the library */
 library.add(
@@ -63,6 +64,29 @@ const bookStore = useBookStore(pinia);
 const authStore = useAuthStore(pinia);
 
 const userData = JSON.parse(localStorage.getItem("user"));
+
+// Interceptors middleware
+
+axios.interceptors.response.use(
+  (response) => {
+    // İsteğin başarılı olması durumunda buraya düşeriz
+    console.log("Response received:", response.data);
+    return response;
+  },
+  (error) => {
+    console.log("error.response", error.response);
+    // İsteğin başarısız olması durumunda buraya düşeriz
+    if (error.response && error.response.status === 401) {
+      //  401 type error time toast message
+      errorAction("Your token has expired, forwarding login page !");
+
+      setTimeout(() => {
+        authStore.logoutAccount();
+        router.push("/login");
+      }, 3500);
+    }
+  }
+);
 
 if (userData) {
   authStore.user = userData.user;

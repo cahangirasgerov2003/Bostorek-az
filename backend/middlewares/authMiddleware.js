@@ -16,9 +16,9 @@ const authorizationUser = async (req, res, next) => {
 
   const jwtToken = tokenArray[1];
 
-  const decodedToken = jwt.verify(jwtToken, process.env.SECRET_KEY);
-
   try {
+    const decodedToken = jwt.verify(jwtToken, process.env.SECRET_KEY);
+
     const user = await User.findById(decodedToken.userId);
 
     req.user = user;
@@ -29,6 +29,13 @@ const authorizationUser = async (req, res, next) => {
       "The token is invalid or expired, perhaps the user was not found !",
       error
     );
+    if (error.name === "TokenExpiredError") {
+      return res
+        .status(401)
+        .json({ error: "Token expired. Please re-authenticate !" });
+    } else {
+      return res.status(500).json({ error: "Internal Server Error !" });
+    }
   }
 };
 

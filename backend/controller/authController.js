@@ -41,10 +41,12 @@ const loginAccount = async (req, res) => {
 
     if (!pass)
       return res
-        .status(401)
+        .status(404)
         .json({ error: "The password you entered is not correct !" });
 
     result.password = undefined;
+
+    const expirationTime = 60 * 60 * 24 * 7;
 
     // Kullanici giris yapmismi kontrol edek
     const token = jwt.sign(
@@ -52,7 +54,7 @@ const loginAccount = async (req, res) => {
         userId: result._id,
       },
       process.env.SECRET_KEY,
-      { expiresIn: process.env.EXPIRES_IN }
+      { expiresIn: expirationTime }
     );
 
     return res
