@@ -27,6 +27,7 @@ import BookList from "@/components/BookList.vue";
 import ThePagination from "@/components/ThePagination.vue";
 import { useBookStore } from "../stores/bookStore";
 import { mapState } from "pinia";
+import { calculateNumberOfPages, limitBooks } from "@/utility/index.js";
 export default {
   name: "BooksView",
   components: {
@@ -47,13 +48,14 @@ export default {
   computed: {
     ...mapState(useBookStore, ["books", "isLoading"]),
     calculateNumberOfPages() {
-      return Math.ceil(this.books.length / this.perPage);
+      return calculateNumberOfPages(this.books, this.perPage);
     },
     limitBooks() {
-      console.log(this.books);
-      const startBookNumber = this.current * this.perPage - this.perPage;
-      const endBookNumber = startBookNumber + this.perPage;
-      return this.books.slice(startBookNumber, endBookNumber);
+      return limitBooks(
+        this.current,
+        this.perPage,
+        this.books.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      );
     },
   },
 

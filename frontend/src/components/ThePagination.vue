@@ -1,6 +1,6 @@
 <template>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end">
+  <nav aria-label="Page navigation example" class="mb-4">
+    <ul class="pagination justify-content-end mb-0">
       <li
         class="page-item"
         :class="{ disabled: current === 1 }"

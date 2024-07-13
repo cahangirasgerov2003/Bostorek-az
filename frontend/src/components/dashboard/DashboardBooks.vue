@@ -14,22 +14,29 @@
     </div>
 
     <!-- Table -->
-    <div class="row">
-      <div class="d-flex justify-content-center col mt-5" v-if="isLoading">
-        <font-awesome-icon icon="spinner" spin-pulse style="font-size: 40px" />
-      </div>
-      <DashboardBooksTable
-        :books="returnUploadedBooks"
-        v-else-if="userUploadedBooks.length !== 0"
-      />
-      <div class="d-flex justify-content-center col mb-4" v-else>
-        <img
-          alt="Not books"
-          src="@/assets/images/notBooks.jpg"
-          style="width: 800px"
-        />
-      </div>
+    <div class="d-flex justify-content-center mt-5" v-if="isLoading">
+      <font-awesome-icon icon="spinner" spin-pulse style="font-size: 40px" />
     </div>
+    <DashboardBooksTable
+      :books="limitBooks"
+      v-if="userUploadedBooks.length !== 0"
+    />
+    <div
+      class="d-flex justify-content-center mb-5"
+      v-if="userUploadedBooks.length === 0 && !isLoading"
+    >
+      <img
+        alt="Not books"
+        src="@/assets/images/notBooks.jpg"
+        style="width: 800px"
+      />
+    </div>
+
+    <ThePagination
+      :current="current"
+      :pages="calculateNumberOfPages"
+      @changePage="updatePage"
+    />
 
     <!-- Modal -->
     <div class="modal fade" tabindex="-1" ref="addEditBook">
@@ -171,11 +178,15 @@ import { Modal } from "bootstrap";
 import { useBookStore } from "@/stores/bookStore.js";
 import { mapActions, mapState } from "pinia";
 import { successAction } from "@/utility/index.js";
+import ThePagination from "@/components/ThePagination.vue";
+import { calculateNumberOfPages, limitBooks } from "@/utility/index.js";
 export default {
   name: "DashboardBooks",
   data() {
     return {
       modal: null,
+      current: 1,
+      perPage: 6,
       bookData: {
         title: "",
         author: "",
@@ -202,6 +213,7 @@ export default {
   },
   components: {
     DashboardBooksTable,
+    ThePagination,
   },
   mounted() {
     this.modal = new Modal(this.$refs.addEditBook);
@@ -215,6 +227,9 @@ export default {
       "fetchBooksByUploader",
       "controlRequest",
     ]),
+    updatePage(page) {
+      this.current = page;
+    },
     async saveBookDetails() {
       this.errorCount = 0;
       try {
@@ -235,12 +250,9 @@ export default {
           const result = await this.createNewBook(this.bookData);
           console.log("response", result);
           successAction(result);
-          this.clearForm();
+          this.modalHide();
           this.controlRequest();
           await this.fetchBooksByUploader();
-          setTimeout(() => {
-            this.modal.hide();
-          }, 3500);
         }
 
         return;
@@ -268,6 +280,12 @@ export default {
       return this.userUploadedBooks.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
+    },
+    calculateNumberOfPages() {
+      return calculateNumberOfPages(this.userUploadedBooks, this.perPage);
+    },
+    limitBooks() {
+      return limitBooks(this.current, this.perPage, this.returnUploadedBooks);
     },
   },
 };

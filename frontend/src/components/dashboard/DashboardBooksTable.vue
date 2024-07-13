@@ -1,7 +1,7 @@
 <template>
   <!-- Table -->
-  <div class="row" style="padding-right: 0">
-    <div class="col table-responsive" style="padding-right: 0">
+  <div class="row mb-4">
+    <div class="col table-responsive">
       <table class="table">
         <thead>
           <tr>
@@ -14,30 +14,28 @@
           </tr>
         </thead>
         <tbody style="position: relative">
-          <TransitionGroup name="tableRow">
-            <tr v-for="(book, index) in books" :key="index">
-              <td>{{ book.title }}</td>
-              <td>{{ book.author }}</td>
-              <td class="bookDesc">
-                {{ book.description }}
-              </td>
-              <td>{{ book.page }}</td>
-              <td class="text-center">
-                <font-awesome-icon
-                  :icon="['far', 'pen-to-square']"
-                  class="text-warning"
-                  style="cursor: pointer"
-                />
-              </td>
-              <td class="text-center">
-                <font-awesome-icon
-                  :icon="['fas', 'trash']"
-                  class="text-danger"
-                  style="cursor: pointer"
-                />
-              </td>
-            </tr>
-          </TransitionGroup>
+          <tr v-for="(book, index) in books" :key="index">
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td class="bookDesc">
+              {{ book.description }}
+            </td>
+            <td>{{ book.page }}</td>
+            <td class="text-center">
+              <font-awesome-icon
+                :icon="['far', 'pen-to-square']"
+                class="text-warning"
+                style="cursor: pointer"
+              />
+            </td>
+            <td class="text-center">
+              <font-awesome-icon
+                :icon="['fas', 'trash']"
+                class="text-danger"
+                style="cursor: pointer"
+              />
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -76,15 +74,5 @@ td {
 .bookDesc:hover {
   white-space: wrap;
   overflow: visible;
-}
-
-.tableRow-enter-active,
-.tableRow-leave-active {
-  transition: all 0.5s ease;
-}
-.tableRow-enter-from,
-.tableRow-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
 }
 </style>

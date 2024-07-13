@@ -17,4 +17,14 @@ const successAction = (result) => {
   });
 };
 
-export { successAction };
+const calculateNumberOfPages = (userUploadedBooks, perPage) => {
+  return Math.ceil(userUploadedBooks.length / perPage);
+};
+
+const limitBooks = (current, perPage, returnUploadedBooks) => {
+  const startBookNumber = current * perPage - perPage;
+  const endBookNumber = startBookNumber + perPage;
+  return returnUploadedBooks.slice(startBookNumber, endBookNumber);
+};
+
+export { successAction, calculateNumberOfPages, limitBooks };
