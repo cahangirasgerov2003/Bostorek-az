@@ -70,7 +70,7 @@ const createNewBook = async (req, res) => {
 
 const updateABook = async (req, res) => {
   const { id } = req.params;
-  const { title, author, page, description, rating } = req.body;
+  const { title, author, page, description } = req.body;
 
   if (controlObjectId(id, res)) return;
 
@@ -83,11 +83,12 @@ const updateABook = async (req, res) => {
     aBook.author = author || aBook.author;
     aBook.page = page || aBook.page;
     aBook.description = description || aBook.description;
-    aBook.rating = rating || aBook.rating;
 
     await aBook.save();
 
-    return res.status(200).json({ message: "The book updated successfully" });
+    return res
+      .status(200)
+      .json({ message: "The book updated successfully", aBook });
   } catch (error) {
     console.error("Error at updateABook", error);
     return res.status(500).json({ error: "Internal Server Error" });

@@ -48,6 +48,7 @@
         :errors="errors"
         :isLoading="isLoading"
         :saveBookDetails="saveBookDetails"
+        :modalTitle="modalTitle"
       />
     </div>
   </div>
@@ -67,6 +68,7 @@ export default {
   data() {
     return {
       modal: null,
+      modalTitle: "",
       current: 1,
       perPage: 6,
       bookData: {
@@ -91,6 +93,7 @@ export default {
       },
       errorCount: 0,
       errorContent: "",
+      editedBookId: null,
     };
   },
   components: {
@@ -109,44 +112,51 @@ export default {
       "createNewBook",
       "fetchBooksByUploader",
       "controlRequest",
+      "editTheBook",
     ]),
-    showModal() {
+    showModal(typeAction, editedBook) {
+      if (typeAction === "Edit") {
+        this.modalTitle = "Edit Book";
+        this.bookData = {
+          title: editedBook.title,
+          author: editedBook.author,
+          description: editedBook.description,
+          page: editedBook.page,
+        };
+        this.editedBookId = editedBook._id;
+      } else {
+        this.modalTitle = "Add Book";
+        this.bookData = {
+          title: "",
+          author: "",
+          description: "",
+          page: "",
+        };
+      }
       this.modal.show();
     },
     updatePage(page) {
       this.current = page;
     },
-    async saveBookDetails() {
+    saveBookDetails() {
       this.errorCount = 0;
-      try {
-        for (let key in this.bookData) {
-          if (this.bookData[key] === "" || this.bookData[key] <= 0) {
-            this.errors[
-              key
-            ].errorMessage = `${key.toUpperCase()} is required !`;
-            this.errorCount += 1;
-          } else {
-            this.errors[key].errorMessage
-              ? (this.errors[key].errorMessage = "")
-              : "";
-          }
+      for (let key in this.bookData) {
+        if (this.bookData[key] === "" || this.bookData[key] <= 0) {
+          this.errors[key].errorMessage = `${key.toUpperCase()} is required !`;
+          this.errorCount += 1;
+        } else {
+          this.errors[key].errorMessage
+            ? (this.errors[key].errorMessage = "")
+            : "";
         }
+      }
 
-        if (this.errorCount === 0) {
-          const result = await this.createNewBook(this.bookData);
-          console.log("response", result);
-          successAction(result);
-          this.modalHide();
-          this.controlRequest();
-          await this.fetchBooksByUploader();
+      if (this.errorCount === 0) {
+        if (this.modalTitle === "Add Book") {
+          this.addABook();
+        } else if (this.modalTitle === "Edit Book") {
+          this.editABook();
         }
-
-        return;
-      } catch (errorData) {
-        console.error("Error occurred when new book was created !", errorData);
-        this.clearForm();
-        this.errorContent =
-          errorData.error || "Error occurred when new book was created !";
       }
     },
     clearForm() {
@@ -158,6 +168,37 @@ export default {
     modalHide() {
       this.modal.hide();
       this.clearForm();
+    },
+
+    async addABook() {
+      try {
+        const result = await this.createNewBook(this.bookData);
+        console.log("response", result);
+        successAction(result);
+        this.modalHide();
+        this.controlRequest();
+        await this.fetchBooksByUploader();
+      } catch (error) {
+        console.error("Error occurred when new book was created !", errorData);
+        this.clearForm();
+        this.errorContent =
+          errorData.error || "Error occurred when new book was created !";
+      }
+    },
+
+    async editABook() {
+      try {
+        const result = await this.editTheBook(this.bookData, this.editedBookId);
+        console.log("response", result);
+        // successAction(result);
+        this.modalHide();
+        this.controlRequest();
+        await this.fetchBooksByUploader();
+      } catch (error) {
+        console.error("Error occurred when book was edited !", errorData);
+        this.errorContent =
+          errorData.error || "Error occurred when new book was created !";
+      }
     },
   },
   computed: {

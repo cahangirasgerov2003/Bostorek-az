@@ -43,6 +43,24 @@ export const useBookStore = defineStore("bookStore", {
       }
     },
 
+    async editTheBook(bookInfo, bookId) {
+      try {
+        const response = await axios.put(
+          `http://localhost:3000/api/v1/books/${bookId}`,
+          bookInfo
+        );
+
+        this.books = this.books.map((book) =>
+          book._id === bookId ? bookInfo : book
+        );
+
+        return response;
+      } catch (error) {
+        console.error("An error occurred while creating a new book", error);
+        throw error.response.data;
+      }
+    },
+
     async deleteABook(bookId) {
       try {
         await axios.delete(`http://localhost:3000/api/v1/books/${bookId}`);

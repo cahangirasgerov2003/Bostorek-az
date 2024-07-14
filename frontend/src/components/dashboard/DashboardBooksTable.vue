@@ -26,7 +26,7 @@
                 :icon="['far', 'pen-to-square']"
                 class="text-warning"
                 style="cursor: pointer"
-                @click="showModal()"
+                @click="showModal('Edit', book)"
               />
             </td>
             <td class="text-center">

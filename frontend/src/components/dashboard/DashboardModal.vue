@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header d-flex justify-content-between">
-        <h5 class="modal-title">Add Book</h5>
+        <h5 class="modal-title">{{ modalTitle }}</h5>
         <font-awesome-icon
           icon="xmark"
           size="xl"
@@ -97,7 +97,7 @@
             Close
           </button>
           <button
-            @click="saveBookDetails"
+            @click="saveBookDetails()"
             type="button"
             class="btn btn-success col-sm-4 saveButton"
             v-if="!isLoading"
@@ -150,6 +150,10 @@ export default {
     },
     saveBookDetails: {
       type: Function,
+      required: true,
+    },
+    modalTitle: {
+      type: String,
       required: true,
     },
   },
