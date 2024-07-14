@@ -26,6 +26,7 @@
                 :icon="['far', 'pen-to-square']"
                 class="text-warning"
                 style="cursor: pointer"
+                @click="showModal()"
               />
             </td>
             <td class="text-center">
@@ -56,6 +57,10 @@ export default {
     books: {
       type: Array,
       default: () => [],
+    },
+    showModal: {
+      type: Function,
+      required: true,
     },
   },
   methods: {
