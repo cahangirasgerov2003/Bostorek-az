@@ -111,7 +111,6 @@ export default {
     ...mapActions(useBookStore, [
       "createNewBook",
       "fetchBooksByUploader",
-      "controlRequest",
       "editTheBook",
     ]),
     showModal(typeAction, editedBook) {
@@ -160,7 +159,6 @@ export default {
       }
     },
     clearForm() {
-      for (let key in this.bookData) this.bookData[key] = "";
       for (let key in this.errors) this.errors[key].errorMessage = "";
       this.errorContent = "";
     },
@@ -173,12 +171,10 @@ export default {
     async addABook() {
       try {
         const result = await this.createNewBook(this.bookData);
-        console.log("response", result);
+        console.log("response add book", result);
         successAction(result);
         this.modalHide();
-        this.controlRequest();
-        await this.fetchBooksByUploader();
-      } catch (error) {
+      } catch (errorData) {
         console.error("Error occurred when new book was created !", errorData);
         this.clearForm();
         this.errorContent =
@@ -189,12 +185,10 @@ export default {
     async editABook() {
       try {
         const result = await this.editTheBook(this.bookData, this.editedBookId);
-        console.log("response", result);
-        // successAction(result);
-        this.modalHide();
-        this.controlRequest();
-        await this.fetchBooksByUploader();
-      } catch (error) {
+        console.log("response edit book", result);
+        successAction(result);
+        this.modal.hide();
+      } catch (errorData) {
         console.error("Error occurred when book was edited !", errorData);
         this.errorContent =
           errorData.error || "Error occurred when new book was created !";

@@ -41,7 +41,6 @@ export default {
       desc: " There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration",
       current: 1,
       perPage: 8,
-      bookStore: useBookStore(),
     };
   },
   // Computed props
@@ -51,10 +50,11 @@ export default {
       return calculateNumberOfPages(this.books, this.perPage);
     },
     limitBooks() {
-      return limitBooks(
-        this.current,
-        this.perPage,
-        this.books.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      return limitBooks(this.current, this.perPage, this.returnSortedBooks);
+    },
+    returnSortedBooks() {
+      return this.books.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
     },
   },

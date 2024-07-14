@@ -34,6 +34,7 @@ export const useBookStore = defineStore("bookStore", {
           newBook
         );
         this.books.push(response.data.book);
+        this.userUploadedBooks.push(response.data.book);
         return response;
       } catch (error) {
         console.error("An error occurred while creating a new book", error);
@@ -51,7 +52,11 @@ export const useBookStore = defineStore("bookStore", {
         );
 
         this.books = this.books.map((book) =>
-          book._id === bookId ? bookInfo : book
+          book._id === bookId ? response.data.book : book
+        );
+
+        this.userUploadedBooks = this.userUploadedBooks.map((book) =>
+          book._id === bookId ? response.data.book : book
         );
 
         return response;
@@ -65,6 +70,9 @@ export const useBookStore = defineStore("bookStore", {
       try {
         await axios.delete(`http://localhost:3000/api/v1/books/${bookId}`);
         this.books = this.books.filter((book) => book._id !== bookId);
+        this.userUploadedBooks = this.userUploadedBooks.filter(
+          (book) => book._id !== bookId
+        );
       } catch (error) {
         console.error("An error occurred while deleting a new book", error);
         throw error.response.data;

@@ -18,7 +18,7 @@
         <span
           class="badge rounded-pill py-2 px-3"
           style="background-color: var(--primary-color); font-size: 14px"
-          >{{ book.updatedAt.slice(11, 19) }}</span
+          >11.02.11</span
         >
       </div>
     </div>

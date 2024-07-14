@@ -64,18 +64,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useBookStore, [
-      "deleteABook",
-      "fetchBooksByUploader",
-      "controlRequest",
-    ]),
+    ...mapActions(useBookStore, ["deleteABook"]),
 
     async removeABook(bookId, bookTitle) {
       try {
+        console.log(bookId);
         await this.deleteABook(bookId);
         warningAction(`${bookTitle} deleted successfully !`);
-        this.controlRequest();
-        await this.fetchBooksByUploader();
       } catch (errorData) {
         console.error("Error occurred when book was deleted !", errorData);
       }
