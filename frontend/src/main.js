@@ -20,17 +20,22 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 /* import specific icons */
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import { faLeftLong } from "@fortawesome/free-solid-svg-icons";
-import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import { faPause } from "@fortawesome/free-solid-svg-icons";
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faAngleRight,
+  faLeftLong,
+  faSpinner,
+  faPlay,
+  faPause,
+  faCircleNotch,
+  faTrash,
+  faXmark,
+  faThumbsUp,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faThumbsUp as farThumbsUp,
+  faPenToSquare,
+} from "@fortawesome/free-regular-svg-icons";
 // Toastification
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
@@ -50,7 +55,8 @@ library.add(
   faCircleNotch,
   faPenToSquare,
   faTrash,
-  faXmark
+  faXmark,
+  farThumbsUp
 );
 
 const pinia = createPinia();

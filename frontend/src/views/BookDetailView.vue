@@ -1,6 +1,6 @@
 <template>
   <!-- <div> -->
-  <section :class="{ calculatingHeightSection: !book, 'my-5': book }">
+  <section :class="{ calculatingHeightSection: !book, 'mb-5 mt-3': book }">
     <div class="container pt-5" v-if="book">
       <TheHeading :title="title" :desc="desc + ' ' + book.title" />
       <RouterLink
@@ -11,7 +11,11 @@
       </RouterLink>
       <div class="row">
         <div class="col-lg-6">
-          <img src="@/assets/images/b3.jpg" alt="Best book" class="editImage" />
+          <img
+            src="@/assets/images/b2.webp"
+            alt="Best book"
+            class="editImage"
+          />
         </div>
         <div class="col-lg-6">
           <div class="textOverflow" style="margin-bottom: 30px">
@@ -21,40 +25,40 @@
           </div>
           <div>
             <div class="row mb-3 bookStatic">
-              <div class="col-lg-6">
+              <div class="col-6">
                 <strong>Page</strong>
               </div>
-              <div class="col-lg-6">
+              <div class="col-6">
                 <p>{{ book.page }}</p>
               </div>
             </div>
             <div class="row mb-3 bookStatic">
-              <div class="col-lg-6">
+              <div class="col-6">
                 <strong>Category</strong>
               </div>
-              <div class="col-lg-6">
+              <div class="col-6">
                 <p>Fiction</p>
               </div>
             </div>
             <div class="row mb-3 bookStatic">
-              <div class="col-lg-6">
+              <div class="col-6">
                 <strong>Rating</strong>
               </div>
-              <div class="col-lg-6">
-                <p>{{ book.rating }}</p>
+              <div class="col-6">
+                <p>{{ book.rating }} - (23 rates)</p>
               </div>
             </div>
             <div class="row mb-3 bookStatic">
-              <div class="col-lg-6">
+              <div class="col-6">
                 <strong>Upload date</strong>
               </div>
-              <div class="col-lg-6">
+              <div class="col-6">
                 <p>{{ book.updatedAt }}</p>
               </div>
             </div>
           </div>
 
-          <div>
+          <div class="commentsSection">
             <h3
               class="my-3 ps-1"
               style="color: var(--primary-color); font-weight: 400"
@@ -79,35 +83,18 @@
                         natural lead-in to additional content.With supporting,
                       </p>
                       <div
-                        class="d-flex align-items-center justify-content-end"
+                        class="d-flex align-items-center justify-content-between"
                       >
-                        <font-awesome-icon
-                          icon="fa-regular fa-thumbs-up"
-                          size="lg"
-                        />
-                        <strong class="ms-2">8</strong>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <div class="card">
-                    <div class="card-header fst-italic fw-bold">John doe</div>
-                    <div class="card-body">
-                      <p class="card-text">
-                        With supporting text below as a natural lead-in to
-                        additional content.With supporting text below as a
-                        natural lead-in to additional content.With supporting,
-                        natural lead-in to additional content.With supporting,
-                      </p>
-                      <div
-                        class="d-flex align-items-center justify-content-end"
-                      >
-                        <font-awesome-icon
-                          icon="fa-regular fa-thumbs-up"
-                          size="lg"
-                        />
-                        <strong class="ms-2">89</strong>
+                        <div>
+                          <strong class="mr-2">Upvote?</strong>
+                        </div>
+                        <div>
+                          <font-awesome-icon
+                            icon="fa-regular fa-thumbs-up"
+                            size="lg"
+                          />
+                          <strong class="ms-2">8</strong>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -129,13 +116,19 @@
                         natural lead-in to additional content.With supporting,
                       </p>
                       <div
-                        class="d-flex align-items-center justify-content-end"
+                        class="d-flex align-items-center justify-content-between"
                       >
-                        <font-awesome-icon
-                          icon="fa-regular fa-thumbs-up"
-                          size="lg"
-                        />
-                        <strong class="ms-2">12</strong>
+                        <div>
+                          <strong class="mr-2">Upvoted</strong>
+                        </div>
+                        <div>
+                          <font-awesome-icon
+                            :icon="['fas', 'thumbs-up']"
+                            style="color: var(--secondary-color)"
+                            size="lg"
+                          />
+                          <strong class="ms-2">12</strong>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -174,20 +167,95 @@
             </div>
           </div>
         </div>
+
+        <div class="col-12 mt-4">
+          <h3
+            class="mb-3 ps-1"
+            style="color: var(--primary-color); font-weight: 400"
+          >
+            Rate section
+          </h3>
+          <div class="boxStyle">
+            <form>
+              <!-- Rating Input -->
+              <div class="mb-3">
+                <label
+                  for="rating"
+                  style="color: var(--primary-color)"
+                  class="form-label labelStyle"
+                  >Rate The Book</label
+                >
+                <input
+                  type="number"
+                  id="rating"
+                  class="form-control form-control-custom rateInput"
+                  min="1"
+                  max="10"
+                  placeholder="Rate (1-10)"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                class="btn btn-primary btn-primary-custom buttonStyle"
+              >
+                Rate
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-12 my-3">
+          <hr style="color: var(--primary-color)" />
+        </div>
+
+        <div class="col-12">
+          <h3
+            class="mb-3 ps-1"
+            style="color: var(--primary-color); font-weight: 400"
+          >
+            Comment section
+          </h3>
+          <div class="boxStyle">
+            <form>
+              <!-- Rating Input -->
+              <div class="mb-3">
+                <label
+                  for="comment"
+                  style="color: var(--primary-color)"
+                  class="form-label labelStyle"
+                  >Comment The Book</label
+                >
+                <textarea
+                  id="comment"
+                  class="form-control commentArea"
+                  rows="4"
+                  maxlength="100"
+                  placeholder="Enter your comment"
+                  autocomplete="off"
+                  required
+                ></textarea>
+              </div>
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                class="btn btn-primary btn-primary-custom buttonStyle"
+              >
+                Comment
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
     <div class="w-100 d-flex justify-content-center" v-else>
       <img alt="notFound" src="@/assets/images/notFound.avif" />
     </div>
   </section>
-  <!-- <section class="mb-5 calculatingHeightSection" v-else>
-      <div
-        class="container pt-5 d-flex justify-content-center align-items-center loadingStyle"
-      >
-        <font-awesome-icon icon="spinner" spin-pulse style="font-size: 40px" />
-      </div>
-    </section>
-  </div> -->
 </template>
 
 <script>
@@ -202,7 +270,6 @@ export default {
       title: "Book Detail",
       desc: "About the book of",
       book: null,
-      // loading:true
     };
   },
   components: {
@@ -248,7 +315,7 @@ export default {
 <style scoped>
 .editImage {
   width: 100%;
-  height: 740px;
+  height: 745px;
   object-fit: cover;
   border-radius: 5px;
 }
@@ -283,7 +350,8 @@ export default {
 }
 
 .card-text {
-  max-height: 96px;
+  /* max-height: 96px; */
+  height: 96px;
   overflow-y: auto;
   text-align: justify;
   padding-right: 8px;
@@ -295,18 +363,77 @@ export default {
   padding-right: 16px;
 }
 
-@media only screen and (max-width: 991px) {
-  .bookDesc {
-    margin-top: 10px;
-    padding-right: 0;
-  }
-}
-
 .btn-left-arrow {
   background-color: var(--primary-color);
   transition: all 0.4s;
 }
 .btn-left-arrow:hover {
   background-color: var(--secondary-color);
+}
+
+.boxStyle {
+  border: 1px solid #e2e3e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.rateInput,
+.commentArea {
+  width: 50%;
+}
+
+.commentArea {
+  background-color: #f1f1f1;
+  color: #101010;
+  padding-left: 25px;
+}
+
+.buttonStyle {
+  width: 25%;
+  margin-top: 20px;
+}
+
+.labelStyle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 4px;
+  margin-bottom: 15px;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border: 1px solid #dee2e6;
+}
+
+@media only screen and (max-width: 991px) {
+  .bookDesc {
+    margin-top: 10px;
+    padding-right: 0;
+    text-align: center;
+  }
+  .editImage {
+    max-height: 600px;
+    width: 100%;
+    object-fit: contain;
+    margin-bottom: 15px;
+  }
+  .commentsSection {
+    margin-top: 25px;
+  }
+
+  .rateInput,
+  .commentArea {
+    width: 100%;
+  }
+
+  .buttonStyle {
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 485px) {
+  .editImage {
+    max-height: 450px;
+  }
 }
 </style>

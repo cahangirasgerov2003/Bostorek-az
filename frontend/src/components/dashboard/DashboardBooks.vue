@@ -172,6 +172,7 @@ export default {
       try {
         const result = await this.createNewBook(this.bookData);
         console.log("response add book", result);
+        this.current = 1;
         successAction(result);
         this.modalHide();
       } catch (errorData) {
