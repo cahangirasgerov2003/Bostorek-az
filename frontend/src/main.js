@@ -31,6 +31,9 @@ import {
   faTrash,
   faXmark,
   faThumbsUp,
+  faLocationDot,
+  faEnvelopeOpenText,
+  faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faThumbsUp as farThumbsUp,
@@ -56,7 +59,10 @@ library.add(
   faPenToSquare,
   faTrash,
   faXmark,
-  farThumbsUp
+  farThumbsUp,
+  faLocationDot,
+  faEnvelopeOpenText,
+  faPhone
 );
 
 const pinia = createPinia();

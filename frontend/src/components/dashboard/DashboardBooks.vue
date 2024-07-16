@@ -29,7 +29,7 @@
       <img
         alt="Not books"
         src="@/assets/images/notBooks.jpg"
-        style="width: 800px"
+        class="trashStyle"
       />
     </div>
 
@@ -213,4 +213,20 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.trashStyle {
+  width: 50%;
+}
+
+@media only screen and (max-width: 991px) {
+  .trashStyle {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .trashStyle {
+    width: 100%;
+  }
+}
+</style>

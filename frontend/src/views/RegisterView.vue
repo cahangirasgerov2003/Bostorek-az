@@ -1,9 +1,7 @@
 <template>
   <section
     :class="
-      !dashboard
-        ? 'calculatingHeightSection'
-        : 'min-height: calc(100vh - 130px)'
+      !dashboard ? 'calculatingHeightSection' : 'calculatingHeightSectionBasic'
     "
   >
     <div class="container my-3">

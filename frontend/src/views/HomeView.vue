@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: calc(100vh - 130px)">
+  <div class="calculatingHeightSectionBasic">
     <section>
       <TheCarusel
         v-bind:caruselItems="carouselItems"

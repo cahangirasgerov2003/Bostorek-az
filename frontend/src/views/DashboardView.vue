@@ -1,5 +1,5 @@
 <template>
-  <section style="min-height: calc(100vh - 130px); overflow: hidden">
+  <section class="calculatingHeightSectionBasic" style="overflow: hidden">
     <div class="container">
       <ul class="nav nav-tabs my-4">
         <li class="nav-item" @click="activeTab = 'General'">
