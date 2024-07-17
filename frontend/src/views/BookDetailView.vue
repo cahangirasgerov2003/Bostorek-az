@@ -72,15 +72,19 @@
               style="width: 90%; margin: auto"
             >
               <div class="carousel-inner">
-                <div class="carousel-item active">
+                <div
+                  class="carousel-item"
+                  :class="{ active: index === 0 }"
+                  v-for="(comment, index) in commentsForBook"
+                  :key="index"
+                >
                   <div class="card">
-                    <div class="card-header fst-italic fw-bold">John doe</div>
+                    <div class="card-header fst-italic fw-bold">
+                      {{ comment.commentedBy.userName }}
+                    </div>
                     <div class="card-body">
                       <p class="card-text">
-                        With supporting text below as a natural lead-in to
-                        additional content.With supporting text below as a
-                        natural lead-in to additional content.With supporting,
-                        natural lead-in to additional content.With supporting,
+                        {{ comment.content }}
                       </p>
                       <div
                         class="d-flex align-items-center justify-content-between"
@@ -94,40 +98,13 @@
                             size="lg"
                           />
                           <strong class="ms-2">8</strong>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <div class="card">
-                    <div class="card-header fst-italic fw-bold">John doe</div>
-                    <div class="card-body">
-                      <p class="card-text">
-                        With supporting text below as a natural lead-in to
-                        additional content.With supporting text below as a
-                        natural lead-in to additional content.With supporting,
-                        natural lead-in to additional content.With supporting,
-                        natural lead-in to additional content.With supporting,
-                        With supporting text below as a natural lead-in to
-                        additional content.With supporting text below as a
-                        natural lead-in to additional content.With supporting,
-                        natural lead-in to additional content.With supporting,
-                        natural lead-in to additional content.With supporting,
-                      </p>
-                      <div
-                        class="d-flex align-items-center justify-content-between"
-                      >
-                        <div>
-                          <strong class="mr-2">Upvoted</strong>
-                        </div>
-                        <div>
-                          <font-awesome-icon
+
+                          <!-- <font-awesome-icon
                             :icon="['fas', 'thumbs-up']"
                             style="color: var(--secondary-color)"
                             size="lg"
                           />
-                          <strong class="ms-2">12</strong>
+                          <strong class="ms-2">12</strong> -->
                         </div>
                       </div>
                     </div>
@@ -236,7 +213,7 @@
                   maxlength="400"
                   placeholder="Enter your comment"
                   autocomplete="off"
-                  v-model="comment"
+                  v-model="commentData.comment"
                 ></textarea>
               </div>
 
@@ -291,7 +268,9 @@ export default {
       title: "Book Detail",
       desc: "About the book of",
       book: null,
-      comment: "",
+      commentData: {
+        comment: "",
+      },
       commentError: "",
     };
   },
@@ -303,12 +282,20 @@ export default {
     const bookId = this.getParamsId;
 
     this.book = this.selectABook(bookId);
+
+    this.fetchCommentsForBook(bookId);
   },
   methods: {
-    ...mapActions(useCommentStore, ["createNewComment"]),
+    ...mapActions(useCommentStore, [
+      "createNewComment",
+      "fetchCommentsForBook",
+    ]),
     async addNewComment() {
       try {
-        if (this.comment.length > 400 || this.comment.length < 1) {
+        if (
+          this.commentData.comment.length > 400 ||
+          this.commentData.comment.length < 1
+        ) {
           this.commentError =
             "Comment length cannot exceed 400 characters or be empty !";
           return;
@@ -316,7 +303,7 @@ export default {
         this.commentError = "";
 
         const result = await this.createNewComment({
-          content: this.comment,
+          content: this.commentData.comment,
           commentedBy: this.user._id,
           reviewedBook: this.getParamsId,
         });
@@ -330,13 +317,14 @@ export default {
         this.commentError =
           errorData.error || "Error occurred when new comment was created !";
       } finally {
-        this.comment = "";
+        this.commentData.comment = "";
       }
     },
   },
   computed: {
     ...mapState(useBookStore, ["selectABook"]),
-    ...mapState(useAuthStore, ["user", "isLoading"]),
+    ...mapState(useAuthStore, ["user"]),
+    ...mapState(useCommentStore, ["commentsForBook", "isLoading"]),
 
     getParamsId() {
       return this.$route.params.id;

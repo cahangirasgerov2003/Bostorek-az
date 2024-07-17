@@ -8,10 +8,15 @@ const createNewComment = async (req, res) => {
       return res.status(400).json({ error: "All fields are required !" });
     }
 
-    const comment = await Comment.create({
+    let comment = await Comment.create({
       content,
       commentedBy,
       reviewedBook,
+    });
+
+    comment = await comment.populate({
+      path: "commentedBy",
+      select: "-password",
     });
 
     return res
@@ -22,4 +27,23 @@ const createNewComment = async (req, res) => {
   }
 };
 
-export { createNewComment };
+const getCommentsForBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const comments = await Comment.find({ reviewedBook: id }).populate({
+      path: "commentedBy",
+      select: "-password",
+    });
+
+    return res.status(200).json({
+      message: "The comments for book was found successfully !",
+      comments,
+    });
+  } catch (error) {
+    console.error("Error at getCommentsForBook", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export { createNewComment, getCommentsForBook };

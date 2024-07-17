@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const useCommentStore = defineStore("commentStore", {
   state: () => ({
-    comments: [],
+    commentsForBook: [],
     isLoading: false,
   }),
   actions: {
@@ -16,11 +16,33 @@ export const useCommentStore = defineStore("commentStore", {
         );
 
         console.log("result", response);
-        this.comments.push(response.data.comment);
+
+        this.commentsForBook.push(response.data.comment);
         return response;
       } catch (error) {
         console.error(
           "An error occurred while creating a new comment !",
+          error
+        );
+        throw error.response.data;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async fetchCommentsForBook(bookId) {
+      try {
+        this.isLoading = true;
+        const response = await axios.get(
+          `http://localhost:3000/api/v1/comments/book/${bookId}`
+        );
+
+        console.log("result", response);
+        this.commentsForBook = response.data.comments;
+        return response;
+      } catch (error) {
+        console.error(
+          "An error occurred while fetching comments for book !",
           error
         );
         throw error.response.data;
