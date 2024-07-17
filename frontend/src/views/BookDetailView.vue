@@ -70,6 +70,7 @@
               class="carousel slide"
               data-bs-ride="carousel"
               style="width: 90%; margin: auto"
+              v-if="!isLoading && commentsForBook.length !== 0"
             >
               <div class="carousel-inner">
                 <div
@@ -142,108 +143,123 @@
                 <span class="visually-hidden">Next</span>
               </button>
             </div>
+            <div
+              class="d-flex justify-content-center align-items-center"
+              style="height: 209px"
+              v-if="isLoading"
+            >
+              <font-awesome-icon
+                icon="fa-solid fa-spinner"
+                spin
+                size="2xl"
+                style="color: var(--primary-color)"
+              />
+            </div>
+            <div
+              class="alert alert-danger py-3 ms-1"
+              v-if="!isLoading && commentsForBook.length === 0"
+            >
+              No comment yet !
+            </div>
           </div>
         </div>
 
-        <div class="col-12 mt-4">
-          <h3
-            class="mb-3 ps-1"
-            style="color: var(--primary-color); font-weight: 400"
-          >
-            Rate section
-          </h3>
-          <div class="boxStyle">
-            <form>
-              <!-- Rating Input -->
-              <div class="mb-3">
-                <label
-                  for="rating"
-                  style="color: var(--primary-color)"
-                  class="form-label labelStyle"
-                  >Rate The Book</label
+        <div v-if="isLoggedIn">
+          <div class="mt-4">
+            <h3
+              class="mb-3 ps-1"
+              style="color: var(--primary-color); font-weight: 400"
+            >
+              Rate section
+            </h3>
+            <div class="boxStyle">
+              <form>
+                <!-- Rating Input -->
+                <div class="mb-3">
+                  <label
+                    for="rating"
+                    style="color: var(--primary-color)"
+                    class="form-label labelStyle"
+                    >Rate The Book</label
+                  >
+                  <input
+                    type="number"
+                    id="rating"
+                    class="form-control form-control-custom rateInput"
+                    min="1"
+                    max="10"
+                    placeholder="Rate (1-10)"
+                    autocomplete="off"
+                    required
+                  />
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-primary-custom buttonStyle"
                 >
-                <input
-                  type="number"
-                  id="rating"
-                  class="form-control form-control-custom rateInput"
-                  min="1"
-                  max="10"
-                  placeholder="Rate (1-10)"
-                  autocomplete="off"
-                  required
-                />
-              </div>
-
-              <!-- Submit Button -->
-              <button
-                type="submit"
-                class="btn btn-primary btn-primary-custom buttonStyle"
-              >
-                Rate
-              </button>
-            </form>
+                  Rate
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
 
-        <div class="col-12 my-3">
-          <hr style="color: var(--primary-color)" />
-        </div>
+          <div class="my-3">
+            <hr style="color: var(--primary-color)" />
+          </div>
 
-        <div class="col-12">
-          <h3
-            class="mb-3 ps-1"
-            style="color: var(--primary-color); font-weight: 400"
-          >
-            Comment section
-          </h3>
-          <div class="boxStyle">
-            <form @submit.prevent="addNewComment()">
-              <!-- Rating Input -->
-              <div>
-                <label
-                  for="comment"
-                  style="color: var(--primary-color)"
-                  class="form-label labelStyle"
-                  >Comment The Book</label
+          <div>
+            <h3
+              class="mb-3 ps-1"
+              style="color: var(--primary-color); font-weight: 400"
+            >
+              Comment section
+            </h3>
+            <div class="boxStyle">
+              <form @submit.prevent="addNewComment()">
+                <!-- Rating Input -->
+                <div>
+                  <label
+                    for="comment"
+                    style="color: var(--primary-color)"
+                    class="form-label labelStyle"
+                    >Comment The Book</label
+                  >
+                  <textarea
+                    id="comment"
+                    class="form-control commentArea"
+                    rows="4"
+                    maxlength="400"
+                    placeholder="Enter your comment"
+                    autocomplete="off"
+                    v-model="commentData.comment"
+                  ></textarea>
+                </div>
+
+                <div class="mt-1 ms-1">
+                  <small v-if="commentError" class="text-danger">{{
+                    commentError
+                  }}</small>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-primary-custom buttonStyle"
                 >
-                <textarea
-                  id="comment"
-                  class="form-control commentArea"
-                  rows="4"
-                  maxlength="400"
-                  placeholder="Enter your comment"
-                  autocomplete="off"
-                  v-model="commentData.comment"
-                ></textarea>
-              </div>
-
-              <div class="mt-1 ms-1">
-                <small v-if="commentError" class="text-danger">{{
-                  commentError
-                }}</small>
-              </div>
-
-              <!-- Submit Button -->
-              <button
-                type="submit"
-                class="btn btn-primary btn-primary-custom buttonStyle"
-                v-if="!isLoading"
-              >
-                Comment
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary btn-primary-custom buttonStyle"
-                v-else
-              >
-                <font-awesome-icon
-                  icon="circle-notch"
-                  spin-pulse
-                  style="font-size: 20px"
-                />
-              </button>
-            </form>
+                  Comment
+                </button>
+              </form>
+            </div>
           </div>
+        </div>
+        <div class="col-6 mt-4" v-else>
+          <router-link to="/login">
+            <div class="alert alert-info py-3">
+              You must be logged in to add comments and ratings about the book !
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -323,7 +339,7 @@ export default {
   },
   computed: {
     ...mapState(useBookStore, ["selectABook"]),
-    ...mapState(useAuthStore, ["user"]),
+    ...mapState(useAuthStore, ["user", "isLoggedIn"]),
     ...mapState(useCommentStore, ["commentsForBook", "isLoading"]),
 
     getParamsId() {

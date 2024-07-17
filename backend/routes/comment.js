@@ -9,8 +9,6 @@ router
   .route("/")
   .post(authMiddleware.authorizationUser, commentController.createNewComment);
 
-router
-  .route("/book/:id")
-  .get(authMiddleware.authorizationUser, commentController.getCommentsForBook);
+router.route("/book/:id").get(commentController.getCommentsForBook);
 
 export default router;
