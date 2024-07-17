@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-lg-6">
           <img
-            src="@/assets/images/b2.webp"
+            src="@/assets/images/joker.jpg"
             alt="Best book"
             class="editImage"
           />
@@ -220,9 +220,9 @@
             Comment section
           </h3>
           <div class="boxStyle">
-            <form>
+            <form @submit.prevent="addNewComment()">
               <!-- Rating Input -->
-              <div class="mb-3">
+              <div>
                 <label
                   for="comment"
                   style="color: var(--primary-color)"
@@ -233,19 +233,37 @@
                   id="comment"
                   class="form-control commentArea"
                   rows="4"
-                  maxlength="100"
+                  maxlength="400"
                   placeholder="Enter your comment"
                   autocomplete="off"
-                  required
+                  v-model="comment"
                 ></textarea>
+              </div>
+
+              <div class="mt-1 mb-3 ms-1">
+                <small v-if="commentError" class="text-danger">{{
+                  commentError
+                }}</small>
               </div>
 
               <!-- Submit Button -->
               <button
                 type="submit"
                 class="btn btn-primary btn-primary-custom buttonStyle"
+                v-if="!isLoading"
               >
                 Comment
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary btn-primary-custom buttonStyle"
+                v-else
+              >
+                <font-awesome-icon
+                  icon="circle-notch"
+                  spin-pulse
+                  style="font-size: 20px"
+                />
               </button>
             </form>
           </div>
@@ -262,7 +280,10 @@
 import TheHeading from "@/components/TheHeading.vue";
 import { RouterLink } from "vue-router";
 import { useBookStore } from "../stores/bookStore.js";
-import { mapState } from "pinia";
+import { useAuthStore } from "../stores/authStore.js";
+import { useCommentStore } from "../stores/commentStore.js";
+import { mapState, mapActions } from "pinia";
+import { successAction } from "@/utility/index.js";
 export default {
   name: "BookDetailView",
   data() {
@@ -270,6 +291,8 @@ export default {
       title: "Book Detail",
       desc: "About the book of",
       book: null,
+      comment: "",
+      commentError: "",
     };
   },
   components: {
@@ -283,7 +306,7 @@ export default {
     // Bunu gettersle yazaq
     // this.fetchABook();
 
-    const bookId = this.$route.params.id;
+    const bookId = this.getParamsId;
 
     // console.log(this.selectABook);
     // anlamasan console.log-a bax
@@ -291,6 +314,8 @@ export default {
     this.book = this.selectABook(bookId);
   },
   methods: {
+    ...mapActions(useCommentStore, ["createNewComment"]),
+
     // Bu kodu getters kullanaraq yazacagiq
     // async fetchABook() {
     //   const bookId = this.$route.params.id;
@@ -305,9 +330,43 @@ export default {
     //     console.error("An error occurred while fetching a book", error);
     //   }
     // },
+
+    async addNewComment() {
+      try {
+        if (this.comment.length > 400 || this.comment.length < 1) {
+          this.commentError =
+            "Comment length cannot exceed 400 characters or be empty !";
+          return;
+        }
+        this.commentError = "";
+
+        const result = await this.createNewComment({
+          content: this.comment,
+          commentedBy: this.user._id,
+          reviewedBook: this.getParamsId,
+        });
+        successAction(result);
+      } catch (errorData) {
+        console.error(
+          "Error occurred when new comment was created !",
+          errorData
+        );
+
+        console.log(errorData, "Errordata bookdetailview");
+        this.commentError =
+          errorData.error || "Error occurred when new comment was created !";
+      } finally {
+        this.comment = "";
+      }
+    },
   },
   computed: {
     ...mapState(useBookStore, ["selectABook"]),
+    ...mapState(useAuthStore, ["user", "isLoading"]),
+
+    getParamsId() {
+      return this.$route.params.id;
+    },
   },
 };
 </script>

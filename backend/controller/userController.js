@@ -1,5 +1,9 @@
 import User from "../models/User.js";
-import { controlObjectId, findDocumentById } from "../utility/index.js";
+import {
+  controlObjectId,
+  findDocumentById,
+  checkValidationErrors,
+} from "../utility/index.js";
 const updateUserDetails = async (req, res) => {
   const { userName, email, password, gender, bookGenres } = req.body;
 

@@ -31,6 +31,8 @@ const findDocumentById = async (collection, id, res) => {
 };
 
 const checkValidationErrors = (error, locationError, res) => {
+  console.log(error);
+  console.log(error.name);
   if (error.name === "ValidationError") {
     const validationErrors = {};
     for (let key in error.errors) {

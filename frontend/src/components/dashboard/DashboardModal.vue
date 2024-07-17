@@ -63,7 +63,6 @@
             rows="6"
             v-model.trim="bookData.description"
             autocomplete="off"
-            maxlength="100"
             required
           ></textarea>
           <small v-if="errors.description.errorMessage" class="text-danger">{{
