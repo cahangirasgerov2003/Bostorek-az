@@ -19,7 +19,10 @@ export const useCommentStore = defineStore("commentStore", {
         this.comments.push(response.data.comment);
         return response;
       } catch (error) {
-        console.error("An error occurred while creating a new comment", error);
+        console.error(
+          "An error occurred while creating a new comment !",
+          error
+        );
         throw error.response.data;
       } finally {
         this.isLoading = false;

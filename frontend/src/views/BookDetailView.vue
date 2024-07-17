@@ -240,7 +240,7 @@
                 ></textarea>
               </div>
 
-              <div class="mt-1 mb-3 ms-1">
+              <div class="mt-1 ms-1">
                 <small v-if="commentError" class="text-danger">{{
                   commentError
                 }}</small>
@@ -300,37 +300,12 @@ export default {
     RouterLink,
   },
   created() {
-    // const bookId = this.$route.params.id;
-    // this.book = books.find((book) => book.id === parseInt(bookId));
-
-    // Bunu gettersle yazaq
-    // this.fetchABook();
-
     const bookId = this.getParamsId;
-
-    // console.log(this.selectABook);
-    // anlamasan console.log-a bax
 
     this.book = this.selectABook(bookId);
   },
   methods: {
     ...mapActions(useCommentStore, ["createNewComment"]),
-
-    // Bu kodu getters kullanaraq yazacagiq
-    // async fetchABook() {
-    //   const bookId = this.$route.params.id;
-    //   try {
-    //     const response = await fetch(
-    //       `http://localhost:3000/api/v1/books/${bookId}`
-    //     );
-    //     const book = await response.json();
-    //     this.book = book.aBook;
-    //     this.loading = false;
-    //   } catch (error) {
-    //     console.error("An error occurred while fetching a book", error);
-    //   }
-    // },
-
     async addNewComment() {
       try {
         if (this.comment.length > 400 || this.comment.length < 1) {
@@ -352,7 +327,6 @@ export default {
           errorData
         );
 
-        console.log(errorData, "Errordata bookdetailview");
         this.commentError =
           errorData.error || "Error occurred when new comment was created !";
       } finally {

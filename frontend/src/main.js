@@ -93,9 +93,16 @@ axios.interceptors.response.use(
       errorAction("Your token has expired, forwarding login page !");
 
       setTimeout(() => {
-        authStore.logoutAccount();
-        router.push("/login");
+        try {
+          // Asenkron işlemler burada
+          authStore.logoutAccount();
+          router.push("/login");
+        } catch (error) {
+          console.error("An error occurred during timeout operation:", error);
+        }
       }, 3500);
+    } else {
+      return Promise.reject(error);
     }
   }
 );

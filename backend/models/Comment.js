@@ -8,7 +8,6 @@ const commentSchema = new Schema(
       type: String,
       required: true,
       maxLength: 400,
-      minLength: 2,
       trim: true,
     },
     commentedBy: {
