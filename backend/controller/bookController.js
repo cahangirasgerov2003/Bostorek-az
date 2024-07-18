@@ -90,13 +90,12 @@ const updateABook = async (req, res) => {
       .status(200)
       .json({ message: "The book updated successfully !", book: aBook });
   } catch (error) {
-    console.error("Error at updateABook", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error at updateABook !", error);
+    return res.status(500).json({ error: "Internal Server Error !" });
   }
 };
 
 const deleteABook = async (req, res) => {
-  console.log("The user who performed the deletion:::", req.user);
   const { id } = req.params;
 
   if (controlObjectId(id, res)) return;
@@ -107,13 +106,13 @@ const deleteABook = async (req, res) => {
     if (!aBook) {
       return res
         .status(404)
-        .json({ error: "No book with this ID value was found" });
+        .json({ error: "No book with this ID value was found !" });
     }
 
     return res.status(200).json({ message: "The book deleted successfully" });
   } catch (error) {
     console.error("Error at deleteABook", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error !" });
   }
 };
 

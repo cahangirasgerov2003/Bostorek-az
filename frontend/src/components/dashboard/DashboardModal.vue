@@ -159,31 +159,7 @@ export default {
 };
 </script>
 <style scoped>
-.modal-content {
-  background-color: var(--secondary-color);
-  border: 2px solid var(--secondary-color);
-  color: var(--primary-color);
-  font-weight: bold;
-}
-
 .closeIcon {
-  cursor: pointer;
-  color: var(--primary-color);
   transition: all 0.5s;
-}
-
-.closeIcon:hover {
-  color: red;
-}
-
-.saveButton {
-  margin-left: 12px;
-}
-
-@media only screen and (max-width: 575px) {
-  .saveButton {
-    margin-left: 0;
-    margin-top: 10px;
-  }
 }
 </style>

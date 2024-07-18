@@ -192,7 +192,7 @@ export default {
       } catch (errorData) {
         console.error("Error occurred when book was edited !", errorData);
         this.errorContent =
-          errorData.error || "Error occurred when new book was created !";
+          errorData.error || "Error occurred when book was edited !";
       }
     },
   },

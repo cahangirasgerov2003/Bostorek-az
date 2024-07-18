@@ -12,6 +12,14 @@
             Books
           </button>
         </li>
+        <li class="nav-item" @click="activeTab = 'Comments'">
+          <button
+            class="nav-link"
+            :class="{ active: activeTab === 'Comments' }"
+          >
+            Comments
+          </button>
+        </li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane fade" :class="controlActiveTab('General')">
@@ -25,6 +33,10 @@
         <div class="tab-pane fade" :class="controlActiveTab('Books')">
           <DashboardBooks />
         </div>
+        <div class="tab-pane fade" :class="controlActiveTab('Comments')">
+          <!-- Dashboard comments -->
+          <DashboardComments />
+        </div>
       </div>
     </div>
   </section>
@@ -34,6 +46,7 @@ import { useAuthStore } from "@/stores/authStore.js";
 import { mapState } from "pinia";
 import RegisterView from "./RegisterView.vue";
 import DashboardBooks from "@/components/dashboard/DashboardBooks.vue";
+import DashboardComments from "../components/dashboard/DashboardComments.vue";
 export default {
   name: "DashboardView",
   data() {
@@ -52,6 +65,7 @@ export default {
   components: {
     RegisterView,
     DashboardBooks,
+    DashboardComments,
   },
 };
 </script>

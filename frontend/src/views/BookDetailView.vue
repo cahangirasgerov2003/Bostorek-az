@@ -19,7 +19,7 @@
         </div>
         <div class="col-lg-6">
           <div class="textOverflow" style="margin-bottom: 30px">
-            <p class="lead bookDesc">
+            <p class="lead bookDetailDesc">
               {{ book.description }}
             </p>
           </div>
@@ -119,7 +119,7 @@ export default {
   overflow-y: auto;
 }
 
-.bookDesc {
+.bookDetailDesc {
   text-align: justify;
   margin-bottom: 0;
   padding-right: 16px;
@@ -134,7 +134,7 @@ export default {
 }
 
 @media only screen and (max-width: 991px) {
-  .bookDesc {
+  .bookDetailDesc {
     margin-top: 10px;
     padding-right: 0;
     text-align: center;

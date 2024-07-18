@@ -19,6 +19,7 @@ export const useBookStore = defineStore("bookStore", {
         this.isLoading = true;
         const response = await axios.get("http://localhost:3000/api/v1/books");
         this.books = response.data.books;
+        return response;
       } catch (error) {
         console.error("An error occurred while fetching books", error);
       } finally {
@@ -61,7 +62,7 @@ export const useBookStore = defineStore("bookStore", {
 
         return response;
       } catch (error) {
-        console.error("An error occurred while creating a new book", error);
+        console.error("An error occurred while editing a book", error);
         throw error.response.data;
       }
     },
@@ -74,7 +75,7 @@ export const useBookStore = defineStore("bookStore", {
           (book) => book._id !== bookId
         );
       } catch (error) {
-        console.error("An error occurred while deleting a new book", error);
+        console.error("An error occurred while deleting a book", error);
         throw error.response.data;
       }
     },
@@ -88,6 +89,7 @@ export const useBookStore = defineStore("bookStore", {
           );
           this.userUploadedBooks = response.data.books;
           this.requestUploadedBooks = true;
+          return response;
         }
       } catch (error) {
         console.error(

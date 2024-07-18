@@ -1,5 +1,9 @@
 import Comment from "../models/Comment.js";
-import { checkValidationErrors } from "../utility/index.js";
+import {
+  checkValidationErrors,
+  controlObjectId,
+  findDocumentById,
+} from "../utility/index.js";
 const createNewComment = async (req, res) => {
   const { content, commentedBy, reviewedBook } = req.body;
 
@@ -18,6 +22,8 @@ const createNewComment = async (req, res) => {
       path: "commentedBy",
       select: "-password",
     });
+
+    comment = await comment.populate("reviewedBook");
 
     return res
       .status(200)
@@ -46,4 +52,74 @@ const getCommentsForBook = async (req, res) => {
   }
 };
 
-export { createNewComment, getCommentsForBook };
+const getCommentsByUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const comments = await Comment.find({ commentedBy: id }).populate(
+      "reviewedBook"
+    );
+
+    return res.status(200).json({
+      message: "The comments by user was found successfully !",
+      comments,
+    });
+  } catch (error) {
+    console.error("Error at getCommentsByUser", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const deleteAComment = async (req, res) => {
+  const { id } = req.params;
+
+  if (controlObjectId(id, res)) return;
+
+  try {
+    const aComment = await Comment.findByIdAndDelete(id);
+
+    if (!aComment) {
+      return res
+        .status(404)
+        .json({ error: "No book with this ID value was found !" });
+    }
+
+    return res.status(200).json({ message: "The book deleted successfully !" });
+  } catch (error) {
+    console.error("Error at deleteABook", error);
+    return res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+const updateAComment = async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+
+  if (controlObjectId(id, res)) return;
+
+  try {
+    const aComment = await findDocumentById(Comment, id, res);
+
+    if (!aComment) return;
+
+    aComment.content = content || aComment.content;
+
+    await aComment.save();
+
+    return res.status(200).json({
+      message: "The comment updated successfully !",
+      comment: aComment,
+    });
+  } catch (error) {
+    console.error("Error at updateAComment !", error);
+    return res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+export {
+  createNewComment,
+  getCommentsForBook,
+  getCommentsByUser,
+  deleteAComment,
+  updateAComment,
+};

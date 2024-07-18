@@ -68,7 +68,6 @@ export default {
 
     async removeABook(bookId, bookTitle) {
       try {
-        console.log(bookId);
         await this.deleteABook(bookId);
         warningAction(`${bookTitle} deleted successfully !`);
       } catch (errorData) {
@@ -83,18 +82,5 @@ export default {
 th,
 td {
   padding: 20px 16px;
-}
-
-.bookDesc {
-  max-width: 250px;
-  text-align: justify;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.bookDesc:hover {
-  white-space: wrap;
-  overflow: visible;
 }
 </style>
