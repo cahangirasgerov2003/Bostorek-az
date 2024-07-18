@@ -31,7 +31,7 @@
               <div class="col-md-4">
                 <img
                   :alt="item.title"
-                  src="../../assets/images/b1.jpg"
+                  src="@/assets/images/b1.jpg"
                   class="img-fluid rounded-4"
                 />
               </div>
@@ -69,7 +69,7 @@
     <div v-else>
       <img
         alt="no rusult"
-        src="../../assets/images/noResult.webp"
+        src="@/assets/images/noResult.webp"
         class="img-fluid rounded-2"
       />
     </div>

@@ -108,3 +108,39 @@ ul {
 .form-control.form-control-custom2:focus {
   box-shadow: none;
 }
+
+/* Book detail styles */
+
+.boxStyle {
+  border: 1px solid #e2e3e5;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.labelStyle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 4px;
+  margin-bottom: 15px;
+}
+
+.rateInput,
+.commentArea {
+  width: 50%;
+}
+
+.buttonStyle {
+  width: 25%;
+  margin-top: 20px;
+}
+
+@media only screen and (max-width: 991px) {
+  .rateInput,
+  .commentArea {
+    width: 100%;
+  }
+
+  .buttonStyle {
+    width: 50%;
+  }
+}

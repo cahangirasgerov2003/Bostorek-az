@@ -23,236 +23,24 @@
               {{ book.description }}
             </p>
           </div>
-          <div>
-            <div class="row mb-3 bookStatic">
-              <div class="col-6">
-                <strong>Page</strong>
-              </div>
-              <div class="col-6">
-                <p>{{ book.page }}</p>
-              </div>
-            </div>
-            <div class="row mb-3 bookStatic">
-              <div class="col-6">
-                <strong>Category</strong>
-              </div>
-              <div class="col-6">
-                <p>Fiction</p>
-              </div>
-            </div>
-            <div class="row mb-3 bookStatic">
-              <div class="col-6">
-                <strong>Rating</strong>
-              </div>
-              <div class="col-6">
-                <p>{{ book.rating }} - (23 rates)</p>
-              </div>
-            </div>
-            <div class="row mb-3 bookStatic">
-              <div class="col-6">
-                <strong>Upload date</strong>
-              </div>
-              <div class="col-6">
-                <p>{{ book.updatedAt }}</p>
-              </div>
-            </div>
-          </div>
 
-          <div class="commentsSection">
-            <h3
-              class="my-3 ps-1"
-              style="color: var(--primary-color); font-weight: 400"
-            >
-              Comments
-            </h3>
-            <div
-              id="carouselExampleAutoplaying"
-              class="carousel slide"
-              data-bs-ride="carousel"
-              style="width: 90%; margin: auto"
-              v-if="!isLoading && commentsForBook.length !== 0"
-            >
-              <div class="carousel-inner">
-                <div
-                  class="carousel-item"
-                  :class="{ active: index === 0 }"
-                  v-for="(comment, index) in commentsForBook"
-                  :key="index"
-                >
-                  <div class="card">
-                    <div class="card-header fst-italic fw-bold">
-                      {{ comment.commentedBy.userName }}
-                    </div>
-                    <div class="card-body">
-                      <p class="card-text">
-                        {{ comment.content }}
-                      </p>
-                      <div
-                        class="d-flex align-items-center justify-content-between"
-                      >
-                        <div>
-                          <strong class="mr-2">Upvote?</strong>
-                        </div>
-                        <div>
-                          <font-awesome-icon
-                            icon="fa-regular fa-thumbs-up"
-                            size="lg"
-                          />
-                          <strong class="ms-2">8</strong>
+          <!-- About book table -->
+          <AboutBookTable :book="book" />
 
-                          <!-- <font-awesome-icon
-                            :icon="['fas', 'thumbs-up']"
-                            style="color: var(--secondary-color)"
-                            size="lg"
-                          />
-                          <strong class="ms-2">12</strong> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button
-                class="carousel-control-prev"
-                type="button"
-                data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="prev"
-                style="height: 32px; width: 20px"
-              >
-                <font-awesome-icon
-                  icon="angle-left"
-                  style="color: black"
-                  size="2xl"
-                  aria-hidden="true"
-                />
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button
-                class="carousel-control-next"
-                type="button"
-                data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="next"
-                style="height: 32px; width: 20px"
-              >
-                <font-awesome-icon
-                  icon="angle-right"
-                  style="color: black"
-                  size="2xl"
-                  aria-hidden="true"
-                />
-                <span class="visually-hidden">Next</span>
-              </button>
-            </div>
-            <div
-              class="d-flex justify-content-center align-items-center"
-              style="height: 209px"
-              v-if="isLoading"
-            >
-              <font-awesome-icon
-                icon="fa-solid fa-spinner"
-                spin
-                size="2xl"
-                style="color: var(--primary-color)"
-              />
-            </div>
-            <div
-              class="alert alert-danger py-3 ms-1"
-              v-if="!isLoading && commentsForBook.length === 0"
-            >
-              No comment yet !
-            </div>
-          </div>
+          <!-- Comment carusel -->
+          <CommentsCarusel />
         </div>
 
         <div v-if="isLoggedIn">
-          <div class="mt-4">
-            <h3
-              class="mb-3 ps-1"
-              style="color: var(--primary-color); font-weight: 400"
-            >
-              Rate section
-            </h3>
-            <div class="boxStyle">
-              <form>
-                <!-- Rating Input -->
-                <div class="mb-3">
-                  <label
-                    for="rating"
-                    style="color: var(--primary-color)"
-                    class="form-label labelStyle"
-                    >Rate The Book</label
-                  >
-                  <input
-                    type="number"
-                    id="rating"
-                    class="form-control form-control-custom rateInput"
-                    min="1"
-                    max="10"
-                    placeholder="Rate (1-10)"
-                    autocomplete="off"
-                    required
-                  />
-                </div>
-
-                <!-- Submit Button -->
-                <button
-                  type="submit"
-                  class="btn btn-primary btn-primary-custom buttonStyle"
-                >
-                  Rate
-                </button>
-              </form>
-            </div>
-          </div>
+          <!-- Rate section -->
+          <RateSection />
 
           <div class="my-3">
             <hr style="color: var(--primary-color)" />
           </div>
 
-          <div>
-            <h3
-              class="mb-3 ps-1"
-              style="color: var(--primary-color); font-weight: 400"
-            >
-              Comment section
-            </h3>
-            <div class="boxStyle">
-              <form @submit.prevent="addNewComment()">
-                <!-- Rating Input -->
-                <div>
-                  <label
-                    for="comment"
-                    style="color: var(--primary-color)"
-                    class="form-label labelStyle"
-                    >Comment The Book</label
-                  >
-                  <textarea
-                    id="comment"
-                    class="form-control commentArea"
-                    rows="4"
-                    maxlength="400"
-                    placeholder="Enter your comment"
-                    autocomplete="off"
-                    v-model="commentData.comment"
-                  ></textarea>
-                </div>
-
-                <div class="mt-1 ms-1">
-                  <small v-if="commentError" class="text-danger">{{
-                    commentError
-                  }}</small>
-                </div>
-
-                <!-- Submit Button -->
-                <button
-                  type="submit"
-                  class="btn btn-primary btn-primary-custom buttonStyle"
-                >
-                  Comment
-                </button>
-              </form>
-            </div>
-          </div>
+          <!-- Comment section -->
+          <AddCommentSection :getParamsId="getParamsId" />
         </div>
         <div class="col-6 mt-4" v-else>
           <router-link to="/login">
@@ -271,12 +59,15 @@
 
 <script>
 import TheHeading from "@/components/TheHeading.vue";
+import AddCommentSection from "@/components/bookDetail/AddCommentSection.vue";
+import RateSection from "@/components/bookDetail/RateSection.vue";
+import AboutBookTable from "@/components/bookDetail/AboutBookTable.vue";
+import CommentsCarusel from "@/components/bookDetail/CommentsCarusel.vue";
 import { RouterLink } from "vue-router";
 import { useBookStore } from "../stores/bookStore.js";
 import { useAuthStore } from "../stores/authStore.js";
 import { useCommentStore } from "../stores/commentStore.js";
 import { mapState, mapActions } from "pinia";
-import { successAction } from "@/utility/index.js";
 export default {
   name: "BookDetailView",
   data() {
@@ -284,15 +75,15 @@ export default {
       title: "Book Detail",
       desc: "About the book of",
       book: null,
-      commentData: {
-        comment: "",
-      },
-      commentError: "",
     };
   },
   components: {
     TheHeading,
     RouterLink,
+    AddCommentSection,
+    RateSection,
+    AboutBookTable,
+    CommentsCarusel,
   },
   created() {
     const bookId = this.getParamsId;
@@ -302,45 +93,11 @@ export default {
     this.fetchCommentsForBook(bookId);
   },
   methods: {
-    ...mapActions(useCommentStore, [
-      "createNewComment",
-      "fetchCommentsForBook",
-    ]),
-    async addNewComment() {
-      try {
-        if (
-          this.commentData.comment.length > 400 ||
-          this.commentData.comment.length < 1
-        ) {
-          this.commentError =
-            "Comment length cannot exceed 400 characters or be empty !";
-          return;
-        }
-        this.commentError = "";
-
-        const result = await this.createNewComment({
-          content: this.commentData.comment,
-          commentedBy: this.user._id,
-          reviewedBook: this.getParamsId,
-        });
-        successAction(result);
-      } catch (errorData) {
-        console.error(
-          "Error occurred when new comment was created !",
-          errorData
-        );
-
-        this.commentError =
-          errorData.error || "Error occurred when new comment was created !";
-      } finally {
-        this.commentData.comment = "";
-      }
-    },
+    ...mapActions(useCommentStore, ["fetchCommentsForBook"]),
   },
   computed: {
     ...mapState(useBookStore, ["selectABook"]),
-    ...mapState(useAuthStore, ["user", "isLoggedIn"]),
-    ...mapState(useCommentStore, ["commentsForBook", "isLoading"]),
+    ...mapState(useAuthStore, ["isLoggedIn"]),
 
     getParamsId() {
       return this.$route.params.id;
@@ -362,38 +119,6 @@ export default {
   overflow-y: auto;
 }
 
-.bookStatic {
-  position: relative;
-  padding-bottom: 10px;
-}
-
-.bookStatic::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 12px;
-  width: calc(100% - 12px);
-  border-bottom: 1px solid rgba(195, 192, 192, 0.523);
-}
-
-.carousel-control-prev {
-  top: 50%;
-  left: calc(-1% - 20px);
-}
-
-.carousel-control-next {
-  top: 50%;
-  left: 101%;
-}
-
-.card-text {
-  /* max-height: 96px; */
-  height: 96px;
-  overflow-y: auto;
-  text-align: justify;
-  padding-right: 8px;
-}
-
 .bookDesc {
   text-align: justify;
   margin-bottom: 0;
@@ -408,40 +133,6 @@ export default {
   background-color: var(--secondary-color);
 }
 
-.boxStyle {
-  border: 1px solid #e2e3e5;
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.rateInput,
-.commentArea {
-  width: 50%;
-}
-
-.commentArea {
-  background-color: #f1f1f1;
-  color: #101010;
-  padding-left: 25px;
-}
-
-.buttonStyle {
-  width: 25%;
-  margin-top: 20px;
-}
-
-.labelStyle {
-  font-size: 20px;
-  font-weight: bold;
-  margin-left: 4px;
-  margin-bottom: 15px;
-}
-
-.form-control:focus {
-  box-shadow: none;
-  border: 1px solid #dee2e6;
-}
-
 @media only screen and (max-width: 991px) {
   .bookDesc {
     margin-top: 10px;
@@ -453,18 +144,6 @@ export default {
     width: 100%;
     object-fit: contain;
     margin-bottom: 15px;
-  }
-  .commentsSection {
-    margin-top: 25px;
-  }
-
-  .rateInput,
-  .commentArea {
-    width: 100%;
-  }
-
-  .buttonStyle {
-    width: 50%;
   }
 }
 

@@ -57,7 +57,7 @@ export default {
 
 <style scoped>
 .blackBg {
-  background-image: url("../../assets/images/blackBg.png");
+  background-image: url("@/assets/images/blackBg.png");
   padding: 90px 0;
   color: #f1f0ef;
 }
