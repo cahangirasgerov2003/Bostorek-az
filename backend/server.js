@@ -3,6 +3,7 @@ import book from "./routes/book.js";
 import auth from "./routes/auth.js";
 import user from "./routes/user.js";
 import comment from "./routes/comment.js";
+import rating from "./routes/rating.js";
 import connectDb from "./config/db.js";
 import cors from "cors";
 
@@ -26,6 +27,8 @@ app.use("/api/v1/auth", auth);
 app.use("/api/v1/user", user);
 
 app.use("/api/v1/comments", comment);
+
+app.use("/api/v1/ratings", rating);
 
 try {
   await connectDb();

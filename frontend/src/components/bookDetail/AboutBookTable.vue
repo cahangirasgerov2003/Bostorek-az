@@ -21,7 +21,7 @@
         <strong>Rating</strong>
       </div>
       <div class="col-6">
-        <p>{{ book.rating }} - (23 rates)</p>
+        <p>{{ averageRatings }} - ( {{ ratingCount }} )</p>
       </div>
     </div>
     <div class="row mb-3 bookStatic">
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { useRatingStore } from "@/stores/ratingStore";
+import { mapState } from "pinia";
 export default {
   name: "AboutBookTable",
   data() {
@@ -45,6 +47,25 @@ export default {
     book: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    ...mapState(useRatingStore, ["ratingsForBook", "isLoading"]),
+    averageRatings() {
+      if (this.ratingsForBook.length > 0) {
+        const sumRatings = this.ratingsForBook.reduce(
+          (sum, item) => sum + item.rating,
+          0
+        );
+
+        return Number((sumRatings / this.ratingsForBook.length).toFixed(1));
+      } else {
+        return "N / A";
+      }
+    },
+
+    ratingCount() {
+      return this.ratingsForBook.length;
     },
   },
 };

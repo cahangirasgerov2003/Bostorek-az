@@ -33,7 +33,7 @@
 
         <div v-if="isLoggedIn">
           <!-- Rate section -->
-          <RateSection />
+          <RateSection :getParamsId="getParamsId" />
 
           <div class="my-3">
             <hr style="color: var(--primary-color)" />
@@ -67,6 +67,7 @@ import { RouterLink } from "vue-router";
 import { useBookStore } from "../stores/bookStore.js";
 import { useAuthStore } from "../stores/authStore.js";
 import { useCommentStore } from "../stores/commentStore.js";
+import { useRatingStore } from "../stores/ratingStore.js";
 import { mapState, mapActions } from "pinia";
 export default {
   name: "BookDetailView",
@@ -91,9 +92,12 @@ export default {
     this.book = this.selectABook(bookId);
 
     this.fetchCommentsForBook(bookId);
+
+    this.fetchRatingsForBook(bookId);
   },
   methods: {
     ...mapActions(useCommentStore, ["fetchCommentsForBook"]),
+    ...mapActions(useRatingStore, ["fetchRatingsForBook"]),
   },
   computed: {
     ...mapState(useBookStore, ["selectABook"]),

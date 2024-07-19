@@ -3,7 +3,7 @@
     <h3 class="mb-3 ps-1" style="color: var(--primary-color); font-weight: 400">
       Comment section
     </h3>
-    <div class="boxStyle">
+    <div class="boxStyle" v-if="!userAlreadyCommented && !isLoading">
       <form @submit.prevent="addNewComment()">
         <!-- Rating Input -->
         <div>
@@ -38,6 +38,22 @@
           Comment
         </button>
       </form>
+    </div>
+    <div v-if="!isLoading && userAlreadyCommented" class="boxStyle col-lg-6">
+      <div class="fs-5 fw-bold">Your comment</div>
+      <div class="ms-1 mt-2">{{ userComment }}</div>
+    </div>
+
+    <div
+      v-if="isLoading"
+      class="boxStyle col-lg-6 d-flex align-items-center justify-content-center"
+    >
+      <font-awesome-icon
+        icon="fa-solid fa-spinner"
+        spin
+        size="lg"
+        style="color: var(--primary-color)"
+      />
     </div>
   </div>
 </template>
@@ -94,6 +110,24 @@ export default {
   },
   computed: {
     ...mapState(useAuthStore, ["user"]),
+    ...mapState(useCommentStore, ["commentsForBook", "isLoading"]),
+    userAlreadyCommented() {
+      if (!this.user) {
+        return false;
+      }
+
+      return this.commentsForBook.some(
+        (comment) => comment.commentedBy._id === this.user._id
+      );
+    },
+
+    userComment() {
+      const userCommentObj = this.commentsForBook.find(
+        (comment) => comment.commentedBy._id === this.user._id
+      );
+
+      return userCommentObj.content;
+    },
   },
 };
 </script>
