@@ -213,20 +213,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.trashStyle {
-  width: 50%;
-}
-
-@media only screen and (max-width: 991px) {
-  .trashStyle {
-    width: 80%;
-  }
-}
-
-@media only screen and (max-width: 575px) {
-  .trashStyle {
-    width: 100%;
-  }
-}
-</style>
+<style scoped></style>

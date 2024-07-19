@@ -171,6 +171,7 @@ ul {
 .closeIcon {
   cursor: pointer;
   color: var(--primary-color);
+  transition: all 0.5s;
 }
 
 .closeIcon:hover {
@@ -185,5 +186,22 @@ ul {
   .saveButton {
     margin-left: 0;
     margin-top: 10px;
+  }
+}
+
+/* Dashboard comments and ratings */
+.trashStyle {
+  width: 50%;
+}
+
+@media only screen and (max-width: 991px) {
+  .trashStyle {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .trashStyle {
+    width: 100%;
   }
 }

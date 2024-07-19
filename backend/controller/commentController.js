@@ -81,12 +81,14 @@ const deleteAComment = async (req, res) => {
     if (!aComment) {
       return res
         .status(404)
-        .json({ error: "No book with this ID value was found !" });
+        .json({ error: "No comment with this ID value was found !" });
     }
 
-    return res.status(200).json({ message: "The book deleted successfully !" });
+    return res
+      .status(200)
+      .json({ message: "The comment deleted successfully !" });
   } catch (error) {
-    console.error("Error at deleteABook", error);
+    console.error("Error at deleteAComment", error);
     return res.status(500).json({ error: "Internal Server Error !" });
   }
 };

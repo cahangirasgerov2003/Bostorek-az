@@ -4,7 +4,7 @@
       <font-awesome-icon icon="spinner" spin-pulse style="font-size: 40px" />
     </div>
 
-    <div class="row mb-4" v-if="commentsByUser.length !== 0">
+    <div class="row mb-4" v-if="ratingsByUser.length !== 0">
       <div class="col table-responsive">
         <table class="table">
           <thead>
@@ -17,20 +17,20 @@
           </thead>
           <tbody
             style="position: relative"
-            v-for="(comment, index) in limitBooks"
+            v-for="(item, index) in limitBooks"
             :key="index"
           >
             <tr>
-              <td>{{ comment.reviewedBook.title }}</td>
+              <td>{{ item.book.title }}</td>
               <td class="bookDesc">
-                {{ comment.content }}
+                {{ item.rating }}
               </td>
               <td class="text-center">
                 <font-awesome-icon
                   :icon="['far', 'pen-to-square']"
                   class="text-warning"
                   style="cursor: pointer"
-                  @click="showModal(comment._id, comment.content)"
+                  @click="showModal(item._id, item.rating)"
                 />
               </td>
               <td class="text-center">
@@ -38,9 +38,7 @@
                   :icon="['fas', 'trash']"
                   class="text-danger"
                   style="cursor: pointer"
-                  @click="
-                    removeAComment(comment._id, comment.reviewedBook.title)
-                  "
+                  @click="removeARating(item._id, item.book.title)"
                 />
               </td>
             </tr>
@@ -51,7 +49,7 @@
 
     <div
       class="d-flex justify-content-center mb-5"
-      v-if="commentsByUser.length === 0 && !isLoading"
+      v-if="ratingsByUser.length === 0 && !isLoading"
     >
       <img
         alt="Not comments"
@@ -67,7 +65,7 @@
     />
 
     <!-- Edit modal -->
-    <div class="modal fade" tabindex="-1" ref="editComment">
+    <div class="modal fade" tabindex="-1" ref="editRating">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header d-flex justify-content-between">
@@ -91,22 +89,22 @@
               </div>
             </div>
             <div class="col">
-              <label for="content" class="form-label mb-0"
-                >Comment
+              <label for="rating" class="form-label mb-0"
+                >Rating
                 <span class="text-danger">*</span>
               </label>
-              <textarea
-                id="content"
-                class="form-control"
-                rows="4"
-                maxlength="400"
-                placeholder="Edit your comment"
+              <input
+                type="number"
+                class="form-control ratingInput"
                 autocomplete="off"
-                v-model="commentData.content"
+                v-model="ratingData.rating"
+                placeholder="Edit your rating"
+                min="1"
+                max="10"
                 required
-              ></textarea>
-              <small v-if="errors.content.errorMessage" class="text-danger">{{
-                errors.content.errorMessage
+              />
+              <small v-if="errors.rating.errorMessage" class="text-danger">{{
+                errors.rating.errorMessage
               }}</small>
             </div>
 
@@ -124,7 +122,7 @@
               <button
                 type="button"
                 class="btn btn-success col-sm-4 saveButton"
-                @click="editAComment()"
+                @click="editARating()"
               >
                 Save
               </button>
@@ -139,24 +137,24 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { Modal } from "bootstrap";
-import { useCommentStore } from "@/stores/commentStore";
+import { useRatingStore } from "@/stores/ratingStore";
 import { useAuthStore } from "@/stores/authStore";
 import { warningAction, successAction } from "@/utility";
 import { calculateNumberOfPages, limitBooks } from "@/utility/index.js";
 import ThePagination from "@/components/ThePagination.vue";
 export default {
-  name: "DashboardComments",
+  name: "DashboardRatings",
   data() {
     return {
-      commentData: {
-        content: "",
+      ratingData: {
+        rating: null,
       },
-      commentId: null,
+      ratingId: null,
       current: 1,
       perPage: 6,
       errorContent: "",
       errors: {
-        content: {
+        rating: {
           errorMessage: "",
         },
       },
@@ -166,73 +164,63 @@ export default {
     ThePagination,
   },
   computed: {
-    ...mapState(useCommentStore, ["isLoading", "commentsByUser"]),
+    ...mapState(useRatingStore, ["isLoading", "ratingsByUser"]),
     ...mapState(useAuthStore, ["user"]),
-    returnUploadedComments() {
-      return this.commentsByUser.sort(
+    returnUploadedRatings() {
+      return this.ratingsByUser.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
     },
     calculateNumberOfPages() {
-      return calculateNumberOfPages(this.commentsByUser, this.perPage);
+      return calculateNumberOfPages(this.ratingsByUser, this.perPage);
     },
     limitBooks() {
-      return limitBooks(
-        this.current,
-        this.perPage,
-        this.returnUploadedComments
-      );
+      return limitBooks(this.current, this.perPage, this.returnUploadedRatings);
     },
   },
   mounted() {
-    this.modal = new Modal(this.$refs.editComment);
+    this.modal = new Modal(this.$refs.editRating);
   },
   created() {
-    this.fetchCommentsByUser(this.user._id);
+    this.fetchRatingsByUser(this.user._id);
   },
   methods: {
-    ...mapActions(useCommentStore, [
-      "fetchCommentsByUser",
-      "deleteAComment",
-      "editTheComment",
+    ...mapActions(useRatingStore, [
+      "fetchRatingsByUser",
+      "deleteARating",
+      "editTheRating",
     ]),
-    async removeAComment(commentId, bookName) {
-      console.log(commentId, bookName);
+    async removeARating(ratingId, bookName) {
+      console.log(ratingId, bookName);
       try {
-        await this.deleteAComment(commentId);
-        warningAction(`Comment for ${bookName} has been deleted !`);
+        await this.deleteARating(ratingId);
+        warningAction(`Rating for ${bookName} has been deleted !`);
       } catch (errorData) {
-        console.error("Error occurred when comment was deleted !", errorData);
+        console.error("Error occurred when rating was deleted !", errorData);
       }
     },
 
-    showModal(commentId, commentContent) {
+    showModal(ratingId, rating) {
       this.modal.show();
-      this.commentData.content = commentContent;
-      this.commentId = commentId;
+      this.ratingData.rating = rating;
+      this.ratingId = ratingId;
     },
 
-    async editAComment() {
+    async editARating() {
       try {
-        if (
-          this.commentData.content.length > 400 ||
-          this.commentData.content.length < 1
-        ) {
-          this.errors.content.errorMessage =
-            "COMMENT cannot exceed 400 characters or empty !";
+        if (this.ratingData.rating > 10 || this.ratingData.rating < 1) {
+          this.errors.rating.errorMessage =
+            "The rating value can take values from 1 to 10 !";
           return;
         }
-        const result = await this.editTheComment(
-          this.commentData,
-          this.commentId
-        );
-        console.log("response edit book", result);
+        const result = await this.editTheRating(this.ratingData, this.ratingId);
+        console.log("response edit rating", result);
         successAction(result);
         this.modal.hide();
       } catch (errorData) {
-        console.error("Error occurred when comment was edited !", errorData);
+        console.error("Error occurred when rating was edited !", errorData);
         this.errorContent =
-          errorData.error || "Error occurred when comment was edited !";
+          errorData.error || "Error occurred when rating was edited !";
       }
     },
     updatePage(page) {
@@ -240,7 +228,7 @@ export default {
     },
     hideModal() {
       this.modal.hide();
-      this.errors.content.errorMessage = "";
+      this.errors.rating.errorMessage = "";
     },
   },
 };
@@ -253,7 +241,7 @@ td {
   white-space: nowrap;
 }
 
-textarea.form-control {
+.ratingInput {
   margin-top: 20px;
 }
 

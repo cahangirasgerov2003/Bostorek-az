@@ -20,6 +20,11 @@
             Comments
           </button>
         </li>
+        <li class="nav-item" @click="activeTab = 'Ratings'">
+          <button class="nav-link" :class="{ active: activeTab === 'Ratings' }">
+            Ratings
+          </button>
+        </li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane fade" :class="controlActiveTab('General')">
@@ -35,7 +40,12 @@
         </div>
         <div class="tab-pane fade" :class="controlActiveTab('Comments')">
           <!-- Dashboard comments -->
-          <DashboardComments />
+          <DashboardComments activeTable="comment" />
+        </div>
+
+        <div class="tab-pane fade" :class="controlActiveTab('Ratings')">
+          <!-- Dashboard ratings -->
+          <DashboardRatings />
         </div>
       </div>
     </div>
@@ -46,7 +56,8 @@ import { useAuthStore } from "@/stores/authStore.js";
 import { mapState } from "pinia";
 import RegisterView from "./RegisterView.vue";
 import DashboardBooks from "@/components/dashboard/DashboardBooks.vue";
-import DashboardComments from "../components/dashboard/DashboardComments.vue";
+import DashboardComments from "@/components/dashboard/DashboardComments.vue";
+import DashboardRatings from "../components/dashboard/DashboardRatings.vue";
 export default {
   name: "DashboardView",
   data() {
@@ -66,6 +77,7 @@ export default {
     RegisterView,
     DashboardBooks,
     DashboardComments,
+    DashboardRatings,
   },
 };
 </script>
@@ -89,5 +101,8 @@ export default {
 }
 .nav-tabs {
   border-color: var(--secondary-color);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 </style>
