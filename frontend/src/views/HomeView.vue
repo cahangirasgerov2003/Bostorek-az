@@ -32,6 +32,10 @@
         </div>
       </div>
     </section>
+
+    <section class="pb-5 pt-4">
+      <HomeComments />
+    </section>
   </div>
 </template>
 
@@ -43,6 +47,7 @@ import TheHeading from "../components/TheHeading.vue";
 import TheCarusel from "../components/widgets/TheCarusel.vue";
 import FeaturedListGroup from "../components/widgets/FeaturedListGroup.vue";
 import FeaturedAccordion from "../components/widgets/FeaturedAccordion.vue";
+import HomeComments from "../components/widgets/HomeComments.vue";
 import { useBookStore } from "@/stores/bookStore.js";
 // Biz burada butun storu yox sadece books-i isteyirik
 // o zaman yalniz onu istifade edek
@@ -54,6 +59,7 @@ export default {
     TheHeading,
     FeaturedListGroup,
     FeaturedAccordion,
+    HomeComments,
   },
   data() {
     return {
@@ -105,6 +111,7 @@ export default {
     //   }
     // },
     changeFilterType(type) {
+      console.log(this.bookStore);
       this.filterType = type;
     },
   },

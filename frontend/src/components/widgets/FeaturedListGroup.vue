@@ -43,4 +43,10 @@ export default {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
+
+@media only screen and (max-width: 767px) {
+  .list-group {
+    margin-bottom: 20px;
+  }
+}
 </style>

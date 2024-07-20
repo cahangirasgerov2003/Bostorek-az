@@ -28,14 +28,18 @@
         >
           <div class="accordion-body">
             <div class="row">
-              <div class="col-md-4">
+              <div
+                class="col-md-4 d-flex justify-content-center align-items-center"
+              >
                 <img
                   :alt="item.title"
                   src="@/assets/images/b1.jpg"
-                  class="img-fluid rounded-4"
+                  class="bookDetailImg"
                 />
               </div>
-              <div class="col-md-8 d-flex flex-column justify-content-center">
+              <div
+                class="col-md-8 d-flex flex-column justify-content-center detailsBook"
+              >
                 <div class="mb-3">
                   {{ item.description }}
                 </div>
@@ -109,5 +113,27 @@ export default {
 .accordion-button:focus {
   outline: 0;
   box-shadow: none;
+}
+
+.bookDetailImg {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+@media only screen and (max-width: 991px) {
+  .bookDetailImg {
+    height: 60%;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .detailsBook {
+    margin-top: 10px;
+  }
+
+  .bookDetailImg {
+    height: 100%;
+  }
 }
 </style>
