@@ -20,6 +20,12 @@ const commentSchema = new Schema(
       ref: "Book",
       required: true,
     },
+    upvotes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,

@@ -7,6 +7,7 @@ const router = express.Router();
 
 router
   .route("/")
+  .get(commentController.getAllComments)
   .post(authMiddleware.authorizationUser, commentController.createNewComment);
 
 router

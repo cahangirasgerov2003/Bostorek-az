@@ -7,8 +7,26 @@ export const useCommentStore = defineStore("commentStore", {
     commentsByUser: [],
     isLoading: false,
     requestCommentsByUser: false,
+    comments: [],
   }),
   actions: {
+    async fetchComments() {
+      try {
+        this.isLoading = true;
+        const response = await axios.get(
+          "http://localhost:3000/api/v1/comments"
+        );
+
+        console.log("Fetch all comments result:", response.data.comments);
+
+        this.comments = response.data.comments;
+        return response;
+      } catch (error) {
+        console.error("An error occurred while fetching comments", error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
     async createNewComment(newComment) {
       try {
         this.isLoading = true;
@@ -21,6 +39,7 @@ export const useCommentStore = defineStore("commentStore", {
 
         this.commentsForBook.push(response.data.comment);
         this.commentsByUser.push(response.data.comment);
+        this.comments.push(response.data.comment);
         return response;
       } catch (error) {
         console.error(

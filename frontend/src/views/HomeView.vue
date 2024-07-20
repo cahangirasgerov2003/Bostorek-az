@@ -33,7 +33,7 @@
       </div>
     </section>
 
-    <section class="pb-5 pt-4">
+    <section class="py-5" style="background-color: #f5f6f9">
       <HomeComments />
     </section>
   </div>

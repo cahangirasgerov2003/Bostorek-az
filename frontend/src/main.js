@@ -8,6 +8,7 @@ import { createPinia } from "pinia";
 
 import { useBookStore } from "@/stores/bookStore.js";
 import { useAuthStore } from "@/stores/authStore.js";
+import { useCommentStore } from "@/stores/commentStore.js";
 
 import App from "@/App.vue";
 
@@ -75,6 +76,8 @@ const bookStore = useBookStore(pinia);
 
 const authStore = useAuthStore(pinia);
 
+const commentStore = useCommentStore(pinia);
+
 const userData = JSON.parse(localStorage.getItem("user"));
 
 // Interceptors middleware
@@ -112,16 +115,36 @@ if (userData) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
 }
 
-bookStore
-  .fetchBooks()
-  .then(() => {
+// Bu kodu da await/asncy yapiya cevirelim
+// bookStore
+//   .fetchBooks()
+//   .then(() => {
+//     app
+//       .use(pinia)
+//       .component("font-awesome-icon", FontAwesomeIcon)
+//       .use(router)
+//       .use(Toast)
+//       .mount("#app");
+//   })
+//   .catch((error) => {
+//     console.error("An error occurred while fetching books", error);
+//   });
+
+// Promise all-da bir sorgu bile error donse hemin error catch hissesine dusecek
+// digerleri avtomatik sonlandirilacaq
+const init = async () => {
+  try {
+    await Promise.all([bookStore.fetchBooks(), commentStore.fetchComments()]);
+
     app
       .use(pinia)
       .component("font-awesome-icon", FontAwesomeIcon)
       .use(router)
       .use(Toast)
       .mount("#app");
-  })
-  .catch((error) => {
-    console.error("An error occurred while fetching books", error);
-  });
+  } catch (error) {
+    console.error("An error occurred while fetching books or comments", error);
+  }
+};
+
+init();

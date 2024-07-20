@@ -4,6 +4,21 @@ import {
   controlObjectId,
   findDocumentById,
 } from "../utility/index.js";
+const getAllComments = async (req, res) => {
+  try {
+    const allComments = await Comment.find({}).populate({
+      path: "commentedBy",
+      select: "userName",
+    });
+    return res.status(200).json({
+      message: "All comments returned successfully",
+      comments: allComments,
+    });
+  } catch (error) {
+    console.error("Error at getAllComments", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 const createNewComment = async (req, res) => {
   const { content, commentedBy, reviewedBook } = req.body;
 
@@ -124,4 +139,5 @@ export {
   getCommentsByUser,
   deleteAComment,
   updateAComment,
+  getAllComments,
 };
