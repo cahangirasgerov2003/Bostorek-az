@@ -94,4 +94,33 @@ const updateARating = async (req, res) => {
   }
 };
 
-export { createNewRating, getRatingsForBook, getRatingsByUser, updateARating };
+const deleteARating = async (req, res) => {
+  const { id } = req.params;
+
+  if (controlObjectId(id, res)) return;
+
+  try {
+    const aRating = await Rating.findByIdAndDelete(id);
+
+    if (!aRating) {
+      return res
+        .status(404)
+        .json({ error: "No rating with this ID value was found !" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "The rating deleted successfully !" });
+  } catch (error) {
+    console.error("Error at deleteARating", error);
+    return res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+export {
+  createNewRating,
+  getRatingsForBook,
+  getRatingsByUser,
+  updateARating,
+  deleteARating,
+};
