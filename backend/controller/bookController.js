@@ -1,4 +1,6 @@
 import Book from "../models/Book.js";
+import Comment from "../models/Comment.js";
+import Rating from "../models/Rating.js";
 import {
   controlObjectId,
   findDocumentById,
@@ -108,6 +110,11 @@ const deleteABook = async (req, res) => {
         .status(404)
         .json({ error: "No book with this ID value was found !" });
     }
+
+    await Promise.all([
+      Comment.deleteMany({ reviewedBook: id }),
+      Rating.deleteMany({ book: id }),
+    ]);
 
     return res.status(200).json({ message: "The book deleted successfully" });
   } catch (error) {

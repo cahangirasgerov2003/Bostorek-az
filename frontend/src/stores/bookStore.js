@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { useRatingStore } from "./ratingStore.js";
+import { useCommentStore } from "./commentStore.js";
 
 export const useBookStore = defineStore("bookStore", {
   state: () => ({
@@ -68,11 +70,24 @@ export const useBookStore = defineStore("bookStore", {
     },
 
     async deleteABook(bookId) {
+      const commentStore = useCommentStore();
+      const ratingStore = useRatingStore();
       try {
         await axios.delete(`http://localhost:3000/api/v1/books/${bookId}`);
         this.books = this.books.filter((book) => book._id !== bookId);
         this.userUploadedBooks = this.userUploadedBooks.filter(
           (book) => book._id !== bookId
+        );
+
+        commentStore.comments = commentStore.comments.filter(
+          (comment) => comment.reviewedBook._id !== bookId
+        );
+
+        commentStore.commentsByUser = commentStore.commentsByUser.filter(
+          (comment) => comment.reviewedBook._id !== bookId
+        );
+        ratingStore.ratingsByUser = ratingStore.ratingsByUser.filter(
+          (rating) => rating.book._id !== bookId
         );
       } catch (error) {
         console.error("An error occurred while deleting a book", error);

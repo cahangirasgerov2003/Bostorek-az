@@ -102,6 +102,11 @@ export const useCommentStore = defineStore("commentStore", {
         await axios.delete(
           `http://localhost:3000/api/v1/comments/${commentId}`
         );
+
+        this.comments = this.comments.filter(
+          (comment) => comment._id !== commentId
+        );
+
         this.commentsByUser = this.commentsByUser.filter(
           (comment) => comment._id !== commentId
         );
