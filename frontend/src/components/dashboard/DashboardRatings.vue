@@ -38,7 +38,6 @@
                   :icon="['fas', 'trash']"
                   class="text-danger"
                   style="cursor: pointer"
-                  @click="removeARating(item._id, item.book.title)"
                 />
               </td>
             </tr>
@@ -185,20 +184,7 @@ export default {
     this.fetchRatingsByUser(this.user._id);
   },
   methods: {
-    ...mapActions(useRatingStore, [
-      "fetchRatingsByUser",
-      "deleteARating",
-      "editTheRating",
-    ]),
-    async removeARating(ratingId, bookName) {
-      console.log(ratingId, bookName);
-      try {
-        await this.deleteARating(ratingId);
-        warningAction(`Rating for ${bookName} has been deleted !`);
-      } catch (errorData) {
-        console.error("Error occurred when rating was deleted !", errorData);
-      }
-    },
+    ...mapActions(useRatingStore, ["fetchRatingsByUser", "editTheRating"]),
 
     showModal(ratingId, rating) {
       this.modal.show();
@@ -223,6 +209,7 @@ export default {
           errorData.error || "Error occurred when rating was edited !";
       }
     },
+
     updatePage(page) {
       this.current = page;
     },

@@ -17,7 +17,6 @@ router.route("/book/:id").get(ratingController.getRatingsForBook);
 
 router
   .route("/:id")
-  .put(authMiddleware.authorizationUser, ratingController.updateARating)
-  .delete(authMiddleware.authorizationUser, ratingController.deleteARating);
+  .put(authMiddleware.authorizationUser, ratingController.updateARating);
 
 export default router;

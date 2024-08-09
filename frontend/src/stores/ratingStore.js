@@ -75,18 +75,6 @@ export const useRatingStore = defineStore("ratingStore", {
       }
     },
 
-    async deleteARating(ratingId) {
-      try {
-        await axios.delete(`http://localhost:3000/api/v1/ratings/${ratingId}`);
-        this.ratingsByUser = this.ratingsByUser.filter(
-          (rating) => rating._id !== ratingId
-        );
-      } catch (error) {
-        console.error("An error occurred while deleting a rating", error);
-        throw error.response.data;
-      }
-    },
-
     async editTheRating(ratingData, ratingId) {
       try {
         const response = await axios.put(
