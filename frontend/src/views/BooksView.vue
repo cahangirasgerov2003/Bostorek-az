@@ -25,9 +25,10 @@
 import TheHeading from "@/components/TheHeading.vue";
 import BookList from "@/components/BookList.vue";
 import ThePagination from "@/components/ThePagination.vue";
-import { useBookStore } from "../stores/bookStore";
-import { mapState } from "pinia";
+import { useBookStore } from "@/stores/bookStore";
+import { mapActions, mapState } from "pinia";
 import { calculateNumberOfPages, limitBooks } from "@/utility/index.js";
+import { useRatingStore } from "@/stores/ratingStore";
 export default {
   name: "BooksView",
   components: {
@@ -46,6 +47,16 @@ export default {
   // Computed props
   computed: {
     ...mapState(useBookStore, ["books", "isLoading"]),
+    ...mapState(useRatingStore, ["ratings"]),
+    addRatingsForBook() {
+      this.books.map((book) => {
+        const ratingsForBook = this.ratings.filter((rating) => {
+          return rating.book === book._id;
+        });
+
+        book.ratings = ratingsForBook;
+      });
+    },
     calculateNumberOfPages() {
       return calculateNumberOfPages(this.books, this.perPage);
     },
@@ -64,10 +75,23 @@ export default {
   // Kitablari elde ede bilmeyeceyik bunun yerine actions-i main.js de proje acilan zaman calisdirsaq daha
   // Yaxsi olacaq bizim ucun
 
+  created() {
+    this.fetchRatingsForBook();
+  },
+
   // Methods
   methods: {
+    ...mapActions(useRatingStore, ["fetchRatings"]),
     updatePage(page) {
       this.current = page;
+    },
+    async fetchRatingsForBook() {
+      try {
+        await this.fetchRatings();
+        this.addRatingsForBook;
+      } catch (error) {
+        console.error("An error occurred while fetching ratings", error);
+      }
     },
   },
 };

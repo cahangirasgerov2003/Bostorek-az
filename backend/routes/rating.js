@@ -7,6 +7,7 @@ const router = express.Router();
 
 router
   .route("/")
+  .get(ratingController.getAllRatings)
   .post(authMiddleware.authorizationUser, ratingController.createNewRating);
 
 router

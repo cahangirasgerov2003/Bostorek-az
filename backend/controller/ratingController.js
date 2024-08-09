@@ -4,6 +4,20 @@ import {
   controlObjectId,
   findDocumentById,
 } from "../utility/index.js";
+
+const getAllRatings = async (req, res) => {
+  try {
+    const allRatings = await Rating.find({});
+    return res.status(200).json({
+      message: "All ratings returned successfully",
+      ratings: allRatings,
+    });
+  } catch (error) {
+    console.error("Error at getAllRatings", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const createNewRating = async (req, res) => {
   const { rating, ratedBy, book } = req.body;
 
@@ -123,4 +137,5 @@ export {
   getRatingsByUser,
   updateARating,
   deleteARating,
+  getAllRatings,
 };

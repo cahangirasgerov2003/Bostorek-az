@@ -131,6 +131,12 @@ export const useCommentStore = defineStore("commentStore", {
             : comment
         );
 
+        this.comments = this.comments.map((comment) =>
+          comment._id === commentId
+            ? { ...comment, content: commentData.content }
+            : comment
+        );
+
         return response;
       } catch (error) {
         console.error("An error occurred while editing a comment", error);

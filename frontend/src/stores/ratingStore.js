@@ -7,8 +7,30 @@ export const useRatingStore = defineStore("ratingStore", {
     ratingsByUser: [],
     isLoading: false,
     requestRatingsByUser: false,
+    ratings: [],
+    requestRatings: false,
   }),
   actions: {
+    async fetchRatings() {
+      try {
+        if (this.requestRatings === false) {
+          this.isLoading = true;
+          const response = await axios.get(
+            "http://localhost:3000/api/v1/ratings"
+          );
+
+          console.log("Fetch all ratings result:", response.data.ratings);
+
+          this.ratings = response.data.ratings;
+          this.requestRatings = true;
+          return response;
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching ratings", error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
     async createNewRating(newRating) {
       try {
         this.isLoading = true;
@@ -21,6 +43,7 @@ export const useRatingStore = defineStore("ratingStore", {
 
         this.ratingsForBook.push(response.data.rating);
         this.ratingsByUser.push(response.data.rating);
+        this.ratings.push(response.data.rating);
         return response;
       } catch (error) {
         console.error("An error occurred while creating a new rating !", error);
@@ -88,6 +111,10 @@ export const useRatingStore = defineStore("ratingStore", {
           item._id === ratingId ? { ...item, rating: ratingData.rating } : item
         );
 
+        this.ratings = this.ratings.map((item) =>
+          item._id === ratingId ? { ...item, rating: ratingData.rating } : item
+        );
+
         return response;
       } catch (error) {
         console.error("An error occurred while editing a rating", error);
@@ -101,6 +128,8 @@ export const useRatingStore = defineStore("ratingStore", {
         this.ratingsByUser = this.ratingsByUser.filter(
           (rating) => rating._id !== ratingId
         );
+
+        this.ratings = this.ratings.filter((rating) => rating._id !== ratingId);
       } catch (error) {
         console.error("An error occurred while deleting a rating", error);
         throw error.response.data;
