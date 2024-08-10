@@ -48,10 +48,22 @@ const limitBooks = (current, perPage, returnUploadedBooks) => {
   return returnUploadedBooks.slice(startBookNumber, endBookNumber);
 };
 
+const addRatingsForBook = (books, ratings) => {
+  console.log(books, "Booookkkess");
+  books.map((book) => {
+    const ratingsForBook = ratings?.filter((rating) => {
+      return rating.book._id === book._id || rating.book === book._id;
+    });
+
+    book.ratings = ratingsForBook;
+  });
+};
+
 export {
   successAction,
   calculateNumberOfPages,
   limitBooks,
   errorAction,
   warningAction,
+  addRatingsForBook,
 };

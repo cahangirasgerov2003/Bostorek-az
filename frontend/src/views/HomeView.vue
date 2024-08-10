@@ -51,7 +51,9 @@ import HomeComments from "../components/widgets/HomeComments.vue";
 import { useBookStore } from "@/stores/bookStore.js";
 // Biz burada butun storu yox sadece books-i isteyirik
 // o zaman yalniz onu istifade edek
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
+import { addRatingsForBook } from "@/utility/index.js";
+import { useRatingStore } from "@/stores/ratingStore";
 export default {
   name: "HomeView",
   components: {
@@ -95,28 +97,24 @@ export default {
     };
   },
   methods: {
-    // Istifade edeceyimiz actions-i yaziriq
-    // Main.js de zaten sorgunu atdiq
-    // ...mapActions(useBookStore, ["fetchBooks"]),
-
-    // Artiq stordan cekeceyik datamizi
-    // async fetchBooks() {
-    //   try {
-    //     const response = await fetch("http://localhost:3000/api/v1/books");
-    //     const data = await response.json();
-    //     this.loading = false;
-    //     this.books = data.books;
-    //   } catch (error) {
-    //     console.error("An error occurred while fetching books", error);
-    //   }
-    // },
+    ...mapActions(useRatingStore, ["fetchRatings"]),
     changeFilterType(type) {
       console.log(this.bookStore);
       this.filterType = type;
     },
+
+    async fetchRatingsForBook() {
+      try {
+        await this.fetchRatings();
+      } catch (error) {
+        console.error("An error occurred while fetching ratings", error);
+      }
+    },
   },
 
   computed: {
+    ...mapState(useBookStore, ["books", "isLoading"]),
+    ...mapState(useRatingStore, ["requestRatings", "ratings"]),
     filterBooks() {
       const booksToFilter = [...this.books];
       if (this.filterType === "Latest") {
@@ -127,14 +125,21 @@ export default {
         return booksToFilter.sort((a, b) => b.rating - a.rating).slice(0, 3);
       }
     },
-
-    ...mapState(useBookStore, ["books", "isLoading"]),
   },
 
-  // Main.js de zaten fetch sorgusu atdik
-  // created() {
-  //   this.fetchBooks();
-  // },
+  watch: {
+    ratings: {
+      handler(newVal) {
+        addRatingsForBook(this.books, newVal);
+      },
+      deep: true,
+      immediate: true, // İlk dəfə komponent mount olunanda işə düşməsi üçün
+    },
+  },
+
+  created() {
+    this.fetchRatingsForBook();
+  },
 };
 </script>
 

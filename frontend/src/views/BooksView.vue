@@ -27,7 +27,11 @@ import BookList from "@/components/BookList.vue";
 import ThePagination from "@/components/ThePagination.vue";
 import { useBookStore } from "@/stores/bookStore";
 import { mapActions, mapState } from "pinia";
-import { calculateNumberOfPages, limitBooks } from "@/utility/index.js";
+import {
+  calculateNumberOfPages,
+  limitBooks,
+  addRatingsForBook,
+} from "@/utility/index.js";
 import { useRatingStore } from "@/stores/ratingStore";
 export default {
   name: "BooksView",
@@ -47,16 +51,7 @@ export default {
   // Computed props
   computed: {
     ...mapState(useBookStore, ["books", "isLoading"]),
-    ...mapState(useRatingStore, ["ratings"]),
-    addRatingsForBook() {
-      this.books.map((book) => {
-        const ratingsForBook = this.ratings.filter((rating) => {
-          return rating.book === book._id;
-        });
-
-        book.ratings = ratingsForBook;
-      });
-    },
+    ...mapState(useRatingStore, ["ratings", "requestRatings"]),
     calculateNumberOfPages() {
       return calculateNumberOfPages(this.books, this.perPage);
     },
@@ -69,11 +64,6 @@ export default {
       );
     },
   },
-
-  // Burda bir xeta olacaq cunki biz home-da fetch atiriq burda yox amma bir basa biz books
-  // Seyfesine kecdiyimizde o zaman burda actions olmadigi ucun ve home-a girmediyimiz ucun |
-  // Kitablari elde ede bilmeyeceyik bunun yerine actions-i main.js de proje acilan zaman calisdirsaq daha
-  // Yaxsi olacaq bizim ucun
 
   created() {
     this.fetchRatingsForBook();
@@ -88,10 +78,19 @@ export default {
     async fetchRatingsForBook() {
       try {
         await this.fetchRatings();
-        this.addRatingsForBook;
       } catch (error) {
         console.error("An error occurred while fetching ratings", error);
       }
+    },
+  },
+
+  watch: {
+    ratings: {
+      handler(newVal) {
+        addRatingsForBook(this.books, newVal);
+      },
+      deep: true,
+      immediate: true, // İlk dəfə komponent mount olunanda işə düşməsi üçün
     },
   },
 };

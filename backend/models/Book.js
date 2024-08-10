@@ -29,12 +29,6 @@ const bookSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    rating: {
-      type: Number,
-      min: 0,
-      max: 10,
-      default: 9.9,
-    },
   },
   {
     timestamps: true,
