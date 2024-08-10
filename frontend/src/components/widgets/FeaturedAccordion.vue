@@ -49,19 +49,7 @@
                     class="position-relative"
                     style="padding-top: 1px; padding-right: 3px"
                   >
-                    {{ item.rating }}
-                    <span
-                      class="position-absolute top-0 start-100 translate-middle border border-light rounded-circle"
-                      :class="
-                        item.rating > 6.6
-                          ? 'bg-success'
-                          : item.rating > 3.3
-                          ? 'bg-warning'
-                          : 'bg-danger'
-                      "
-                      style="padding: 6px"
-                    >
-                    </span>
+                    {{ averageRatings(item) }}
                   </div>
                 </div>
               </div>
@@ -80,6 +68,7 @@
   </div>
 </template>
 <script>
+import { averageRatings } from "@/utility/index.js";
 export default {
   name: "FeaturedAccordion",
   data() {
@@ -100,6 +89,10 @@ export default {
       } else {
         this.openAccordionIndex = -1;
       }
+    },
+
+    averageRatings(book) {
+      return averageRatings(book);
     },
   },
 };

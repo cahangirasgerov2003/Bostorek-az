@@ -49,7 +49,7 @@ const limitBooks = (current, perPage, returnUploadedBooks) => {
 };
 
 const addRatingsForBook = (books, ratings) => {
-  console.log(books, "Booookkkess");
+  // console.log(books, "Booookkkess");
   books.map((book) => {
     const ratingsForBook = ratings?.filter((rating) => {
       return rating.book._id === book._id || rating.book === book._id;
@@ -59,6 +59,25 @@ const addRatingsForBook = (books, ratings) => {
   });
 };
 
+const averageRatings = (book) => {
+  if (book?.ratings?.length > 0) {
+    const sumRatings = book.ratings.reduce((sum, item) => sum + item.rating, 0);
+
+    return Number((sumRatings / book.ratings.length).toFixed(1));
+  } else {
+    return "N/A";
+  }
+};
+
+const compareRatings = (book) => {
+  if (averageRatings(book) > 6.6) {
+    return "bg-success";
+  } else if (averageRatings(book) > 3.3) {
+    return "bg-warning";
+  }
+  return "bg-danger";
+};
+
 export {
   successAction,
   calculateNumberOfPages,
@@ -66,4 +85,6 @@ export {
   errorAction,
   warningAction,
   addRatingsForBook,
+  averageRatings,
+  compareRatings,
 };

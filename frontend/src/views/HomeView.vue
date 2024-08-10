@@ -99,7 +99,6 @@ export default {
   methods: {
     ...mapActions(useRatingStore, ["fetchRatings"]),
     changeFilterType(type) {
-      console.log(this.bookStore);
       this.filterType = type;
     },
 
@@ -113,16 +112,18 @@ export default {
   },
 
   computed: {
-    ...mapState(useBookStore, ["books", "isLoading"]),
+    ...mapState(useBookStore, [
+      "books",
+      "isLoading",
+      "filterFourLatest",
+      "filterFourTop",
+    ]),
     ...mapState(useRatingStore, ["requestRatings", "ratings"]),
     filterBooks() {
-      const booksToFilter = [...this.books];
       if (this.filterType === "Latest") {
-        return booksToFilter
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .slice(0, 3);
+        return this.filterFourLatest;
       } else if (this.filterType === "TopRated") {
-        return booksToFilter.sort((a, b) => b.rating - a.rating).slice(0, 3);
+        return this.filterFourTop;
       }
     },
   },

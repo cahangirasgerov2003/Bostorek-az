@@ -14,6 +14,26 @@ export const useBookStore = defineStore("bookStore", {
     selectABook(state) {
       return (id) => state.books.find((item) => item._id === id);
     },
+
+    filterFourLatest(state) {
+      return state.books
+        .sort(
+          (newBook, oldBook) =>
+            new Date(oldBook.createdAt) - new Date(newBook.createdAt)
+        )
+        .slice(0, 3);
+    },
+
+    filterFourTop(state) {
+      return state.books
+        .sort((a, b) => {
+          return (
+            b.ratings.reduce((sum, item) => sum + item.rating, 0) -
+            a.ratings.reduce((sum, item) => sum + item.rating, 0)
+          );
+        })
+        .slice(0, 3);
+    },
   },
   actions: {
     async fetchBooks() {

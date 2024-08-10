@@ -48,6 +48,7 @@
 import { RouterLink } from "vue-router";
 import { useRatingStore } from "@/stores/ratingStore";
 import { mapState } from "pinia";
+import { averageRatings, compareRatings } from "@/utility/index.js";
 
 export default {
   name: "Book",
@@ -61,25 +62,11 @@ export default {
   computed: {
     ...mapState(useRatingStore, ["isLoading"]),
     averageRatings() {
-      if (this.book.ratings?.length > 0) {
-        const sumRatings = this.book.ratings.reduce(
-          (sum, item) => sum + item.rating,
-          0
-        );
-
-        return Number((sumRatings / this.book.ratings.length).toFixed(1));
-      } else {
-        return "N/A";
-      }
+      return averageRatings(this.book);
     },
 
     compareRatings() {
-      if (this.averageRatings > 6.6) {
-        return "bg-success";
-      } else if (this.averageRatings > 3.3) {
-        return "bg-warning";
-      }
-      return "bg-danger";
+      return compareRatings(this.book);
     },
 
     formattedText() {
@@ -111,17 +98,17 @@ export default {
 }
 
 .descContent {
-  min-height: 72px;
+  min-height: 100px;
 }
 
 .ratingStyle {
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 3rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  border: 2px solid white;
+  border: 4px solid white;
   border-radius: 50%;
 }
 </style>
