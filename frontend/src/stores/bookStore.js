@@ -27,10 +27,15 @@ export const useBookStore = defineStore("bookStore", {
     filterFourTop(state) {
       return state.books
         .sort((a, b) => {
-          return (
-            b.ratings.reduce((sum, item) => sum + item.rating, 0) -
-            a.ratings.reduce((sum, item) => sum + item.rating, 0)
-          );
+          const ratingA =
+            a.ratings.reduce((sum, item) => sum + item.rating, 0) /
+            (a.ratings.length || 1);
+
+          const ratingB =
+            b.ratings.reduce((sum, item) => sum + item.rating, 0) /
+            (b.ratings.length || 1);
+
+          return ratingB - ratingA;
         })
         .slice(0, 3);
     },

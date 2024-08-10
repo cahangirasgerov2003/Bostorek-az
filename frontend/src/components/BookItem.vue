@@ -111,4 +111,17 @@ export default {
   border: 4px solid white;
   border-radius: 50%;
 }
+
+.card-title {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 991px) {
+  .book_author {
+    left: 8px;
+  }
+}
 </style>
