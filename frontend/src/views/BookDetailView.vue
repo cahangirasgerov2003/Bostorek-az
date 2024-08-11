@@ -76,6 +76,8 @@ export default {
       title: "Book Detail",
       desc: "About the book of",
       book: null,
+      a: 4,
+      b: 5,
     };
   },
   components: {
@@ -94,10 +96,22 @@ export default {
     this.fetchCommentsForBook(bookId);
 
     this.fetchRatingsForBook(bookId);
+
+    console.log(this.calculateSum(), "Sum");
+
+    this.a = 20;
+
+    console.log(this.calculateSum(), "Sum2");
+
+    this.helloWorld;
   },
   methods: {
     ...mapActions(useCommentStore, ["fetchCommentsForBook"]),
     ...mapActions(useRatingStore, ["fetchRatingsForBook"]),
+
+    calculateSum() {
+      return this.a + this.b;
+    },
   },
   computed: {
     ...mapState(useBookStore, ["selectABook"]),
@@ -105,6 +119,10 @@ export default {
 
     getParamsId() {
       return this.$route.params.id;
+    },
+
+    helloWorld() {
+      console.log(this.book, "This.book");
     },
   },
 };
