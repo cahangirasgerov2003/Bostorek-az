@@ -25,22 +25,82 @@
               <p class="card-text">
                 {{ comment.content }}
               </p>
-              <div class="d-flex align-items-center justify-content-between">
+
+              <!-- Upwote or cancel upwote -->
+
+              <div
+                class="d-flex align-items-center justify-content-between"
+                v-if="!user"
+              >
+                <router-link to="/login">
+                  <strong class="mr-2" style="cursor: pointer"
+                    >Login for upvote!</strong
+                  >
+                </router-link>
+                <div>
+                  <font-awesome-icon
+                    :icon="['fas', 'thumbs-up']"
+                    size="lg"
+                    style="color: var(--secondary-color)"
+                  />
+                  <strong class="ms-2">{{ comment.upvotes.length }}</strong>
+                </div>
+              </div>
+
+              <div
+                class="d-flex align-items-center justify-content-between"
+                v-else-if="comment.commentedBy._id === user._id"
+              >
+                <div>
+                  <strong class="mr-2">You can't upvote your comment!</strong>
+                </div>
+                <div>
+                  <font-awesome-icon
+                    :icon="['fas', 'thumbs-up']"
+                    size="lg"
+                    style="color: var(--secondary-color)"
+                  />
+                  <strong class="ms-2">{{ comment.upvotes.length }}</strong>
+                </div>
+              </div>
+
+              <div
+                class="d-flex align-items-center justify-content-between"
+                v-else-if="!comment.upvotes.includes(user._id)"
+              >
                 <div>
                   <strong class="mr-2">Upvote?</strong>
                 </div>
                 <div>
-                  <font-awesome-icon icon="fa-regular fa-thumbs-up" size="lg" />
-                  <strong class="ms-2">8</strong>
-
-                  <!-- <font-awesome-icon
-                            :icon="['fas', 'thumbs-up']"
-                            style="color: var(--secondary-color)"
-                            size="lg"
-                          />
-                          <strong class="ms-2">12</strong> -->
+                  <font-awesome-icon
+                    icon="fa-regular fa-thumbs-up"
+                    size="lg"
+                    style="cursor: pointer"
+                    @click="upvoteComment(comment._id)"
+                  />
+                  <strong class="ms-2">{{ comment.upvotes.length }}</strong>
                 </div>
               </div>
+
+              <div
+                class="d-flex align-items-center justify-content-between"
+                v-else
+              >
+                <div>
+                  <strong class="mr-2">Upvoted</strong>
+                </div>
+                <div>
+                  <font-awesome-icon
+                    :icon="['fas', 'thumbs-up']"
+                    size="lg"
+                    style="cursor: pointer; color: var(--secondary-color)"
+                    @click="cancelUpvote(comment._id)"
+                  />
+                  <strong class="ms-2">{{ comment.upvotes.length }}</strong>
+                </div>
+              </div>
+
+              <!-- Upwote or cancel upwote end-->
             </div>
           </div>
         </div>
@@ -99,7 +159,9 @@
 
 <script>
 import { useCommentStore } from "@/stores/commentStore";
-import { mapState } from "pinia";
+import { mapActions, mapState } from "pinia";
+import { useAuthStore } from "@/stores/authStore";
+import { errorAction, successAction } from "@/utility/index.js";
 
 export default {
   name: "CommentCarusel",
@@ -108,6 +170,38 @@ export default {
   },
   computed: {
     ...mapState(useCommentStore, ["commentsForBook", "isLoading"]),
+    ...mapState(useAuthStore, ["user"]),
+  },
+  methods: {
+    ...mapActions(useCommentStore, [
+      "upvoteCommentAction",
+      "cancelUpvoteAction",
+    ]),
+    async upvoteComment(commentId) {
+      try {
+        const result = await this.upvoteCommentAction(commentId);
+        successAction(result);
+      } catch (errorData) {
+        console.error(
+          "An error occurred when a new upvote was added to the comment !",
+          errorData
+        );
+        errorAction(errorData.error || "Error occurred when upvoting !");
+      }
+    },
+
+    async cancelUpvote(commentId) {
+      try {
+        const result = await this.cancelUpvoteAction(commentId);
+        successAction(result);
+      } catch (errorData) {
+        console.error(
+          "An error occurred when a new upvote was deleted to the comment !",
+          errorData
+        );
+        errorAction(errorData.error || "Error occurred when cancel upvoting !");
+      }
+    },
   },
 };
 </script>

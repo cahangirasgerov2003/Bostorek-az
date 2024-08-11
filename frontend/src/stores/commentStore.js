@@ -143,5 +143,63 @@ export const useCommentStore = defineStore("commentStore", {
         throw error.response.data;
       }
     },
+
+    async upvoteCommentAction(commentId) {
+      try {
+        const response = await axios.post(
+          `http://localhost:3000/api/v1/comments/${commentId}/upvote`
+        );
+
+        console.log("result upvote", response);
+
+        const updatedComment = response.data.comment;
+
+        const commentIndex = this.commentsForBook.findIndex(
+          (item) => item._id === updatedComment._id
+        );
+
+        if (commentIndex !== -1) {
+          this.commentsForBook[commentIndex] = updatedComment;
+        } else {
+          console.error(
+            `Comment with id : ${updatedComment._id} was not found!`
+          );
+        }
+
+        return response;
+      } catch (error) {
+        console.error("Error occurred when upvoting !", error);
+        throw error.response.data;
+      }
+    },
+
+    async cancelUpvoteAction(commentId) {
+      try {
+        const response = await axios.post(
+          `http://localhost:3000/api/v1/comments/${commentId}/cancelUpvote`
+        );
+
+        console.log("result cancel upvote", response);
+
+        const updatedComment = response.data.comment;
+
+        const commentIndex = this.commentsForBook.findIndex(
+          (item) => item._id === updatedComment._id
+        );
+
+        if (commentIndex !== -1) {
+          this.commentsForBook[commentIndex] = updatedComment;
+        } else {
+          console.error(
+            `Comment with id : ${updatedComment._id} was not found!`
+          );
+        }
+
+        return response;
+      } catch (error) {
+        console.error("Error occurred when cancel upvoting !", error);
+        throw error.response.data;
+      }
+    },
   },
 });

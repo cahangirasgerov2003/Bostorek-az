@@ -21,4 +21,15 @@ router
   .put(authMiddleware.authorizationUser, commentController.updateAComment)
   .delete(authMiddleware.authorizationUser, commentController.deleteAComment);
 
+router
+  .route("/:id/upvote")
+  .post(authMiddleware.authorizationUser, commentController.upvoteAComment);
+
+router
+  .route("/:id/cancelUpvote")
+  .post(
+    authMiddleware.authorizationUser,
+    commentController.cancelUpvoteAComment
+  );
+
 export default router;

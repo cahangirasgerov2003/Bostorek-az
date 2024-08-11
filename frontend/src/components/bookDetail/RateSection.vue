@@ -6,7 +6,7 @@
     <div class="boxStyle" v-if="!userAlreadyRated && !isLoading">
       <form @submit.prevent="addNewRating()">
         <!-- Rating Input -->
-        <div class="mb-3">
+        <div>
           <label
             for="rating"
             style="color: var(--primary-color)"
@@ -21,6 +21,10 @@
             autocomplete="off"
             v-model="rating"
           />
+        </div>
+
+        <div class="mt-1 ms-1">
+          <small v-if="rateError" class="text-danger">{{ rateError }}</small>
         </div>
 
         <!-- Submit Button -->

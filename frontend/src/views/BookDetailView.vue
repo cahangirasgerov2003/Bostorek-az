@@ -42,7 +42,7 @@
           <!-- Comment section -->
           <AddCommentSection :getParamsId="getParamsId" />
         </div>
-        <div class="col-6 mt-4" v-else>
+        <div class="col-lg-6 mt-4" v-else>
           <router-link to="/login">
             <div class="alert alert-info py-3">
               You must be logged in to add comments and ratings about the book !

@@ -99,6 +99,11 @@ textarea.mailText {
   padding: 10px 40px;
   font-size: 16px;
   border-radius: 40px;
+  border: 1px solid white;
+}
+
+.sendButton:hover {
+  background-color: transparent;
 }
 
 .mapImage {

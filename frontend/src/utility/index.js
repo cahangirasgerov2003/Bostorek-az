@@ -49,7 +49,6 @@ const limitBooks = (current, perPage, returnUploadedBooks) => {
 };
 
 const addRatingsForBook = (books, ratings) => {
-  // console.log(books, "Booookkkess");
   books.map((book) => {
     const ratingsForBook = ratings?.filter((rating) => {
       return rating.book._id === book._id || rating.book === book._id;

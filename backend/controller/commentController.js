@@ -133,6 +133,47 @@ const updateAComment = async (req, res) => {
   }
 };
 
+const upvoteAComment = async (req, res) => {
+  try {
+    const commentId = req.params.id;
+    const userId = req.user._id;
+
+    const comment = await Comment.findById(commentId);
+
+    comment.upvotes.push(userId);
+
+    await comment.save();
+
+    return res.status(200).json({
+      message: "Upvote added successfully !",
+      comment,
+    });
+  } catch (error) {
+    console.error("Error at upvoteAComment !", error);
+    return res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
+const cancelUpvoteAComment = async (req, res) => {
+  try {
+    const commentId = req.params.id;
+    const userId = req.user._id;
+    const comment = await Comment.findById(commentId);
+
+    comment.upvotes = comment.upvotes.filter((item) => {
+      return item.toString() !== userId.toString();
+    });
+    await comment.save();
+    return res.status(200).json({
+      message: "Upvote deleted successfully !",
+      comment,
+    });
+  } catch (error) {
+    console.error("Error at cancelUpvoteAComment !", error);
+    return res.status(500).json({ error: "Internal Server Error !" });
+  }
+};
+
 export {
   createNewComment,
   getCommentsForBook,
@@ -140,4 +181,6 @@ export {
   deleteAComment,
   updateAComment,
   getAllComments,
+  upvoteAComment,
+  cancelUpvoteAComment,
 };
