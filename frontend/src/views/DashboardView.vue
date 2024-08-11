@@ -25,6 +25,12 @@
             Ratings
           </button>
         </li>
+
+        <li class="nav-item" @click="activeTab = 'Test'">
+          <button class="nav-link" :class="{ active: activeTab === 'Test' }">
+            Test
+          </button>
+        </li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane fade" :class="controlActiveTab('General')">
@@ -47,6 +53,11 @@
           <!-- Dashboard ratings -->
           <DashboardRatings />
         </div>
+
+        <div class="tab-pane fade" :class="controlActiveTab('Test')">
+          <!-- Dashboard composition api test -->
+          <CompositionApi />
+        </div>
       </div>
     </div>
   </section>
@@ -57,12 +68,13 @@ import { mapState } from "pinia";
 import RegisterView from "./RegisterView.vue";
 import DashboardBooks from "@/components/dashboard/DashboardBooks.vue";
 import DashboardComments from "@/components/dashboard/DashboardComments.vue";
-import DashboardRatings from "../components/dashboard/DashboardRatings.vue";
+import DashboardRatings from "@/components/dashboard/DashboardRatings.vue";
+import CompositionApi from "@/components/dashboard/CompositionApi.vue";
 export default {
   name: "DashboardView",
   data() {
     return {
-      activeTab: "Books",
+      activeTab: "General",
     };
   },
   computed: {
@@ -78,6 +90,7 @@ export default {
     DashboardBooks,
     DashboardComments,
     DashboardRatings,
+    CompositionApi,
   },
 };
 </script>
