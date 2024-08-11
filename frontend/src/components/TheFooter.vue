@@ -8,15 +8,9 @@
   </footer>
 </template>
 
-<script>
-export default {
-  name: "TheFooter",
-  data() {
-    return {
-      year: new Date().getFullYear(),
-    };
-  },
-};
+<script setup>
+import { ref } from "vue";
+const year = ref(new Date().getFullYear());
 </script>
 
 <style scoped></style>

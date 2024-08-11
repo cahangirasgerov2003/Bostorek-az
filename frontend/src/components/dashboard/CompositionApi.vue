@@ -1,31 +1,23 @@
 <template>
-  <div class="d-flex justify-content-center gap-4">
-    <button @click="increment()" class="btn btn-success">Increment</button>
-    <p class="d-flex align-items-center mb-0">{{ count }}</p>
-    <button @click="decrement()" class="btn btn-danger">Decrement</button>
+  <div class="d-flex justify-content-center">
+    <p class="text-success fs-5">Mouse position is x : {{ x }}, y : {{ y }}</p>
   </div>
 </template>
-<script>
-import { ref } from "vue";
-export default {
-  setup() {
-    let count = ref(0);
+<script setup>
+import { ref, onMounted, onUnmounted } from "vue";
 
-    const increment = () => {
-      count.value = count.value + 1;
-    };
+let x = ref(0);
 
-    const decrement = () => {
-      count.value--;
-    };
+let y = ref(0);
 
-    return {
-      count,
-      increment,
-      decrement,
-    };
-  },
-};
+function updateCoordinates(event) {
+  x.value = event.pageX;
+  y.value = event.pageY;
+}
+
+onMounted(() => window.addEventListener("mousemove", updateCoordinates));
+
+onUnmounted(() => window.removeEventListener("mousemove", updateCoordinates));
 </script>
 
 <style scoped></style>
