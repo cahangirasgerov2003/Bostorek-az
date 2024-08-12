@@ -49,58 +49,53 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "TheCarusel",
-  data() {
-    return {
-      currentIndex: 0,
-      currentItem: null,
-      autoPlay: null,
-      autoPlayInterval: null,
-    };
+<script setup>
+import { ref } from "vue";
+const props = defineProps({
+  caruselItems: {
+    type: Array,
+    required: true,
   },
-  created() {
-    this.currentItem = this.caruselItems[0];
-    this.autoPlay = false;
+  height: {
+    type: String,
+    default: "100%",
   },
-  props: {
-    caruselItems: {
-      type: Array,
-      required: true,
-    },
-    height: {
-      type: String,
-      default: "100%",
-    },
-  },
-  methods: {
-    goNextItem() {
-      this.currentIndex = (this.currentIndex + 1) % this.caruselItems.length;
-      this.currentItem = this.caruselItems[this.currentIndex];
-    },
-    goPrevItem() {
-      if (this.currentIndex === 0)
-        this.currentIndex = this.caruselItems.length - 1;
-      this.currentIndex = this.currentIndex - 1;
+});
+const currentIndex = ref(0);
+const currentItem = ref(null);
+const autoPlay = ref(null);
+const autoPlayInterval = ref(null);
+currentItem.value = props.caruselItems[0];
+autoPlay.value = false;
 
-      this.currentItem = this.caruselItems[this.currentIndex];
-    },
-    autoPlayControl() {
-      this.autoPlay = !this.autoPlay;
-      this.startAutoPlay();
-    },
-    stopControl() {
-      this.autoPlay = !this.autoPlay;
-      clearInterval(this.autoPlayInterval);
-    },
-    startAutoPlay() {
-      this.autoPlayInterval = setInterval(() => {
-        this.currentIndex = (this.currentIndex + 1) % this.caruselItems.length;
-        this.currentItem = this.caruselItems[this.currentIndex];
-      }, 2000);
-    },
-  },
+const goNextItem = () => {
+  currentIndex.value = (currentIndex.value + 1) % props.caruselItems.length;
+  currentItem.value = props.caruselItems[currentIndex.value];
+};
+
+const goPrevItem = () => {
+  if (currentIndex.value === 0)
+    currentIndex.value = props.caruselItems.length - 1;
+  currentIndex.value = currentIndex.value - 1;
+
+  currentItem.value = props.caruselItems[currentIndex.value];
+};
+
+const startAutoPlay = () => {
+  autoPlayInterval.value = setInterval(() => {
+    currentIndex.value = (currentIndex.value + 1) % props.caruselItems.length;
+    currentItem.value = props.caruselItems[currentIndex.value];
+  }, 2000);
+};
+
+const autoPlayControl = () => {
+  autoPlay.value = !autoPlay.value;
+  startAutoPlay();
+};
+
+const stopControl = () => {
+  autoPlay.value = !autoPlay.value;
+  clearInterval(autoPlayInterval.value);
 };
 </script>
 

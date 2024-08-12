@@ -278,7 +278,7 @@
               "
               class="btn btn-primary btn-primary-custom w-100 py-2"
               @click="toggleEditMode"
-              v-if="!isLoading"
+              v-if="!authStore.isLoading"
             >
               {{ !dashboard ? "Submit" : editMode ? "Save" : "Edit" }}
             </button>
@@ -323,195 +323,177 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import { useAuthStore } from "@/stores/authStore.js";
 import { useUserStore } from "@/stores/userStore.js";
-import { mapState, mapActions } from "pinia";
 import { successAction } from "@/utility/index.js";
-export default {
-  name: "RegisterView",
-  data() {
-    return {
-      userData: {
+import { computed, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+const authStore = useAuthStore();
+const userStore = useUserStore();
+const router = useRouter();
+const props = defineProps({
+  dashboard: {
+    type: Boolean,
+    default: () => false,
+  },
+  userInfo: {
+    type: Object,
+    default: () => ({
+      userName: "",
+      email: "",
+      password: "",
+      gender: "",
+      bookGenres: ["Horror"],
+    }),
+  },
+});
+let userData = reactive({
+  userName: "",
+  email: "",
+  password: "",
+  gender: "",
+  bookGenres: ["Horror"],
+});
+let errors = reactive({
+  userName: {
+    error: false,
+    errorMessage: "Username must be between 3 and 9 characters !",
+    successMessage: "Looks good !",
+    focusedUserName: false,
+  },
+  email: {
+    error: false,
+    errorMessage: "Please provide a valid email !",
+    successMessage: "Looks good !",
+    focusedEmail: false,
+  },
+  password: {
+    error: false,
+    errorMessage: "Password must be between 4 and 10 characters !",
+    successMessage: "Looks good !",
+    focusedPassword: false,
+  },
+});
+
+const existingEmail = ref(null);
+const requestError = ref(false);
+const submitButton = ref(true);
+const editMode = ref(false);
+const otherError = ref(false);
+
+const submitForm = async () => {
+  try {
+    const result = await authStore.beRegister(userData);
+    console.log("response", result);
+    successAction(result);
+    submitButton.value = false;
+    setTimeout(() => {
+      router.push("/login");
+    }, 3500);
+  } catch (errorData) {
+    console.error("Error occurred when new user was created !", errorData);
+    if (errorData.error == "The user already exists !") {
+      existingEmail.value = userData.email;
+    } else {
+      requestError.value = true;
+      userData = {
         userName: "",
         email: "",
         password: "",
         gender: "",
-        bookGenres: ["Horror"],
-      },
-
-      errors: {
-        userName: {
-          error: false,
-          errorMessage: "Username must be between 3 and 9 characters !",
-          successMessage: "Looks good !",
-          focusedUserName: false,
-        },
-        email: {
-          error: false,
-          errorMessage: "Please provide a valid email !",
-          successMessage: "Looks good !",
-          focusedEmail: false,
-        },
-        password: {
-          error: false,
-          errorMessage: "Password must be between 4 and 10 characters !",
-          successMessage: "Looks good !",
-          focusedPassword: false,
-        },
-      },
-      existingEmail: null,
-      requestError: false,
-      submitButton: true,
-      editMode: false,
-      otherError: false,
-    };
-  },
-  props: {
-    dashboard: {
-      type: Boolean,
-      default: () => false,
-    },
-    userInfo: {
-      type: Object,
-      default: () => ({
-        userName: "",
-        email: "",
-        password: "",
-        gender: "",
-        bookGenres: ["Horror"],
-      }),
-    },
-  },
-  methods: {
-    ...mapActions(useAuthStore, ["beRegister", "logoutAccount"]),
-    ...mapActions(useUserStore, ["updateUserData"]),
-    async submitForm() {
-      try {
-        const result = await this.beRegister(this.userData);
-        console.log("response", result);
-        successAction(result);
-        this.submitButton = false;
-        setTimeout(() => {
-          this.$router.push("/login");
-        }, 3500);
-      } catch (errorData) {
-        console.error("Error occurred when new user was created !", errorData);
-        if (errorData.error == "The user already exists !") {
-          this.existingEmail = this.userData.email;
-        } else {
-          this.requestError = true;
-          this.userData = {
-            userName: "",
-            email: "",
-            password: "",
-            gender: "",
-            bookGenres: [],
-          };
-          this.errors.userName.error = false;
-          this.errors.email.error = false;
-          this.errors.password.error = false;
-        }
-      }
-    },
-
-    updateGender(gender) {
-      this.userData.gender = gender;
-    },
-
-    async saveUpdatedUserData() {
-      try {
-        const result = await this.updateUserData(this.userData);
-        console.log("response", result);
-        successAction(result);
-        this.submitButton = false;
-        setTimeout(() => {
-          this.logoutAccount();
-        }, 3500);
-      } catch (errorData) {
-        console.error(
-          "Error occurred when user details were updated !",
-          errorData
-        );
-
-        if (errorData.error == "Internal Server Error") {
-          this.requestError = true;
-        } else {
-          this.otherError = errorData.error;
-        }
-
-        this.userData = {
-          userName: "",
-          email: "",
-          password: "",
-          gender: "",
-          bookGenres: [],
-        };
-        this.errors.userName.error = false;
-        this.errors.email.error = false;
-        this.errors.password.error = false;
-      }
-    },
-
-    toggleEditMode() {
-      this.dashboard
-        ? !this.editMode
-          ? (this.editMode = !this.editMode)
-          : this.saveUpdatedUserData()
-        : "";
-    },
-
-    clearUpdatedUserData() {
-      this.editMode = false;
-      this.userData.userName = this.userInfo.userName;
-      this.userData.email = this.userInfo.email;
-      this.userData.password = "";
-      this.userData.bookGenres = this.userInfo.bookGenres;
-      this.errors.password.error = false;
-    },
-  },
-
-  computed: {
-    ...mapState(useAuthStore, ["isLoading"]),
-
-    isUserNameValid() {
-      const userNameLength = this.userData.userName.length;
-      return userNameLength >= 3 && userNameLength <= 9;
-    },
-
-    isEmailValid() {
-      return /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
-        this.userData.email
-      );
-    },
-
-    isPasswordValid() {
-      const passwordLength = this.userData.password?.length;
-      return passwordLength >= 4 && passwordLength <= 10;
-    },
-
-    isGenderValid() {
-      return this.userData.gender;
-    },
-
-    formIsValid() {
-      return (
-        this.isEmailValid &&
-        this.isGenderValid &&
-        this.isPasswordValid &&
-        this.isUserNameValid &&
-        this.submitButton
-      );
-    },
-  },
-
-  created() {
-    this.userData.userName = this.userInfo.userName;
-    this.userData.email = this.userInfo.email;
-    this.userData.bookGenres = this.userInfo.bookGenres;
-    this.userData.gender = this.userInfo.gender;
-  },
+        bookGenres: [],
+      };
+      errors.userName.error = false;
+      errors.email.error = false;
+      errors.password.error = false;
+    }
+  }
 };
+
+const updateGender = (gender) => {
+  userData.gender = gender;
+};
+
+const saveUpdatedUserData = async () => {
+  try {
+    const result = await userStore.updateUserData(userData);
+    console.log("response", result);
+    successAction(result);
+    submitButton.value = false;
+    setTimeout(() => {
+      authStore.logoutAccount();
+    }, 3500);
+  } catch (errorData) {
+    console.error("Error occurred when user details were updated !", errorData);
+
+    if (errorData.error == "Internal Server Error") {
+      requestError.value = true;
+    } else {
+      otherError.value = errorData.error;
+    }
+
+    userData = {
+      userName: "",
+      email: "",
+      password: "",
+      gender: "",
+      bookGenres: [],
+    };
+    errors.userName.error = false;
+    errors.email.error = false;
+    errors.password.error = false;
+  }
+};
+
+const toggleEditMode = () => {
+  props.dashboard
+    ? !editMode.value
+      ? (editMode.value = !editMode.value)
+      : saveUpdatedUserData()
+    : "";
+};
+
+const clearUpdatedUserData = () => {
+  editMode.value = false;
+  userData.userName = props.userInfo.userName;
+  userData.email = props.userInfo.email;
+  userData.password = "";
+  userData.bookGenres = props.userInfo.bookGenres;
+  errors.password.error = false;
+};
+
+userData.userName = props.userInfo.userName;
+userData.email = props.userInfo.email;
+userData.bookGenres = props.userInfo.bookGenres;
+userData.gender = props.userInfo.gender;
+
+const isUserNameValid = computed(() => {
+  const userNameLength = userData.userName.length;
+  return userNameLength >= 3 && userNameLength <= 9;
+});
+
+const isEmailValid = computed(() =>
+  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
+    userData.email
+  )
+);
+
+const isPasswordValid = computed(() => {
+  const passwordLength = userData.password?.length;
+  return passwordLength >= 4 && passwordLength <= 10;
+});
+
+const isGenderValid = computed(() => userData.gender);
+
+const formIsValid = computed(
+  () =>
+    isEmailValid &&
+    isGenderValid &&
+    isPasswordValid &&
+    isUserNameValid &&
+    submitButton.value
+);
 </script>
 
 <style scoped>

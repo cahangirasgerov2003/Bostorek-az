@@ -32,26 +32,24 @@
   </nav>
 </template>
 
-<script>
-export default {
-  name: "ThePagination",
-  emits: ["changePage"],
-  props: {
-    current: {
-      type: Number,
-      required: true,
-    },
-    pages: {
-      type: Number,
-      required: true,
-    },
+<script setup>
+const emit = defineEmits(["changePage"]);
+const props = defineProps({
+  current: {
+    type: Number,
+    required: true,
   },
-  methods: {
-    goToPage(pageNumber) {
-      this.$emit("changePage", pageNumber);
-    },
+  pages: {
+    type: Number,
+    required: true,
   },
-};
+});
+
+console.log(props.pages);
+
+function goToPage(pageNumber) {
+  emit("changePage", pageNumber);
+}
 </script>
 
 <style scoped>

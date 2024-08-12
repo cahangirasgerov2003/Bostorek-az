@@ -23,11 +23,11 @@
       </div>
     </div>
     <span
-      :class="compareRatings"
+      :class="compareRatingsFunc"
       class="position-absolute top-0 start-100 translate-middle ratingStyle"
-      v-if="!isLoading"
+      v-if="!ratingStore.isLoading"
     >
-      {{ this.averageRatings }}
+      {{ averageRatingsFunc }}
     </span>
     <span
       class="position-absolute top-0 start-100 translate-middle ratingStyle"
@@ -44,41 +44,29 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { RouterLink } from "vue-router";
 import { useRatingStore } from "@/stores/ratingStore";
-import { mapState } from "pinia";
 import { averageRatings, compareRatings } from "@/utility/index.js";
-
-export default {
-  name: "Book",
-  props: {
-    book: {
-      type: Object,
-      default: () => {},
-    },
+import { computed } from "vue";
+const ratingStore = useRatingStore();
+const props = defineProps({
+  book: {
+    type: Object,
+    default: () => {},
   },
-  // CAMPUTED PROPS
-  computed: {
-    ...mapState(useRatingStore, ["isLoading"]),
-    averageRatings() {
-      return averageRatings(this.book);
-    },
+});
 
-    compareRatings() {
-      return compareRatings(this.book);
-    },
+const averageRatingsFunc = computed(() => averageRatings(props.book));
 
-    formattedText() {
-      return this.book.description.length > 80
-        ? this.book.description.slice(0, 77) + "..."
-        : this.book.description;
-    },
-  },
-  components: { RouterLink },
-};
+const compareRatingsFunc = computed(() => compareRatings(props.book));
+
+const formattedText = computed(() =>
+  props.book.description.length > 80
+    ? props.book.description.slice(0, 77) + "..."
+    : props.book.description
+);
 </script>
-
 <style scoped>
 .book_author {
   position: absolute;
