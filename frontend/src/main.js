@@ -91,7 +91,11 @@ axios.interceptors.response.use(
   (error) => {
     console.log("error.response", error.response);
     // İsteğin başarısız olması durumunda buraya düşeriz
-    if (error.response && error.response.status === 401) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      error.response.data.message === "Token expired"
+    ) {
       //  401 type error time toast message
       errorAction("Your token has expired, forwarding login page !");
 

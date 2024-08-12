@@ -5,14 +5,16 @@ const authorizationUser = async (req, res, next) => {
   const authorizationToken = req.headers.authorization;
 
   if (!authorizationToken)
-    return res.status(401).json({ error: "Authorization token is missing !" });
+    return res.status(401).json({
+      error: "Authorization token is missing !",
+    });
 
   const tokenArray = authorizationToken.split(" ");
 
   if (tokenArray.length !== 2 || tokenArray[0] !== "Bearer")
-    return res
-      .status(401)
-      .json({ error: "Token generation is not correct or not supported" });
+    return res.status(401).json({
+      error: "Token generation is not correct or not supported !",
+    });
 
   const jwtToken = tokenArray[1];
 
@@ -30,9 +32,10 @@ const authorizationUser = async (req, res, next) => {
       error
     );
     if (error.name === "TokenExpiredError") {
-      return res
-        .status(401)
-        .json({ error: "Token expired. Please re-authenticate !" });
+      return res.status(401).json({
+        error: "Token expired. Please re-authenticate !",
+        message: "Token expired",
+      });
     } else {
       return res.status(500).json({ error: "Internal Server Error !" });
     }
