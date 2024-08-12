@@ -31,7 +31,7 @@
           <CommentsCarusel />
         </div>
 
-        <div v-if="isLoggedIn">
+        <div v-if="authStore.isLoggedIn">
           <!-- Rate section -->
           <RateSection :getParamsId="getParamsId" />
 
@@ -57,57 +57,39 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import TheHeading from "@/components/TheHeading.vue";
 import AddCommentSection from "@/components/bookDetail/AddCommentSection.vue";
 import RateSection from "@/components/bookDetail/RateSection.vue";
 import AboutBookTable from "@/components/bookDetail/AboutBookTable.vue";
 import CommentsCarusel from "@/components/bookDetail/CommentsCarusel.vue";
 import { RouterLink } from "vue-router";
-import { useBookStore } from "../stores/bookStore.js";
-import { useAuthStore } from "../stores/authStore.js";
-import { useCommentStore } from "../stores/commentStore.js";
-import { useRatingStore } from "../stores/ratingStore.js";
-import { mapState, mapActions } from "pinia";
-export default {
-  name: "BookDetailView",
-  data() {
-    return {
-      title: "Book Detail",
-      desc: "About the book of",
-      book: null,
-    };
-  },
-  components: {
-    TheHeading,
-    RouterLink,
-    AddCommentSection,
-    RateSection,
-    AboutBookTable,
-    CommentsCarusel,
-  },
-  created() {
-    const bookId = this.getParamsId;
+import { useBookStore } from "@/stores/bookStore.js";
+import { useAuthStore } from "@/stores/authStore.js";
+import { useCommentStore } from "@/stores/commentStore.js";
+import { useRatingStore } from "@/stores/ratingStore.js";
+import { ref, computed } from "vue";
+import { useRoute } from "vue-router";
 
-    this.book = this.selectABook(bookId);
+const bookStore = useBookStore();
+const authStore = useAuthStore();
+const commentStore = useCommentStore();
+const ratingStore = useRatingStore();
+const route = useRoute();
 
-    this.fetchCommentsForBook(bookId);
+const title = "Book Detail";
+const desc = "About the book of";
+const book = ref(null);
 
-    this.fetchRatingsForBook(bookId);
-  },
-  methods: {
-    ...mapActions(useCommentStore, ["fetchCommentsForBook"]),
-    ...mapActions(useRatingStore, ["fetchRatingsForBook"]),
-  },
-  computed: {
-    ...mapState(useBookStore, ["selectABook"]),
-    ...mapState(useAuthStore, ["isLoggedIn"]),
+const getParamsId = computed(() => route.params.id);
 
-    getParamsId() {
-      return this.$route.params.id;
-    },
-  },
-};
+const bookId = getParamsId.value;
+
+book.value = bookStore.selectABook(bookId);
+
+commentStore.fetchCommentsForBook(bookId);
+
+ratingStore.fetchRatingsForBook(bookId);
 </script>
 
 <style scoped>
