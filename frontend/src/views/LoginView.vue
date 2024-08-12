@@ -123,7 +123,7 @@
               :disabled="!formIsValid"
               type="submit"
               class="btn btn-primary btn-primary-custom w-100 py-2"
-              v-if="!isLoading"
+              v-if="!authStore.isLoading"
             >
               Submit
             </button>
@@ -155,88 +155,82 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import { useAuthStore } from "@/stores/authStore.js";
-import { mapState, mapActions } from "pinia";
 import { successAction } from "@/utility/index.js";
-export default {
-  name: "LoginView",
-  data() {
-    return {
-      userData: {
-        email: "",
-        password: "",
-      },
-      errors: {
-        email: {
-          error: false,
-          errorMessage: "Please provide a valid email !",
-          successMessage: "Looks good !",
-          focusedEmail: false,
-        },
-        password: {
-          error: false,
-          errorMessage: "Password must be between 4 and 10 characters !",
-          successMessage: "Looks good !",
-          focusedPassword: false,
-        },
-      },
-      inCorrectEmail: null,
-      wrongPasswordEntered: false,
-      requestError: false,
-      submitButton: true,
-    };
+import { ref, computed, reactive } from "vue";
+import { useRouter } from "vue-router";
+const userData = reactive({
+  email: "",
+  password: "",
+});
+const errors = reactive({
+  email: {
+    error: false,
+    errorMessage: "Please provide a valid email !",
+    successMessage: "Looks good !",
+    focusedEmail: false,
   },
-  methods: {
-    ...mapActions(useAuthStore, ["beLogin"]),
-    async submitForm() {
-      try {
-        const result = await this.beLogin(this.userData);
-        console.log("response", result);
-        successAction(result);
-        this.submitButton = false;
-        setTimeout(() => {
-          this.$router.push("/dashboard");
-        }, 3500);
-      } catch (errorData) {
-        console.error("An error occurred when logging in !", errorData);
-        if (errorData.error === "User not found !") {
-          this.inCorrectEmail = this.userData.email;
-        } else if (
-          errorData.error === "The password you entered is not correct !"
-        ) {
-          this.wrongPasswordEntered = true;
-        } else {
-          this.requestError = true;
-          this.userData = {
-            email: "",
-            password: "",
-          };
-          this.errors.email.error = false;
-          this.errors.password.error = false;
-        }
-      }
-    },
+  password: {
+    error: false,
+    errorMessage: "Password must be between 4 and 10 characters !",
+    successMessage: "Looks good !",
+    focusedPassword: false,
   },
+});
 
-  computed: {
-    ...mapState(useAuthStore, ["isLoading"]),
-    isEmailValid() {
-      return /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
-        this.userData.email
-      );
-    },
+const inCorrectEmail = ref(null);
+const wrongPasswordEntered = ref(false);
+const requestError = ref(false);
+const submitButton = ref(true);
 
-    isPasswordValid() {
-      const passwordLength = this.userData.password.length;
-      return passwordLength >= 4 && passwordLength <= 10;
-    },
+const authStore = useAuthStore();
 
-    formIsValid() {
-      return this.isEmailValid && this.isPasswordValid && this.submitButton;
-    },
-  },
+const router = useRouter();
+
+const submitForm = async () => {
+  try {
+    const result = await authStore.beLogin(userData);
+    console.log("response", result);
+    successAction(result);
+    submitButton.value = false;
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 3500);
+  } catch (errorData) {
+    console.error("An error occurred when logging in !", errorData);
+    if (errorData.error === "User not found !") {
+      inCorrectEmail.value = userData.email;
+    } else if (
+      errorData.error === "The password you entered is not correct !"
+    ) {
+      wrongPasswordEntered.value = true;
+    } else {
+      requestError.value = true;
+      // Burda ya let userData yazacaqsan
+      // ve ya icindekileri bir-bir deyiseceksen
+      userData.email = "";
+      userData.password = "";
+      errors.email.error = false;
+      errors.password.error = false;
+    }
+  }
 };
+
+const isEmailValid = computed(() =>
+  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
+    userData.email
+  )
+);
+
+const isPasswordValid = computed(() => {
+  const passwordLength = userData.password.length;
+  return passwordLength >= 4 && passwordLength <= 10;
+});
+
+const formIsValid = computed(
+  () => isEmailValid.value && isPasswordValid.value && submitButton.value
+);
 </script>
 
 <style scoped></style>

@@ -30,7 +30,7 @@
         <div class="tab-pane fade" :class="controlActiveTab('General')">
           <div class="row">
             <div class="col-lg-6">
-              <RegisterView :dashboard="true" :userInfo="user" />
+              <RegisterView :dashboard="true" :userInfo="authStore.user" />
             </div>
             <div class="col-lg-6"></div>
           </div>
@@ -51,35 +51,18 @@
     </div>
   </section>
 </template>
-<script>
+<script setup>
 import { useAuthStore } from "@/stores/authStore.js";
-import { mapState } from "pinia";
 import RegisterView from "./RegisterView.vue";
 import DashboardBooks from "@/components/dashboard/DashboardBooks.vue";
 import DashboardComments from "@/components/dashboard/DashboardComments.vue";
 import DashboardRatings from "@/components/dashboard/DashboardRatings.vue";
-export default {
-  name: "DashboardView",
-  data() {
-    return {
-      activeTab: "General",
-    };
-  },
-  computed: {
-    ...mapState(useAuthStore, ["user"]),
-  },
-  methods: {
-    controlActiveTab(tabName) {
-      if (this.activeTab === tabName) return "show active";
-    },
-  },
-  components: {
-    RegisterView,
-    DashboardBooks,
-    DashboardComments,
-    DashboardRatings,
-  },
-};
+import { ref } from "vue";
+const activeTab = ref("General");
+const authStore = useAuthStore();
+function controlActiveTab(tabName) {
+  if (activeTab.value === tabName) return "show active";
+}
 </script>
 
 <style scoped>
