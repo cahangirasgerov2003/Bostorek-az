@@ -46,14 +46,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ContactUsForm",
-  data() {
-    return {};
-  },
-};
-</script>
+<script setup></script>
 
 <style scoped>
 .blackBg {

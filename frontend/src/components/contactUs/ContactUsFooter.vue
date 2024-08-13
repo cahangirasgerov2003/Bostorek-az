@@ -54,16 +54,21 @@
         </div>
       </div>
     </div>
+    <div
+      style="height: 200px; font-size: 20px"
+      class="d-flex align-items-center justify-content-center bg-white"
+    >
+      <p class="text-success">
+        The coordinates of the mouse are x : {{ x }}, y : {{ y }}
+      </p>
+    </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "ContactUsFooter",
-  data() {
-    return {};
-  },
-};
+<script setup>
+import useMouse from "@/utility/mouse.js";
+
+const { x, y } = useMouse();
 </script>
 
 <style scoped>
