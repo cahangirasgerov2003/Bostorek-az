@@ -35,7 +35,7 @@
               rows="6"
               placeholder="Message"
               autocomplete="off"
-              maxlength="100"
+              maxlength="500"
               required
               v-model.trim="formData.message"
             ></textarea>
@@ -54,11 +54,8 @@
             >
               Send
             </button>
-            <button
-              type="submit"
-              class="btn btn-primary btn-primary-custom w-100 py-2"
-              v-else
-            >
+
+            <button class="btn fw-bold sendButton text-uppercase mt-5" v-else>
               <font-awesome-icon
                 icon="circle-notch"
                 spin-pulse
@@ -97,7 +94,7 @@ const isEmailValid = () => {
 };
 
 const isMessageValid = () => {
-  return formData.message.length <= 100;
+  return formData.message.length > 0 && formData.message.length <= 500;
 };
 
 const isLoading = computed(() => contactStore.isLoading);
@@ -197,6 +194,10 @@ textarea.mailText {
 @media only screen and (max-width: 575px) {
   .titleContent {
     font-size: 20px;
+  }
+
+  .sendButton {
+    width: 100%;
   }
 }
 </style>

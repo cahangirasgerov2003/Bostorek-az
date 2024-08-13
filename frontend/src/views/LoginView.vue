@@ -128,7 +128,7 @@
               Submit
             </button>
             <button
-              type="submit"
+              type="button"
               class="btn btn-primary btn-primary-custom w-100 py-2"
               v-else
             >
