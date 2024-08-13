@@ -4,6 +4,7 @@ import auth from "./routes/auth.js";
 import user from "./routes/user.js";
 import comment from "./routes/comment.js";
 import rating from "./routes/rating.js";
+import contact from "./routes/contact.js";
 import connectDb from "./config/db.js";
 import cors from "cors";
 
@@ -29,6 +30,8 @@ app.use("/api/v1/user", user);
 app.use("/api/v1/comments", comment);
 
 app.use("/api/v1/ratings", rating);
+
+app.use("/api/v1/contact", contact);
 
 try {
   await connectDb();

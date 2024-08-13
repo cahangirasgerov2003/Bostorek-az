@@ -14,6 +14,13 @@
       <div class="row">
         <div class="col-md-6 d-flex flex-column align-items-end">
           <div class="mailBox">
+            <div class="row justify-content-center mb-3" v-if="requestError">
+              <div class="col-lg-6 text-center">
+                <span class="text-danger ms-2" style="font-weight: 500">{{
+                  requestError
+                }}</span>
+              </div>
+            </div>
             <input
               type="text"
               class="form-control form-control-custom2 mailText"
@@ -21,6 +28,7 @@
               placeholder="Email"
               autocomplete="off"
               required
+              v-model.trim="formData.email"
             />
             <textarea
               class="form-control form-control-custom2 mailText"
@@ -29,10 +37,33 @@
               autocomplete="off"
               maxlength="100"
               required
+              v-model.trim="formData.message"
             ></textarea>
 
-            <button class="btn mt-5 fw-bold sendButton text-uppercase">
+            <div class="mt-3 ms-1" v-if="errorForm">
+              <small style="color: rgb(209, 85, 85); font-size: 16px">{{
+                errorForm
+              }}</small>
+            </div>
+
+            <button
+              :class="errorForm ? 'mt-4' : 'mt-5'"
+              class="btn fw-bold sendButton text-uppercase"
+              @click="sendMessage()"
+              v-if="!isLoading"
+            >
               Send
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary btn-primary-custom w-100 py-2"
+              v-else
+            >
+              <font-awesome-icon
+                icon="circle-notch"
+                spin-pulse
+                style="font-size: 20px"
+              />
             </button>
           </div>
         </div>
@@ -46,7 +77,51 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, reactive, computed } from "vue";
+import { useContactStore } from "@/stores/contactStore.js";
+import { successAction } from "@/utility/index.js";
+const formData = reactive({
+  email: "",
+  message: "",
+});
+
+const errorForm = ref(null);
+const contactStore = useContactStore();
+const requestError = ref(null);
+
+const isEmailValid = () => {
+  return /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(
+    formData.email
+  );
+};
+
+const isMessageValid = () => {
+  return formData.message.length <= 100;
+};
+
+const isLoading = computed(() => contactStore.isLoading);
+
+const sendMessage = async () => {
+  if (isEmailValid() && isMessageValid()) {
+    errorForm.value = null;
+
+    // REQUEST
+    try {
+      const result = await contactStore.sendMessage(formData);
+      successAction(result);
+    } catch (errorData) {
+      console.error("An error occurred while sending the message !", errorData);
+      requestError.value = errorData.error;
+    }
+
+    formData.email = "";
+    formData.message = "";
+  } else {
+    errorForm.value = "Check the form and try again !";
+  }
+};
+</script>
 
 <style scoped>
 .blackBg {
@@ -64,7 +139,7 @@
 }
 
 .mailText {
-  color: #989999;
+  color: #524f4f;
   padding: 20px;
 }
 
@@ -92,7 +167,7 @@ textarea.mailText {
   padding: 10px 40px;
   font-size: 16px;
   border-radius: 40px;
-  border: 1px solid white;
+  border: 2px solid white;
 }
 
 .sendButton:hover {
