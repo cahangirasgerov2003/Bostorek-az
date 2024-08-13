@@ -3,7 +3,7 @@
     <h2 class="fw-bold mb-3">
       {{ title }}
     </h2>
-    <p style="font-size: 18px; margin-bottom: 4px">
+    <p style="font-size: 18px; margin-bottom: 4px" class="bookDescription">
       {{ desc }}
     </p>
   </div>
@@ -25,4 +25,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+@media only screen and (max-width: 767px) {
+  .bookDescription {
+    text-align: center;
+  }
+}
+</style>

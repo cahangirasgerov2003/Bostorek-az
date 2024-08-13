@@ -17,7 +17,7 @@
             >
               {{ currentItem.subtitle }}
             </h4>
-            <h5 class="mb-3" style="font-size: 46px">
+            <h5 class="mb-3 caruselTitle">
               {{ currentItem.title }}
             </h5>
             <p class="lead">{{ currentItem.description }}</p>
@@ -154,5 +154,15 @@ const stopControl = () => {
 
 .fade-enter-active {
   transition: opacity 0.5s linear;
+}
+
+.caruselTitle {
+  font-size: 46px;
+}
+
+@media only screen and (max-width: 575px) {
+  .caruselTitle {
+    font-size: 35px;
+  }
 }
 </style>

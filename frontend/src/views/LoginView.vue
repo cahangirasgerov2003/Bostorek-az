@@ -191,7 +191,6 @@ const router = useRouter();
 const submitForm = async () => {
   try {
     const result = await authStore.beLogin(userData);
-    console.log("response", result);
     successAction(result);
     submitButton.value = false;
     setTimeout(() => {

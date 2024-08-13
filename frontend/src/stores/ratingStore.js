@@ -19,8 +19,6 @@ export const useRatingStore = defineStore("ratingStore", {
             "http://localhost:3000/api/v1/ratings"
           );
 
-          console.log("Fetch all ratings result:", response.data.ratings);
-
           this.ratings = response.data.ratings;
           this.requestRatings = true;
           return response;
@@ -38,8 +36,6 @@ export const useRatingStore = defineStore("ratingStore", {
           "http://localhost:3000/api/v1/ratings",
           newRating
         );
-
-        console.log("result", response);
 
         this.ratingsForBook.push(response.data.rating);
         this.ratingsByUser.push(response.data.rating);
@@ -59,8 +55,6 @@ export const useRatingStore = defineStore("ratingStore", {
         const response = await axios.get(
           `http://localhost:3000/api/v1/ratings/book/${bookId}`
         );
-
-        console.log("result", response);
         this.ratingsForBook = response.data.ratings;
         return response;
       } catch (error) {
@@ -82,7 +76,6 @@ export const useRatingStore = defineStore("ratingStore", {
             `http://localhost:3000/api/v1/ratings/user/${userId}`
           );
 
-          console.log("result", response);
           this.ratingsByUser = response.data.ratings;
           this.requestRatingsByUser = true;
           return response;
@@ -104,8 +97,6 @@ export const useRatingStore = defineStore("ratingStore", {
           `http://localhost:3000/api/v1/ratings/${ratingId}`,
           ratingData
         );
-
-        console.log(response, "response:::");
 
         this.ratingsByUser = this.ratingsByUser.map((item) =>
           item._id === ratingId ? { ...item, rating: ratingData.rating } : item

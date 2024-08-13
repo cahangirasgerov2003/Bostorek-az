@@ -45,8 +45,6 @@ const props = defineProps({
   },
 });
 
-console.log(props.pages);
-
 function goToPage(pageNumber) {
   emit("changePage", pageNumber);
 }

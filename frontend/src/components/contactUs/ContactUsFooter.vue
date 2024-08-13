@@ -2,35 +2,37 @@
   <div class="bg-black">
     <div class="followBg">
       <div class="container">
-        <div class="row">
-          <div class="col-12 mb-4">
-            <h3 class="followText text-center text-uppercase">FOLLOW NOW</h3>
+        <div class="row d-flex justify-content-center">
+          <div class="col-12 mb-5">
+            <h3 class="followText text-center text-uppercase mb-0">
+              FOLLOW NOW
+            </h3>
           </div>
           <div class="col-12 socialIcon d-flex justify-content-center">
-            <ul class="d-flex">
-              <li>
+            <ul class="socialList">
+              <li class="mx-3">
                 <a
                   href="https://www.linkedin.com/in/cahangir-asgerov-07258a252/"
                   title="Linkedin"
                   target="_blank"
-                  ><img alt="linkedin" src="@/assets/images/linkedin.webp"
-                /></a>
+                  >Linkedin</a
+                >
               </li>
-              <li>
+              <li class="mx-5">
                 <a
                   href="https://github.com/cahangirasgerov2003"
                   title="Github"
                   target="_blank"
-                  ><img alt="gitHub" src="@/assets/images/gitHub.png"
-                /></a>
+                  >Github</a
+                >
               </li>
-              <li>
+              <li class="mx-3">
                 <a
                   href="https://www.instagram.com/_cahangir.asgerov/"
                   title="Instagram"
                   target="_blank"
-                  ><img alt="instagram" src="@/assets/images/instagram.webp"
-                /></a>
+                  >Instagram</a
+                >
               </li>
             </ul>
           </div>
@@ -44,32 +46,20 @@
                 icon="fa-solid fa-envelope-open-text"
                 size="lg"
               />
-              <p class="iconText">cahangirsgrli46@gmail.com</p>
+              <p class="iconText">xxxxxxxxxxx@gmail.com</p>
             </div>
             <div class="col-md-4 iconBox">
               <font-awesome-icon icon="fa-solid fa-phone" size="lg" />
-              <p class="iconText">050 349 ** **</p>
+              <p class="iconText">*** *** ** **</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div
-      style="height: 200px; font-size: 20px"
-      class="d-flex align-items-center justify-content-center bg-white"
-    >
-      <p class="text-success">
-        The coordinates of the mouse are x : {{ x }}, y : {{ y }}
-      </p>
-    </div>
   </div>
 </template>
 
-<script setup>
-import useMouse from "@/utility/mouse.js";
-
-const { x, y } = useMouse();
-</script>
+<script setup></script>
 
 <style scoped>
 .followBg {
@@ -83,13 +73,14 @@ const { x, y } = useMouse();
   color: #080807;
   font: bolder 24px "sans-serif";
 }
-
-.socialIcon ul li {
-  margin: 0 10px;
+.socialIcon ul li a {
+  color: #063547;
+  font-size: 18px;
+  transition: color 0.5s;
 }
 
-.socialIcon ul li a img {
-  width: 35px;
+.socialIcon ul li a:hover {
+  color: var(--secondary-color);
 }
 
 .iconBox {
@@ -102,6 +93,10 @@ const { x, y } = useMouse();
   margin-bottom: 0;
 }
 
+.socialList {
+  display: flex;
+}
+
 @media only screen and (max-width: 991px) {
   .followBg {
     background-image: none;
@@ -111,6 +106,16 @@ const { x, y } = useMouse();
 
 @media only screen and (max-width: 767px) {
   .iconBox:not(:last-child) {
+    margin-bottom: 15px;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .socialList {
+    flex-direction: column;
+    align-items: center;
+  }
+  .socialIcon ul li:not(:last-child) {
     margin-bottom: 15px;
   }
 }

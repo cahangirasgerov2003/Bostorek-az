@@ -45,7 +45,7 @@ export default {
       title: "Books Categories",
       desc: " There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration",
       current: 1,
-      perPage: 3,
+      perPage: 4,
     };
   },
   // Computed props

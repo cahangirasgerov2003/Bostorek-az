@@ -192,7 +192,6 @@ export default {
     ]),
 
     async removeARating(ratingId, bookName) {
-      console.log(ratingId, bookName);
       try {
         await this.deleteARating(ratingId);
         warningAction(`Rating for ${bookName} has been deleted !`);
@@ -215,7 +214,6 @@ export default {
           return;
         }
         const result = await this.editTheRating(this.ratingData, this.ratingId);
-        console.log("response edit rating", result);
         successAction(result);
         this.modal.hide();
       } catch (errorData) {

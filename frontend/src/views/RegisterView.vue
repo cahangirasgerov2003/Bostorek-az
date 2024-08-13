@@ -385,7 +385,6 @@ const otherError = ref(false);
 const submitForm = async () => {
   try {
     const result = await authStore.beRegister(userData);
-    console.log("response", result);
     successAction(result);
     submitButton.value = false;
     setTimeout(() => {
@@ -418,7 +417,6 @@ const updateGender = (gender) => {
 const saveUpdatedUserData = async () => {
   try {
     const result = await userStore.updateUserData(userData);
-    console.log("response", result);
     successAction(result);
     submitButton.value = false;
     setTimeout(() => {

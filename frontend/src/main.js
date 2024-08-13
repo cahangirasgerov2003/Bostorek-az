@@ -85,7 +85,7 @@ const userData = JSON.parse(localStorage.getItem("user"));
 axios.interceptors.response.use(
   (response) => {
     // İsteğin başarılı olması durumunda buraya düşeriz
-    console.log("Response received:", response.data);
+    // console.log("Response received:", response.data);
     return response;
   },
   (error) => {

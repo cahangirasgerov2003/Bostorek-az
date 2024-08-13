@@ -197,7 +197,6 @@ export default {
       "editTheComment",
     ]),
     async removeAComment(commentId, bookName) {
-      console.log(commentId, bookName);
       try {
         await this.deleteAComment(commentId);
         warningAction(`Comment for ${bookName} has been deleted !`);
@@ -226,7 +225,6 @@ export default {
           this.commentData,
           this.commentId
         );
-        console.log("response edit book", result);
         successAction(result);
         this.modal.hide();
       } catch (errorData) {

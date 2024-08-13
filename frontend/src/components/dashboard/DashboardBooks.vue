@@ -132,7 +132,6 @@ const clearForm = () => {
 const addABook = async () => {
   try {
     const result = await bookStore.createNewBook(bookData);
-    console.log("response add book", result);
     current.value = 1;
     successAction(result);
     modalHide();
@@ -147,7 +146,6 @@ const addABook = async () => {
 const editABook = async () => {
   try {
     const result = await bookStore.editTheBook(bookData, editedBookId.value);
-    console.log("response edit book", result);
     successAction(result);
 
     modalInstance.value && modalInstance.value.hide();

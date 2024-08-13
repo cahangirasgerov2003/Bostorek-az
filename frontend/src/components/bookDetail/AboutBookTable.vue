@@ -85,4 +85,10 @@ export default {
   width: calc(100% - 12px);
   border-bottom: 1px solid rgba(195, 192, 192, 0.523);
 }
+
+@media only screen and (max-width: 991px) {
+  .bookStatic {
+    text-align: center;
+  }
+}
 </style>

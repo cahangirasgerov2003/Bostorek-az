@@ -24,13 +24,13 @@
     </div>
     <span
       :class="compareRatingsFunc"
-      class="position-absolute top-0 start-100 translate-middle ratingStyle"
+      class="translate-middle ratingStyle"
       v-if="!ratingStore.isLoading"
     >
       {{ averageRatingsFunc }}
     </span>
     <span
-      class="position-absolute top-0 start-100 translate-middle ratingStyle"
+      class="translate-middle ratingStyle"
       style="background-color: white"
       v-else
     >
@@ -98,6 +98,9 @@ const formattedText = computed(() =>
   color: white;
   border: 4px solid white;
   border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 100%;
 }
 
 .card-title {
@@ -110,6 +113,12 @@ const formattedText = computed(() =>
 @media only screen and (max-width: 991px) {
   .book_author {
     left: 8px;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .ratingStyle {
+    left: calc(0% + 24px);
   }
 }
 </style>

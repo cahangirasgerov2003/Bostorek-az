@@ -16,9 +16,6 @@ export const useCommentStore = defineStore("commentStore", {
         const response = await axios.get(
           "http://localhost:3000/api/v1/comments"
         );
-
-        console.log("Fetch all comments result:", response.data.comments);
-
         this.comments = response.data.comments;
         return response;
       } catch (error) {
@@ -34,9 +31,6 @@ export const useCommentStore = defineStore("commentStore", {
           "http://localhost:3000/api/v1/comments",
           newComment
         );
-
-        console.log("result", response);
-
         this.commentsForBook.push(response.data.comment);
         this.commentsByUser.push(response.data.comment);
         this.comments.push(response.data.comment);
@@ -58,8 +52,6 @@ export const useCommentStore = defineStore("commentStore", {
         const response = await axios.get(
           `http://localhost:3000/api/v1/comments/book/${bookId}`
         );
-
-        console.log("result", response);
         this.commentsForBook = response.data.comments;
         return response;
       } catch (error) {
@@ -80,8 +72,6 @@ export const useCommentStore = defineStore("commentStore", {
           const response = await axios.get(
             `http://localhost:3000/api/v1/comments/user/${userId}`
           );
-
-          console.log("result", response);
           this.commentsByUser = response.data.comments;
           this.requestCommentsByUser = true;
           return response;
@@ -122,9 +112,6 @@ export const useCommentStore = defineStore("commentStore", {
           `http://localhost:3000/api/v1/comments/${commentId}`,
           commentData
         );
-
-        console.log(response, "response:::");
-
         this.commentsByUser = this.commentsByUser.map((comment) =>
           comment._id === commentId
             ? { ...comment, content: commentData.content }
@@ -149,9 +136,6 @@ export const useCommentStore = defineStore("commentStore", {
         const response = await axios.post(
           `http://localhost:3000/api/v1/comments/${commentId}/upvote`
         );
-
-        console.log("result upvote", response);
-
         const updatedComment = response.data.comment;
 
         const commentIndex = this.commentsForBook.findIndex(
@@ -178,8 +162,6 @@ export const useCommentStore = defineStore("commentStore", {
         const response = await axios.post(
           `http://localhost:3000/api/v1/comments/${commentId}/cancelUpvote`
         );
-
-        console.log("result cancel upvote", response);
 
         const updatedComment = response.data.comment;
 
