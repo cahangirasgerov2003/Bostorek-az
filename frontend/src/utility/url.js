@@ -1,3 +1,3 @@
-const returnUrl = "http://localhost:3000";
+const returnUrl = "https://bostorek-az-backend.onrender.com";
 
 export { returnUrl };
