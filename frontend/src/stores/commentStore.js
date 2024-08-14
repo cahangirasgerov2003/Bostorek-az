@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { returnUrl } from "@/utility/url.js";
 
 export const useCommentStore = defineStore("commentStore", {
   state: () => ({
@@ -13,9 +14,7 @@ export const useCommentStore = defineStore("commentStore", {
     async fetchComments() {
       try {
         this.isLoading = true;
-        const response = await axios.get(
-          "http://localhost:3000/api/v1/comments"
-        );
+        const response = await axios.get(`${returnUrl}/api/v1/comments`);
         this.comments = response.data.comments;
         return response;
       } catch (error) {
@@ -28,7 +27,7 @@ export const useCommentStore = defineStore("commentStore", {
       try {
         this.isLoading = true;
         const response = await axios.post(
-          "http://localhost:3000/api/v1/comments",
+          `${returnUrl}/api/v1/comments`,
           newComment
         );
         this.commentsForBook.push(response.data.comment);
@@ -50,7 +49,7 @@ export const useCommentStore = defineStore("commentStore", {
       try {
         this.isLoading = true;
         const response = await axios.get(
-          `http://localhost:3000/api/v1/comments/book/${bookId}`
+          `${returnUrl}/api/v1/comments/book/${bookId}`
         );
         this.commentsForBook = response.data.comments;
         return response;
@@ -70,7 +69,7 @@ export const useCommentStore = defineStore("commentStore", {
         if (this.requestCommentsByUser === false) {
           this.isLoading = true;
           const response = await axios.get(
-            `http://localhost:3000/api/v1/comments/user/${userId}`
+            `${returnUrl}/api/v1/comments/user/${userId}`
           );
           this.commentsByUser = response.data.comments;
           this.requestCommentsByUser = true;
@@ -89,9 +88,7 @@ export const useCommentStore = defineStore("commentStore", {
 
     async deleteAComment(commentId) {
       try {
-        await axios.delete(
-          `http://localhost:3000/api/v1/comments/${commentId}`
-        );
+        await axios.delete(`${returnUrl}/api/v1/comments/${commentId}`);
 
         this.comments = this.comments.filter(
           (comment) => comment._id !== commentId
@@ -109,7 +106,7 @@ export const useCommentStore = defineStore("commentStore", {
     async editTheComment(commentData, commentId) {
       try {
         const response = await axios.put(
-          `http://localhost:3000/api/v1/comments/${commentId}`,
+          `${returnUrl}/api/v1/comments/${commentId}`,
           commentData
         );
         this.commentsByUser = this.commentsByUser.map((comment) =>
@@ -134,7 +131,7 @@ export const useCommentStore = defineStore("commentStore", {
     async upvoteCommentAction(commentId) {
       try {
         const response = await axios.post(
-          `http://localhost:3000/api/v1/comments/${commentId}/upvote`
+          `${returnUrl}/api/v1/comments/${commentId}/upvote`
         );
         const updatedComment = response.data.comment;
 
@@ -160,7 +157,7 @@ export const useCommentStore = defineStore("commentStore", {
     async cancelUpvoteAction(commentId) {
       try {
         const response = await axios.post(
-          `http://localhost:3000/api/v1/comments/${commentId}/cancelUpvote`
+          `${returnUrl}/api/v1/comments/${commentId}/cancelUpvote`
         );
 
         const updatedComment = response.data.comment;

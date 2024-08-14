@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-
 import axios from "axios";
+import { returnUrl } from "@/utility/url.js";
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({
@@ -11,7 +11,7 @@ export const useUserStore = defineStore("userStore", {
       try {
         this.isLoading = true;
         const response = await axios.put(
-          "http://localhost:3000/api/v1/user/updateUser",
+          `${returnUrl}/api/v1/user/updateUser`,
           updatedUserData
         );
         return response;

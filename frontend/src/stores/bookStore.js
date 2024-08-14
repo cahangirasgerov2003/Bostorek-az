@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { useRatingStore } from "./ratingStore.js";
 import { useCommentStore } from "./commentStore.js";
+import { returnUrl } from "@/utility/url.js";
 
 export const useBookStore = defineStore("bookStore", {
   state: () => ({
@@ -44,7 +45,7 @@ export const useBookStore = defineStore("bookStore", {
     async fetchBooks() {
       try {
         this.isLoading = true;
-        const response = await axios.get("http://localhost:3000/api/v1/books");
+        const response = await axios.get(`${returnUrl}/api/v1/books`);
         this.books = response.data.books;
         return response;
       } catch (error) {
@@ -57,10 +58,7 @@ export const useBookStore = defineStore("bookStore", {
     async createNewBook(newBook) {
       try {
         this.isLoading = true;
-        const response = await axios.post(
-          "http://localhost:3000/api/v1/books",
-          newBook
-        );
+        const response = await axios.post(`${returnUrl}/api/v1/books`, newBook);
         this.books.push(response.data.book);
         this.userUploadedBooks.push(response.data.book);
         return response;
@@ -75,7 +73,7 @@ export const useBookStore = defineStore("bookStore", {
     async editTheBook(bookInfo, bookId) {
       try {
         const response = await axios.put(
-          `http://localhost:3000/api/v1/books/${bookId}`,
+          `${returnUrl}/api/v1/books/${bookId}`,
           bookInfo
         );
 
@@ -98,7 +96,7 @@ export const useBookStore = defineStore("bookStore", {
       const commentStore = useCommentStore();
       const ratingStore = useRatingStore();
       try {
-        await axios.delete(`http://localhost:3000/api/v1/books/${bookId}`);
+        await axios.delete(`${returnUrl}/api/v1/books/${bookId}`);
         this.books = this.books.filter((book) => book._id !== bookId);
         this.userUploadedBooks = this.userUploadedBooks.filter(
           (book) => book._id !== bookId
@@ -125,7 +123,7 @@ export const useBookStore = defineStore("bookStore", {
         if (this.requestUploadedBooks === false) {
           this.isLoading = true;
           const response = await axios.get(
-            "http://localhost:3000/api/v1/books/uploader"
+            `${returnUrl}/api/v1/books/uploader`
           );
           this.userUploadedBooks = response.data.books;
           this.requestUploadedBooks = true;

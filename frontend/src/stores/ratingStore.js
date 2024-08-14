@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { returnUrl } from "@/utility/url.js";
 
 export const useRatingStore = defineStore("ratingStore", {
   state: () => ({
@@ -15,9 +16,7 @@ export const useRatingStore = defineStore("ratingStore", {
       try {
         if (this.requestRatings === false) {
           this.isLoading = true;
-          const response = await axios.get(
-            "http://localhost:3000/api/v1/ratings"
-          );
+          const response = await axios.get(`${returnUrl}/api/v1/ratings`);
 
           this.ratings = response.data.ratings;
           this.requestRatings = true;
@@ -33,7 +32,7 @@ export const useRatingStore = defineStore("ratingStore", {
       try {
         this.isLoading = true;
         const response = await axios.post(
-          "http://localhost:3000/api/v1/ratings",
+          `${returnUrl}/api/v1/ratings`,
           newRating
         );
 
@@ -53,7 +52,7 @@ export const useRatingStore = defineStore("ratingStore", {
       try {
         this.isLoading = true;
         const response = await axios.get(
-          `http://localhost:3000/api/v1/ratings/book/${bookId}`
+          `${returnUrl}/api/v1/ratings/book/${bookId}`
         );
         this.ratingsForBook = response.data.ratings;
         return response;
@@ -73,7 +72,7 @@ export const useRatingStore = defineStore("ratingStore", {
         if (this.requestRatingsByUser === false) {
           this.isLoading = true;
           const response = await axios.get(
-            `http://localhost:3000/api/v1/ratings/user/${userId}`
+            `${returnUrl}/api/v1/ratings/user/${userId}`
           );
 
           this.ratingsByUser = response.data.ratings;
@@ -94,7 +93,7 @@ export const useRatingStore = defineStore("ratingStore", {
     async editTheRating(ratingData, ratingId) {
       try {
         const response = await axios.put(
-          `http://localhost:3000/api/v1/ratings/${ratingId}`,
+          `${returnUrl}/api/v1/ratings/${ratingId}`,
           ratingData
         );
 
@@ -115,7 +114,7 @@ export const useRatingStore = defineStore("ratingStore", {
 
     async deleteARating(ratingId) {
       try {
-        await axios.delete(`http://localhost:3000/api/v1/ratings/${ratingId}`);
+        await axios.delete(`${returnUrl}/api/v1/ratings/${ratingId}`);
         this.ratingsByUser = this.ratingsByUser.filter(
           (rating) => rating._id !== ratingId
         );

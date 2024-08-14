@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-
 import axios from "axios";
+import { returnUrl } from "@/utility/url.js";
 
 export const useAuthStore = defineStore("authStore", {
   state: () => ({
@@ -19,7 +19,7 @@ export const useAuthStore = defineStore("authStore", {
       try {
         this.isLoading = true;
         const response = await axios.post(
-          "http://localhost:3000/api/v1/auth/register",
+          `${returnUrl}/api/v1/auth/register`,
           newUser
         );
         return response;
@@ -36,7 +36,7 @@ export const useAuthStore = defineStore("authStore", {
       try {
         this.isLoading = true;
         const response = await axios.post(
-          "http://localhost:3000/api/v1/auth/login",
+          `${returnUrl}/api/v1/auth/login`,
           loginData
         );
         const token = response.data.token;

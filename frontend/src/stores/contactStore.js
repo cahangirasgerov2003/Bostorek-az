@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { returnUrl } from "@/utility/url.js";
 
 import axios from "axios";
 
@@ -11,7 +12,7 @@ export const useContactStore = defineStore("contactStore", {
       try {
         this.isLoading = true;
         const response = await axios.post(
-          "http://localhost:3000/api/v1/contact",
+          `${returnUrl}/api/v1/contact`,
           formData
         );
         return response;
