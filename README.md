@@ -32,3 +32,5 @@ Proyekti öz kompüterinizə yükləmək və quraşdırmaq üçün aşağıdakı
 6. Brauzerdə http://localhost:port-a uyğun porta daxil olun.
 
 ## Proyekt linki
+
+[Bostorek-az](https://bostorek-az-frontend.onrender.com)
