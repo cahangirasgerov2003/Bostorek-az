@@ -140,6 +140,14 @@ const init = async () => {
   try {
     await Promise.all([bookStore.fetchBooks(), commentStore.fetchComments()]);
 
+    // Loading ekranını gizlət
+    const loadingScreen = document.getElementById("loading-screen");
+    if (loadingScreen) {
+      loadingScreen.remove();
+    }
+
+    document.getElementById("app").style.display = "block";
+
     app
       .use(pinia)
       .component("font-awesome-icon", FontAwesomeIcon)

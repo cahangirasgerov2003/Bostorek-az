@@ -5,9 +5,87 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <style>
+      #loading-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 50px);
+        position: relative;
+      }
+
+      #render-info {
+        position: absolute;
+        width: 80%;
+        bottom: 40px;
+        font-size: 14px;
+        color: #888;
+        text-align: center;
+      }
+
+      .spinner {
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+      }
+
+      .readDocs {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .disadvantagesRender {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media only screen and (max-width: 575px) {
+        .disadvantagesInfo {
+          display: none;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="loading-screen">
+      <div>
+        <div class="spinner"></div>
+      </div>
+      <div id="render-info">
+        <h3 class="disadvantagesRender">
+          Disadvantages of Render Free Version
+        </h3>
+        <p class="disadvantagesInfo">
+          Render spins down a Free web service that goes 15 minutes without
+          receiving inbound traffic. Render spins the service back up whenever
+          it next receives a request to process. Spinning up a service takes up
+          to a minute, which causes a noticeable delay for incoming requests
+          until the service is back up and running. For example, a browser page
+          load will hang temporarily.
+        </p>
+        <a
+          href="https://docs.render.com/free#spinning-down-on-idle"
+          class="readDocs"
+          target="_blank"
+        >
+          Read more in the documentation
+        </a>
+      </div>
+    </div>
+    <div id="app" style="display: none"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
