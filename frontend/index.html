@@ -16,7 +16,7 @@
 
       #render-info {
         position: absolute;
-        width: 80%;
+        width: 60%;
         bottom: 40px;
         font-size: 14px;
         color: #888;
@@ -49,6 +49,18 @@
         }
         100% {
           transform: rotate(360deg);
+        }
+      }
+
+      @media only screen and (max-width: 1199px) {
+        #render-info {
+          width: 80%;
+        }
+      }
+
+      @media only screen and (max-width: 767px) {
+        #render-info {
+          width: 90%;
         }
       }
 
